@@ -18,7 +18,7 @@ class Device {
 }
 
 class DevicesModel extends ChangeNotifier {
-  late Box devices;
+  Box? devices;
 
   init() async {
     Hive.registerAdapter<Device>(DeviceAdapter());
@@ -27,25 +27,25 @@ class DevicesModel extends ChangeNotifier {
   }
 
   read() {
-    return devices.values.toList();
+    return devices != null ? devices?.values.toList() : [];
   }
 
   get(index) {
-    return devices.values.toList()[index];
+    return devices?.values.toList()[index];
   }
 
   add(Device device) {
-    devices.add(device);
+    devices?.add(device);
     notifyListeners();
   }
 
   delete(index) {
-    devices.deleteAt(index);
+    devices?.deleteAt(index);
     notifyListeners();
   }
 
   update(index, device) {
-    devices.putAt(index, device);
+    devices?.putAt(index, device);
     notifyListeners();
   }
 }

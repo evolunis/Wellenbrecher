@@ -17,8 +17,9 @@ class _DevicesPageState extends State<DevicesPage> {
 
   //Initialization, data fetching
   void initState() {
-    Provider.of<SettingsModel>(context, listen: false).loadSettings();
     Provider.of<DevicesModel>(context, listen: false).init();
+    Provider.of<SettingsModel>(context, listen: false).loadSettings();
+
     super.initState();
   }
 
@@ -78,6 +79,16 @@ class _DevicesPageState extends State<DevicesPage> {
                       );
                     },
                     child: const Icon(Icons.add_sharp, size: 100),
+                  ),
+                ),
+              ),
+              Card(
+                color: Colors.grey,
+                child: Center(
+                  child: InkWell(
+                    onTap: () async {},
+                    child:
+                        const Icon(Icons.airplane_ticket_outlined, size: 100),
                   ),
                 ),
               ),

@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:shelly_controller/process/preferences.dart' as prefs;
+import 'package:shelly_controller/utils/storage.dart' as prefs;
 
 class ServerSettings {
-  String serverAddress;
-  String apiKey;
+  String serverAddress = "";
+  String apiKey = "";
 
   ServerSettings(this.serverAddress, this.apiKey);
 }

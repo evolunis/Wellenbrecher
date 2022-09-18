@@ -92,7 +92,7 @@ class _DeviceModalState extends State<DeviceModal> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(0),
                   child: (widget.index >= 0)
                       ? ElevatedButton(
                           style: ButtonStyle(
