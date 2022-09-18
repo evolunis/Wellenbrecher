@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:shelly_controller/models/settings.dart';
 import 'package:shelly_controller/models/devices.dart';
+import 'package:shelly_controller/models/time_series.dart';
+
 import 'package:shelly_controller/screens/parts/settings.dart';
 import 'package:shelly_controller/screens/parts/modal.dart';
+import 'package:shelly_controller/screens/time_series.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({super.key});
@@ -18,7 +22,8 @@ class _DevicesPageState extends State<DevicesPage> {
   //Initialization, data fetching
   void initState() {
     Provider.of<DevicesModel>(context, listen: false).init();
-    Provider.of<SettingsModel>(context, listen: false).loadSettings();
+    Provider.of<SettingsModel>(context, listen: false).init();
+    Provider.of<TimeSeriesModel>(context, listen: false).init();
 
     super.initState();
   }
@@ -86,7 +91,12 @@ class _DevicesPageState extends State<DevicesPage> {
                 color: Colors.grey,
                 child: Center(
                   child: InkWell(
-                    onTap: () async {},
+                    onTap: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const TimeSeries()));
+                    },
                     child:
                         const Icon(Icons.airplane_ticket_outlined, size: 100),
                   ),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:shelly_controller/models/settings.dart';
+import 'package:shelly_controller/models/time_series.dart';
 import 'package:shelly_controller/models/devices.dart';
 import 'package:shelly_controller/screens/devices.dart';
 
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => SettingsModel()),
-        ChangeNotifierProvider(create: (context) => DevicesModel())
+        ChangeNotifierProvider(create: (context) => DevicesModel()),
+        ChangeNotifierProvider(create: (context) => TimeSeriesModel())
       ],
       child: MaterialApp(
         title: 'Plug controller',

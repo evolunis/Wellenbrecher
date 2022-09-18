@@ -11,7 +11,7 @@ class ServerSettings {
 class SettingsModel extends ChangeNotifier {
   ServerSettings? serverSettings;
 
-  void loadSettings() async {
+  void init() async {
     var var1 = await prefs.read("server");
     var var2 = await prefs.read("apikey");
     serverSettings = ServerSettings(var1, var2);

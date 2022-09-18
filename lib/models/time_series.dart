@@ -1,11 +1,33 @@
 //flutter run -d chrome --web-renderer html
 
 import 'package:flutter/foundation.dart';
-import 'package:shelly_controller/utils/helpers.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:shelly_controller/utils/api_calls.dart';
 import 'dart:convert';
 
 class TimeSeriesModel extends ChangeNotifier {
+  var data = {};
+
+  init() async {
+    data = await getPowerData();
+    data['prodSerieSum'] = sumSeries(data['prodSeries']);
+    data['consSerieSum'] = sumSeries(data['consSeries']);
+    notifyListeners();
+  }
+
+  getData() {
+    return data;
+  }
+
+  toFlSpots(List list, int interval) {
+    List<FlSpot> spots = [];
+    for (var i = 0; i < list.length; i += interval) {
+      spots.add(FlSpot(list[i][0], list[i][1] ?? 0));
+    }
+
+    return spots;
+  }
+
 //Get the whole timestamp list
   getTimestamp(items) async {
     var timestamps = [];
@@ -45,8 +67,6 @@ class TimeSeriesModel extends ChangeNotifier {
       timeSeriesClean.add(timeSerie.sublist(0, index[0]));
     }
     return timeSeriesClean;
-    //print(index);
-    //print(index[0]);
   }
 
   getPowerData() async {
@@ -71,20 +91,21 @@ class TimeSeriesModel extends ChangeNotifier {
     int timeStamp = await getTimestamp(items);
     var timeSeries = await getTimeSeries(items, timeStamp);
 
-    //Get last data point
-    var lastData = [];
-    for (var timeSerie in timeSeries) {
-      lastData.add(timeSerie.last[1] ?? 0);
-    }
-    var prod = sum(lastData.sublist(0, 11));
-    var cons = lastData[12];
-
-    //print(lastData);
     return {
       "prodSeries": timeSeries.sublist(0, 11),
-      "consSeries": timeSeries.last,
-      "prod": prod,
-      "cons": cons,
+      "consSeries": [timeSeries[12]]
     };
   }
+}
+
+//Sum all the series
+sumSeries(timeSeries) {
+  var timeSerie = timeSeries[0];
+  for (var i = 1; i < timeSeries.length; i++) {
+    for (var j = 0; j < timeSerie.length; j++) {
+      timeSerie[j][1] = (timeSerie[j][1] ?? 0) + (timeSeries[i][j][1] ?? 0);
+    }
+  }
+
+  return timeSerie;
 }
