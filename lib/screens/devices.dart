@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelly_controller/models/settings.dart';
 import 'package:shelly_controller/models/devices.dart';
+import 'package:shelly_controller/screens/parts/settings.dart';
+import 'package:shelly_controller/screens/parts/modal.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({super.key});
@@ -23,6 +25,7 @@ class _DevicesPageState extends State<DevicesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //Appbar
       appBar: AppBar(
         actions: [
           Builder(
@@ -35,31 +38,54 @@ class _DevicesPageState extends State<DevicesPage> {
         ],
         title: const Text("Devices"),
       ),
-      body: Center(child: Consumer<DevicesModel>(
-        builder: (context, deviceModel, child) {
-          return GridView.count(crossAxisCount: 3, children: [
-            ...List.generate(deviceModel.devices.values.toList().length,
-                (index) {
-              return Card(
-                color: Colors.lightGreen,
-                borderOnForeground: true,
+      body: Center(
+        child: Consumer<DevicesModel>(
+          builder: (context, devicesModel, child) {
+            //Gridview
+            return GridView.count(crossAxisCount: 3, children: [
+              ...List.generate(devicesModel.read().length, (index) {
+                return Card(
+                  color: Colors.green,
+                  borderOnForeground: true,
+                  child: Center(
+                    child: InkWell(
+                      onTap: () {
+                        showDialog<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DeviceModal(index, devicesModel.get(index));
+                          },
+                        );
+                      },
+                      child: Text(
+                        '${devicesModel.get(index).name}',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+              Card(
+                color: Colors.grey,
                 child: Center(
-                  child: Text(
-                    'Item $index ${deviceModel.devices.values.toList()[index].name}',
-                    style: Theme.of(context).textTheme.headline5,
+                  child: InkWell(
+                    onTap: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeviceModal(-1, Device(id: "", name: ""));
+                        },
+                      );
+                    },
+                    child: const Icon(Icons.add_sharp, size: 100),
                   ),
                 ),
-              );
-            }),
-            const Card(
-              color: Colors.grey,
-              child: Center(
-                child: Icon(Icons.add_box_outlined, size: 100),
               ),
-            ),
-          ]);
-        },
-      )),
+            ]);
+          },
+        ),
+      ),
+      //Settings drawer
       endDrawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -73,87 +99,6 @@ class _DevicesPageState extends State<DevicesPage> {
             const SettingsForm(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class SettingsForm extends StatefulWidget {
-  const SettingsForm({super.key});
-
-  @override
-  SettingsFormState createState() {
-    return SettingsFormState();
-  }
-}
-
-class SettingsFormState extends State<SettingsForm> {
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    // Allows to fill fields with settings values.
-    final SettingsModel settingsModel =
-        Provider.of<SettingsModel>(context, listen: false);
-    final serverController = TextEditingController(
-        text: settingsModel.serverSettings?.serverAddress);
-    final keyController =
-        TextEditingController(text: settingsModel.serverSettings?.apiKey);
-
-    // Build a Form widget using the _formKey created above.
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: TextFormField(
-              controller: serverController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Server address',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: TextFormField(
-              controller: keyController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Secret key',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  Provider.of<SettingsModel>(context, listen: false).set(
-                      ServerSettings(
-                          serverController.text, keyController.text));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Saved !')),
-                  );
-                }
-              },
-              child: const Text('Submit'),
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -23,18 +23,29 @@ class DevicesModel extends ChangeNotifier {
   init() async {
     Hive.registerAdapter<Device>(DeviceAdapter());
     devices = await Hive.openBox<Device>('devices');
-    devices.add(Device(
-      id: "ak345",
-      name: "dishwasher",
-    ));
     notifyListeners();
   }
 
-  readDb() {
+  read() {
     return devices.values.toList();
   }
 
-  addDeviceDb(Device device) {
+  get(index) {
+    return devices.values.toList()[index];
+  }
+
+  add(Device device) {
     devices.add(device);
+    notifyListeners();
+  }
+
+  delete(index) {
+    devices.deleteAt(index);
+    notifyListeners();
+  }
+
+  update(index, device) {
+    devices.putAt(index, device);
+    notifyListeners();
   }
 }
