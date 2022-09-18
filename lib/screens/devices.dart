@@ -48,16 +48,16 @@ class _DevicesPageState extends State<DevicesPage> {
                 return Card(
                   color: Colors.green,
                   borderOnForeground: true,
-                  child: Center(
-                    child: InkWell(
-                      onTap: () {
-                        showDialog<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DeviceModal(index, devicesModel.get(index));
-                          },
-                        );
-                      },
+                  child: InkWell(
+                    onTap: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeviceModal(index, devicesModel.get(index));
+                        },
+                      );
+                    },
+                    child: Center(
                       child: Text(
                         '${devicesModel.get(index).name}',
                         style: Theme.of(context).textTheme.headline5,
@@ -68,17 +68,17 @@ class _DevicesPageState extends State<DevicesPage> {
               }),
               Card(
                 color: Colors.grey,
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      showDialog<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DeviceModal(-1, Device(id: "", name: ""));
-                        },
-                      );
-                    },
-                    child: const Icon(Icons.add_sharp, size: 100),
+                child: InkWell(
+                  onTap: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DeviceModal(-1, Device(id: "", name: ""));
+                      },
+                    );
+                  },
+                  child: const Center(
+                    child: Icon(Icons.add_sharp, size: 100),
                   ),
                 ),
               ),
