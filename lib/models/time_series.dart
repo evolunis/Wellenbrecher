@@ -6,13 +6,17 @@ import 'package:shelly_controller/utils/api_calls.dart';
 import 'dart:convert';
 
 class TimeSeriesModel extends ChangeNotifier {
-  var data = {};
+  Map? data;
 
   init() async {
     data = await getPowerData();
-    data['prodSerieSum'] = sumSeries(data['prodSeries']);
-    data['consSerieSum'] = sumSeries(data['consSeries']);
+    data?['prodSerieSum'] = sumSeries(data?['prodSeries']);
+    data?['consSerieSum'] = sumSeries(data?['consSeries']);
     notifyListeners();
+  }
+
+  isLoaded() {
+    return data != null ? true : false;
   }
 
   getData() {
@@ -40,10 +44,10 @@ class TimeSeriesModel extends ChangeNotifier {
     }
 
     timestamps.sort();
-    return timestamps[0];
+    return [timestamps[0] - 1000 * 60 * 60 * 24 * 7, timestamps[0]];
   }
 
-//Retrive the whole time series and trim the end null values
+//Retrieve the whole time series and trim the end null values
   getTimeSeries(items, timeStamp) async {
     var timeSeries = [];
     var index = [];
@@ -88,8 +92,16 @@ class TimeSeriesModel extends ChangeNotifier {
     var itemsCons = [410];
 
     var items = [...itemsGen, ...itemsCons];
-    int timeStamp = await getTimestamp(items);
-    var timeSeries = await getTimeSeries(items, timeStamp);
+    var timeStamps = await getTimestamp(items);
+    var timeSeriesPast = await getTimeSeries(items, timeStamps[0]);
+    var timeSeriesNow = await getTimeSeries(items, timeStamps[1]);
+
+    var timeSeries = timeSeriesPast;
+    for (var i = 0; i < timeSeries.length; i++) {
+      timeSeries[i] = [...timeSeries[i], ...timeSeriesNow[i]];
+      timeSeries[i] = timeSeries[i].sublist(
+          timeSeries[i].length - 4 * 24 * 7 - 1, timeSeries[i].length - 1);
+    }
 
     return {
       "prodSeries": timeSeries.sublist(0, 11),
