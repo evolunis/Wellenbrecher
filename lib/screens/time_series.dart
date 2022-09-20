@@ -70,9 +70,6 @@ class TimeSeries extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       //Appbar
-      appBar: AppBar(
-        title: const Text("Power Data"),
-      ),
       body: Center(
         child: Consumer<TimeSeriesModel>(builder: (context, timeSeries, child) {
           if (!timeSeries.isLoaded()) {

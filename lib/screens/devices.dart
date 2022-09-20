@@ -72,7 +72,8 @@ class _DevicesPageState extends State<DevicesPage> {
                 );
               }),
               Card(
-                color: Colors.grey,
+                color: Colors.white,
+                shadowColor: Colors.white,
                 child: InkWell(
                   onTap: () {
                     showDialog<void>(
@@ -82,23 +83,12 @@ class _DevicesPageState extends State<DevicesPage> {
                       },
                     );
                   },
-                  child: const Center(
-                    child: Icon(Icons.add_sharp, size: 100),
-                  ),
-                ),
-              ),
-              Card(
-                color: Colors.grey,
-                child: Center(
-                  child: InkWell(
-                    onTap: () async {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const TimeSeries()));
-                    },
-                    child:
-                        const Icon(Icons.airplane_ticket_outlined, size: 100),
+                  child: Center(
+                    child: Icon(
+                      Icons.add_box_outlined,
+                      size: 100,
+                      color: Colors.black.withOpacity(0.9),
+                    ),
                   ),
                 ),
               ),
@@ -106,6 +96,22 @@ class _DevicesPageState extends State<DevicesPage> {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {
+          showModalBottomSheet(
+              context: context,
+              builder: (ctx) {
+                return Container(
+                  height: MediaQuery.of(context).size.height * 2,
+                  child: const Center(
+                    child: TimeSeries(),
+                  ),
+                );
+              })
+        },
+        tooltip: 'Show chart',
+        child: const Icon(Icons.area_chart),
+      ), // This traili
       //Settings drawer
       endDrawer: Drawer(
         child: ListView(
