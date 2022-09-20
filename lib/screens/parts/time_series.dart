@@ -125,7 +125,7 @@ class TimeSeries extends StatelessWidget {
                                   if (first) {
                                     first = false;
                                     return LineTooltipItem(
-                                        '${timestampToString(touchedSpot.x, "HH:mm:ss")}\n',
+                                        '${timestampToString(touchedSpot.x.toInt(), "HH:mm:ss")}\n',
                                         const TextStyle(color: Colors.black),
                                         children: [
                                           TextSpan(
