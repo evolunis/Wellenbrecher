@@ -26,7 +26,7 @@ class TimeSeriesModel extends ChangeNotifier {
   toFlSpots(List list, int interval) {
     List<FlSpot> spots = [];
     for (var i = 0; i < list.length; i += interval) {
-      spots.add(FlSpot(list[i][0], list[i][1] ?? 0));
+      spots.add(FlSpot(list[i][0].toDouble(), list[i][1].toDouble() ?? 0.0));
     }
 
     return spots;
@@ -115,7 +115,7 @@ sumSeries(timeSeries) {
   var timeSerie = timeSeries[0];
   for (var i = 1; i < timeSeries.length; i++) {
     for (var j = 0; j < timeSerie.length; j++) {
-      timeSerie[j][1] = (timeSerie[j][1] ?? 0) + (timeSeries[i][j][1] ?? 0);
+      timeSerie[j][1] = (timeSerie[j][1] ?? 0.0) + (timeSeries[i][j][1] ?? 0.0);
     }
   }
 
