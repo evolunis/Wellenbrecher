@@ -142,10 +142,14 @@ class TimeSeries extends StatelessWidget {
                             }),
                         handleBuiltInTouches: true,
                         getTouchLineStart: (data, index) => 0),
-                    minX: timeSeries.getData()['consSerieSum'].first[0],
-                    maxX: timeSeries.getData()['consSerieSum'].last[0],
-                    minY: 5000,
-                    maxY: 20000,
+                    minX: timeSeries
+                        .getData()['consSerieSum']
+                        .first[0]
+                        .toDouble(),
+                    maxX:
+                        timeSeries.getData()['consSerieSum'].last[0].toDouble(),
+                    minY: 5000.0,
+                    maxY: 20000.0,
                     borderData: FlBorderData(show: false),
                     gridData: FlGridData(
                         verticalInterval: 1000 * 60 * 15,
