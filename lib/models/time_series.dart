@@ -5,6 +5,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:shelly_controller/utils/api_calls.dart';
 import 'dart:convert';
 
+import 'package:shelly_controller/utils/helpers.dart';
+
 class TimeSeriesModel extends ChangeNotifier {
   Map? data;
 
@@ -21,6 +23,10 @@ class TimeSeriesModel extends ChangeNotifier {
 
   getData() {
     return data;
+  }
+
+  lastUpdate() {
+    return data?['consSerieSum'].last[0];
   }
 
   toFlSpots(List list, int interval) {
@@ -64,13 +70,56 @@ class TimeSeriesModel extends ChangeNotifier {
       }
       timeSeries.add(timeSerie);
     }
-    index.sort();
 
-    var timeSeriesClean = [];
+    //Finds last data index, values after are all null
+    var lastIndex = mostPopularValue(index);
+
+    var timeSeriesCut = [];
     for (var timeSerie in timeSeries) {
-      timeSeriesClean.add(timeSerie.sublist(0, index[0]));
+      timeSeriesCut.add(timeSerie.sublist(0, lastIndex + 1));
     }
-    return timeSeriesClean;
+
+    //Interpolate over null data points
+    for (var i = 1; i < timeSeriesCut.length; i++) {
+      var timeSerie = timeSeriesCut[i];
+      for (var j = 0; j < timeSerie.length; j++) {
+        //If the value is null, find the next non-null to do an average with preceeding valued
+        if (timeSerie[j][1] == null) {
+          int k = j + 1;
+          int left = 0;
+          int right = 0;
+          if (j != 0 && j != lastIndex) {
+            left = timeSerie[j - 1][1];
+            while (timeSerie[k][1] == null) {
+              k++;
+              if (k == lastIndex) {
+                timeSerie[k][1] = left;
+                break;
+              }
+            }
+            right = timeSerie[k][1];
+            //Last value is null
+          } else if (j == lastIndex) {
+            k = j - 1;
+            left = right = timeSerie[k][1];
+          } //First value is null
+          else {
+            while (timeSerie[k][1] == null) {
+              k++;
+              if (k == lastIndex) {
+                timeSerie[k][1] = 0;
+                break;
+              }
+            }
+            left = right = timeSerie[k][1];
+          }
+
+          timeSerie[j][1] = (left + right) / 2;
+        }
+      }
+      timeSeriesCut[i] = timeSerie;
+    }
+    return timeSeriesCut;
   }
 
   getPowerData() async {
@@ -104,7 +153,7 @@ class TimeSeriesModel extends ChangeNotifier {
     }
 
     return {
-      "prodSeries": timeSeries.sublist(0, 11),
+      "prodSeries": timeSeries.sublist(0, 12),
       "consSeries": [timeSeries[12]]
     };
   }
@@ -115,7 +164,7 @@ sumSeries(timeSeries) {
   var timeSerie = timeSeries[0];
   for (var i = 1; i < timeSeries.length; i++) {
     for (var j = 0; j < timeSerie.length; j++) {
-      timeSerie[j][1] = (timeSerie[j][1] ?? 0.0) + (timeSeries[i][j][1] ?? 0.0);
+      timeSerie[j][1] = (timeSerie[j][1]) + (timeSeries[i][j][1]);
     }
   }
 

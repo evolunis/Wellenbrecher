@@ -7,7 +7,7 @@ import 'package:shelly_controller/models/time_series.dart';
 
 import 'package:shelly_controller/screens/parts/settings.dart';
 import 'package:shelly_controller/screens/parts/modal.dart';
-import 'package:shelly_controller/screens/time_series.dart';
+import 'package:shelly_controller/screens/parts/time_series.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({super.key});
@@ -71,21 +71,19 @@ class _DevicesPageState extends State<DevicesPage> {
                   ),
                 );
               }),
-              Card(
-                color: Colors.white,
-                shadowColor: Colors.white,
-                child: InkWell(
-                  onTap: () {
-                    showDialog<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DeviceModal(-1, Device(id: "", name: ""));
-                      },
-                    );
-                  },
-                  child: Center(
+              SizedBox(
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeviceModal(-1, Device(id: "", name: ""));
+                        },
+                      );
+                    },
                     child: Icon(
-                      Icons.add_box_outlined,
+                      Icons.add,
                       size: 100,
                       color: Colors.black.withOpacity(0.9),
                     ),
@@ -101,8 +99,8 @@ class _DevicesPageState extends State<DevicesPage> {
           showModalBottomSheet(
               context: context,
               builder: (ctx) {
-                return Container(
-                  height: MediaQuery.of(context).size.height * 2,
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 3,
                   child: const Center(
                     child: TimeSeries(),
                   ),
