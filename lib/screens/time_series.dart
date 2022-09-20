@@ -99,7 +99,8 @@ class TimeSeries extends StatelessWidget {
                                   return FlDotCirclePainter(
                                     radius: 8,
                                     color: barData.color?.withAlpha(159),
-                                    strokeColor: barData.color?.withOpacity(1),
+                                    strokeColor:
+                                        barData.color?.withOpacity(1.0),
                                     strokeWidth: 5,
                                   );
                                 },
