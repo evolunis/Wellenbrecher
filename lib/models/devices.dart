@@ -30,7 +30,7 @@ class DevicesModel extends ChangeNotifier {
     return devices != null ? devices?.values.toList() : [];
   }
 
-  get(index) {
+  get(int index) {
     return devices?.values.toList()[index];
   }
 
@@ -39,12 +39,12 @@ class DevicesModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  delete(index) {
+  delete(int index) {
     devices?.deleteAt(index);
     notifyListeners();
   }
 
-  update(index, device) {
+  update(int index, Device device) {
     devices?.putAt(index, device);
     notifyListeners();
   }

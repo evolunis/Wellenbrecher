@@ -22,6 +22,6 @@ mostPopularValue(list) {
   return sortedKeys.first;
 }
 
-String timestampToString(int value, format) {
+String timestampToString(int value, String format) {
   return DateFormat(format).format(DateTime.fromMillisecondsSinceEpoch(value));
 }

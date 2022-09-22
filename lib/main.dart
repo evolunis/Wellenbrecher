@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:shelly_controller/models/settings.dart';
-import 'package:shelly_controller/models/time_series.dart';
-import 'package:shelly_controller/models/devices.dart';
-import 'package:shelly_controller/screens/devices.dart';
+import 'package:wellenreiter/models/settings.dart';
+import 'package:wellenreiter/models/time_series.dart';
+import 'package:wellenreiter/models/devices.dart';
+import 'package:wellenreiter/screens/devices.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TimeSeriesModel())
       ],
       child: MaterialApp(
-        title: 'Plug controller',
+        title: 'Wellenreiter',
         theme: ThemeData(
           primarySwatch: Colors.green,
           primaryColor: Colors.green,

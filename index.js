@@ -1,51 +1,51 @@
-//flutter run -d chrome --web-renderer html
-import 'package:flutter/foundation.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:wellenreiter/utils/api_calls.dart';
-import 'dart:convert';
+const functions = require("firebase-functions");
 
-import 'package:wellenreiter/utils/helpers.dart';
+// // Create and Deploy Your First Cloud Functions
+// // https://firebase.google.com/docs/functions/write-firebase-functions
+//
+// exports.helloWorld = functions.https.onRequest((request, response) => {
+//   functions.logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });
 
-class TimeSeriesModel extends ChangeNotifier {
-  Map? data;
-
-  init() async {
-    data = await getPowerData();
-    data?['prodSerieSum'] = sumSeries(data?['prodSeries']);
-    data?['consSerieSum'] = sumSeries(data?['consSeries']);
-    notifyListeners();
-  }
-
-  isLoaded() {
-    return data != null ? true : false;
-  }
-
-  getData() {
-    return data;
-  }
-
-  lastUpdate() {
-    return data?['consSerieSum'].last[0];
-  }
-
-  toFlSpots(List list, int interval) {
-    List<FlSpot> spots = [];
-    for (var i = 0; i < list.length; i += interval) {
-      spots.add(FlSpot(list[i][0].toDouble(), list[i][1].toDouble() ?? 0.0));
-    }
-
-    return spots;
-  }
 
 //Get the whole timestamp list
-  getTimestamp(items) async {
+
+exports.date = functions.https.onRequest((req, res) => {
+  console.log("called");
+  res.end();
+})
+
+/*
+exports.scheduledFunction = functions.pubsub.schedule('every 5 minutes').onRun((context) => {
+    console.log('This will be run every 5 minutes!');
+    update();
+  });
+
+async function update() {
+    data = await getPowerData();
+    console.log(data)
+    data['prodSerieSum'] = sumSeries(data['prodSeries']);
+    data['consSerieSum'] = sumSeries(data['consSeries']);
+  }
+
+
+function mostPopularValue(arr){
+    return arr.sort((a,b) =>
+          arr.filter(v => v===a).length
+        - arr.filter(v => v===b).length
+    ).pop();
+}
+
+async function getTimestamp(items) {
     var timestamps = [];
 
     for (var item in items) {
-      String url =
-          'https://www.smard.de/app/chart_data/$item/DE/index_quarterhour.json';
-      var response = await fetchGet(url);
-      timestamps.add(jsonDecode(response.body)['timestamps'].last);
+       url =
+          'https://www.smard.de/app/chart_data/'+str(item)+'/DE/index_quarterhour.json';
+      var response = await fetch(url);
+      timestamps = JSON.parse(response.body)['timestamps']
+      timestamps.add(timestamps[timestamps.length-1]);
     }
 
     timestamps.sort();
@@ -53,14 +53,14 @@ class TimeSeriesModel extends ChangeNotifier {
   }
 
 //Retrieve the whole time series and trim the end null values
-  getTimeSeries(items, timeStamp) async {
+  async function getTimeSeries(items, timeStamp)  {
     var timeSeries = [];
     var index = [];
     for (var item in items) {
-      String url =
-          'https://www.smard.de/app/chart_data/$item/DE/${item}_DE_quarterhour_$timeStamp.json';
-      var response = await fetchGet(url);
-      var timeSerie = jsonDecode(response.body)['series'];
+      url =
+          'https://www.smard.de/app/chart_data/'+str(item)+'/DE/'+str(item)+'_DE_quarterhour_'+str(timeStamp)+'.json';
+      var response = await fetch(url);
+      var timeSerie = JSON.parse(response.body)['series'];
       for (var i = timeSerie.length - 1; i > 0; i--) {
         if (timeSerie[i][1] != null) {
           index.add(i);
@@ -75,7 +75,7 @@ class TimeSeriesModel extends ChangeNotifier {
 
     var timeSeriesCut = [];
     for (var timeSerie in timeSeries) {
-      timeSeriesCut.add(timeSerie.sublist(0, lastIndex + 1));
+      timeSeriesCut.add(timeSerie.slice(0, lastIndex + 1));
     }
 
     //Interpolate over null data points
@@ -84,9 +84,9 @@ class TimeSeriesModel extends ChangeNotifier {
       for (var j = 0; j < timeSerie.length; j++) {
         //If the value is null, find the next non-null to do an average with preceeding valued
         if (timeSerie[j][1] == null) {
-          int k = j + 1;
-          int left = 0;
-          int right = 0;
+           k = j + 1;
+          left = 0;
+          right = 0;
           if (j != 0 && j != lastIndex) {
             left = timeSerie[j - 1][1];
             while (timeSerie[k][1] == null) {
@@ -121,7 +121,7 @@ class TimeSeriesModel extends ChangeNotifier {
     return timeSeriesCut;
   }
 
-  getPowerData() async {
+  async function getPowerData() {
     var itemsGen = [
       1223,
       1224,
@@ -147,19 +147,19 @@ class TimeSeriesModel extends ChangeNotifier {
     var timeSeries = timeSeriesPast;
     for (var i = 0; i < timeSeries.length; i++) {
       timeSeries[i] = [...timeSeries[i], ...timeSeriesNow[i]];
-      timeSeries[i] = timeSeries[i].sublist(
+      timeSeries[i] = timeSeries[i].slice(
           timeSeries[i].length - 4 * 24 * 7 - 1, timeSeries[i].length - 1);
     }
 
     return {
-      "prodSeries": timeSeries.sublist(0, 12),
+      "prodSeries": timeSeries.slice(0, 12),
       "consSeries": [timeSeries[12]]
     };
   }
-}
+
 
 //Sum all the series
-sumSeries(timeSeries) {
+function sumSeries(timeSeries) {
   var timeSerie = timeSeries[0];
   for (var i = 1; i < timeSeries.length; i++) {
     for (var j = 0; j < timeSerie.length; j++) {
@@ -169,3 +169,4 @@ sumSeries(timeSeries) {
 
   return timeSerie;
 }
+*/

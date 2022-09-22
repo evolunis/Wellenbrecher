@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:shelly_controller/models/settings.dart';
-import 'package:shelly_controller/models/devices.dart';
-import 'package:shelly_controller/models/time_series.dart';
+import 'package:wellenreiter/models/settings.dart';
+import 'package:wellenreiter/models/devices.dart';
+import 'package:wellenreiter/models/time_series.dart';
 
-import 'package:shelly_controller/screens/parts/settings.dart';
-import 'package:shelly_controller/screens/parts/modal.dart';
-import 'package:shelly_controller/screens/parts/time_series.dart';
+import 'package:wellenreiter/screens/parts/settings.dart';
+import 'package:wellenreiter/screens/parts/modal.dart';
+import 'package:wellenreiter/screens/parts/time_series.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({super.key});

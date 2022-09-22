@@ -3,8 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-import 'package:shelly_controller/models/time_series.dart';
-import 'package:shelly_controller/utils/helpers.dart';
+import 'package:wellenreiter/models/time_series.dart';
+import 'package:wellenreiter/utils/helpers.dart';
 
 class TimeSeries extends StatelessWidget {
   const TimeSeries({super.key});
@@ -50,7 +50,7 @@ class TimeSeries extends StatelessWidget {
     String text = "";
 
     if (true) {
-      text = (value / 1000).toString();
+      text = (value / 1000).toStringAsFixed(0);
     }
 
     return SideTitleWidget(

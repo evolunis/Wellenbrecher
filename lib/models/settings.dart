@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:shelly_controller/utils/storage.dart' as prefs;
+import 'package:wellenreiter/utils/storage.dart' as prefs;
 
 class ServerSettings {
   String serverAddress;
