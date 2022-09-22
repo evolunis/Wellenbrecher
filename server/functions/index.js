@@ -12,7 +12,7 @@ exports.smartGridApiCall = functions.pubsub.schedule('every 15 minutes').onRun((
       return null;});
   });
   
-  /*
+  /* TEST
   exports.smartGridApiCall = functions.https.onRequest((request, res) => {
        functions.logger.info("Hello logs!", {structuredData: true});
        update().then(()=>{res.end()});

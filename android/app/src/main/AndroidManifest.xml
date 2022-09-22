@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.evolunis.welllenreiter">
+    package="com.evolunis.wellenreiter">
    <application
         android:label="wellenreiter"
         android:name="${applicationName}"
