@@ -6,12 +6,12 @@ A simple open-source mobile application allowing to control smart wifi plugs and
 
 The app displays the following features :
 - Local storage of credentials.
-- Live map.
+- Live chart.
 - Devices added manually to app.
 - The app actively keeps the switches off every 15 minutes when an energy overconsomation is detected. 
-- In case of network or phone malfunction the switches are set back on after 20 minutes thanks to an auto-on timer. 
+- In case of network or phone malfunction, the switches are set back on after 20 minutes thanks to an auto-on timer. 
 
 ### Compatibility : 
 
-- [Shelly devices compatible with Cloud platform](https://shelly.cloud/products/shelly-plug-smart-home-automation-device/)
+- [Shelly™ devices available on Cloud platform](https://shelly.cloud/products/shelly-plug-smart-home-automation-device/)
 
