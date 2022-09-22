@@ -15,13 +15,14 @@ class TimeSeriesModel extends ChangeNotifier {
   init() async {
     data = await getDataFirebase();
     //data = await getPowerData();
-    data?['prodSerieSum'] = sumSeries(data?['prodSeries']);
-    data?['consSerieSum'] = sumSeries(data?['consSeries']);
+    //data?['prodSerieSum'] = sumSeries(data?['prodSeries']);
+    //data?['consSerieSum'] = sumSeries(data?['consSeries']);
     notifyListeners();
   }
 
   getDataFirebase() async {
     DatabaseReference ref = FirebaseDatabase.instance.ref();
+    data = {};
     final snapshot = await ref.child('data/').get();
     if (snapshot.exists) {
       return snapshot.value;
@@ -50,6 +51,8 @@ class TimeSeriesModel extends ChangeNotifier {
 
     return spots;
   }
+
+/* NOT USED, WAS PUT ON SERVER */
 
 //Get the whole timestamp list
   getTimestamp(items) async {
@@ -161,8 +164,8 @@ class TimeSeriesModel extends ChangeNotifier {
     var timeSeries = timeSeriesPast;
     for (var i = 0; i < timeSeries.length; i++) {
       timeSeries[i] = [...timeSeries[i], ...timeSeriesNow[i]];
-      timeSeries[i] = timeSeries[i].sublist(
-          timeSeries[i].length - 4 * 24 * 7 - 1, timeSeries[i].length - 1);
+      timeSeries[i] = timeSeries[i]
+          .sublist(timeSeries[i].length - 4 * 24 * 7 - 1, timeSeries[i].length);
     }
 
     return {

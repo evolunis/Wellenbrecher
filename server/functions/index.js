@@ -5,38 +5,30 @@ admin.initializeApp(functions.config().firebase);
 db = admin.database();
 
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });F
 
 
-//Get the whole timestamp list
-
-/*
-exports.scheduledFunction = functions.pubsub.schedule('every 5 minutes').onRun((context) => {
-    console.log('This will be run every 5 minutes!');
-    update();
+exports.smartGridApiCall = functions.pubsub.schedule('every 15 minutes').onRun((context) => {
+    return update().then(()=> {
+      return null;});
   });
-  */
-
-  exports.helloWorld = functions.https.onRequest((request, res) => {
+  
+  /*
+  exports.smartGridApiCall = functions.https.onRequest((request, res) => {
        functions.logger.info("Hello logs!", {structuredData: true});
-       update(res);
+       update().then(()=>{res.end()});
      });
+*/
 
-
-async function update(res) {
-    data = await getPowerData();
+async function update() {
+    var data = await getPowerData();
     data['prodSerieSum'] = sumSeries(data['prodSeries']);
     data['consSerieSum'] = sumSeries(data['consSeries']);
+    delete data['prodSeries'];
+    delete data['consSeries'];
 
     const ref = db.ref('/data');
-    ref.set(data).then(()=>{
-      res.end();});
+    return ref.set(data).then(()=>{
+      return true;});
     
   }
 
@@ -124,7 +116,7 @@ async function fetchTimeSeries(items,timeStamp){
    
     //Finds last data index, values after are all null
     var lastIndex = mostPopularValue(index);
-
+  
     var timeSeriesCut = [];
     for (var timeSerie of timeSeries) {
       timeSeriesCut.push(timeSerie.slice(0, lastIndex + 1));
@@ -146,7 +138,6 @@ async function fetchTimeSeries(items,timeStamp){
             while (timeSerie[k][1] == null) {
               k++;
               if (k == lastIndex) {
-                console.log(timeSerie)
                 timeSerie[k][1] = left;
                 break;
               }
@@ -194,21 +185,21 @@ async function fetchTimeSeries(items,timeStamp){
     ];
 
     var itemsCons = [410];
-    console.log("called 1")
+   
     var items = [...itemsGen, ...itemsCons];
     var timeStamps = await getTimestamp(items);
-    console.log("called 2")
+
     var timeSeriesPast = await getTimeSeries(items, timeStamps[0]);
     var timeSeriesNow = await getTimeSeries(items, timeStamps[1]);
-    console.log("called 3")
+
 
     var timeSeries = timeSeriesPast;
     for (var i = 0; i < timeSeries.length; i++) {
       timeSeries[i] = [...timeSeries[i], ...timeSeriesNow[i]];
       timeSeries[i] = timeSeries[i].slice(
-          timeSeries[i].length - 4 * 24 * 7 - 1, timeSeries[i].length - 1);
+          timeSeries[i].length - 4 * 24 * 7 - 1, timeSeries[i].length);
     }
-    console.log("called 4")
+  
 
     return {
       "prodSeries": timeSeries.slice(0, 12),
@@ -225,6 +216,6 @@ function sumSeries(timeSeries) {
       timeSerie[j][1] = (timeSerie[j][1]) + (timeSeries[i][j][1]);
     }
   }
-  
+
   return timeSerie;
 }
