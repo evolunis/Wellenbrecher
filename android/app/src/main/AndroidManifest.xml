@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.shelly_controller">
+    package="com.evolunis.welllenreiter">
    <application
-        android:label="shelly_controller"
+        android:label="wellenreiter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

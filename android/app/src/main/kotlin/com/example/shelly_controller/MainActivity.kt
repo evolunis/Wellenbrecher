@@ -1,4 +1,4 @@
-package com.example.shelly_controller
+package com.evolunis.wellenreiter
 
 import io.flutter.embedding.android.FlutterActivity
 

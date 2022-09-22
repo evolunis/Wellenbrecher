@@ -1,5 +1,8 @@
-//const functions = require("firebase-functions");
+const functions = require("firebase-functions");
+const admin = require('firebase-admin');
 const fetch = require("node-fetch");
+admin.initializeApp(functions.config().firebase);
+db = admin.database();
 
 
 // // Create and Deploy Your First Cloud Functions
@@ -8,7 +11,7 @@ const fetch = require("node-fetch");
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
-// });
+// });F
 
 
 //Get the whole timestamp list
@@ -19,21 +22,22 @@ exports.scheduledFunction = functions.pubsub.schedule('every 5 minutes').onRun((
     update();
   });
   */
-/*
-  exports.helloWorld = functions.https.onRequest((request, response) => {
-       functions.logger.info("Hello logs!", {structuredData: true});
-       update();
-       response.send("Hello from Firebase!");
-     });
-     */
-update();
 
-async function update() {
+  exports.helloWorld = functions.https.onRequest((request, res) => {
+       functions.logger.info("Hello logs!", {structuredData: true});
+       update(res);
+     });
+
+
+async function update(res) {
     data = await getPowerData();
-    console.log("test")
-    console.log(data)
     data['prodSerieSum'] = sumSeries(data['prodSeries']);
     data['consSerieSum'] = sumSeries(data['consSeries']);
+
+    const ref = db.ref('/data');
+    ref.set(data).then(()=>{
+      res.end();});
+    
   }
 
 
@@ -74,8 +78,6 @@ async function fetchTimeStamps(items){
         }
         return timestamps;
     })
-    
-    
     })
     
 }
@@ -211,7 +213,7 @@ async function fetchTimeSeries(items,timeStamp){
     return {
       "prodSeries": timeSeries.slice(0, 12),
       "consSeries": [timeSeries[12]]
-    };
+    }
   }
 
 
@@ -223,6 +225,6 @@ function sumSeries(timeSeries) {
       timeSerie[j][1] = (timeSerie[j][1]) + (timeSeries[i][j][1]);
     }
   }
-
+  
   return timeSerie;
 }

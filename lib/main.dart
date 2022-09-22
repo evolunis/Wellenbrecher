@@ -7,8 +7,17 @@ import 'package:wellenreiter/models/time_series.dart';
 import 'package:wellenreiter/models/devices.dart';
 import 'package:wellenreiter/screens/devices.dart';
 
+//firebase
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 void main() async {
   await Hive.initFlutter();
+
+  //Firebase init
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

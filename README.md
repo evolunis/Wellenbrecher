@@ -1,4 +1,4 @@
-# shelly_controller
+# Wellenreiter
 
 A new Flutter project.
 

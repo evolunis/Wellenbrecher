@@ -6,14 +6,28 @@ import 'dart:convert';
 
 import 'package:wellenreiter/utils/helpers.dart';
 
+//Firebase
+import 'package:firebase_database/firebase_database.dart';
+
 class TimeSeriesModel extends ChangeNotifier {
   Map? data;
 
   init() async {
-    data = await getPowerData();
+    data = await getDataFirebase();
+    //data = await getPowerData();
     data?['prodSerieSum'] = sumSeries(data?['prodSeries']);
     data?['consSerieSum'] = sumSeries(data?['consSeries']);
     notifyListeners();
+  }
+
+  getDataFirebase() async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref.child('data/').get();
+    if (snapshot.exists) {
+      return snapshot.value;
+    } else {
+      return 0;
+    }
   }
 
   isLoaded() {
