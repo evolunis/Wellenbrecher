@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Wellenreiter',
         theme: ThemeData(
-          primarySwatch: Colors.green,
-          primaryColor: Colors.green,
+          primarySwatch: Colors.blue,
+          primaryColor: const Color(0xFF3399FF),
         ),
         home: const DevicesPage(),
       ),
