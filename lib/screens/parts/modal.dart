@@ -78,13 +78,13 @@ class _DeviceModalState extends State<DeviceModal> {
                     child: const Text("Save Device"),
                     onPressed: () {
                       if (widget.index >= 0) {
-                        devicesModel.update(
+                        devicesModel.modifyDevice(
                             widget.index,
                             Device(
                                 name: nameController.text,
                                 id: idController.text));
                       } else {
-                        devicesModel.add(Device(
+                        devicesModel.addDevice(Device(
                             name: nameController.text, id: idController.text));
                       }
                       Navigator.pop(context);
@@ -106,7 +106,7 @@ class _DeviceModalState extends State<DeviceModal> {
                           child: const Text("Delete"),
                           onPressed: () {
                             if (widget.index >= 0) {
-                              devicesModel.delete(
+                              devicesModel.deleteDevice(
                                 widget.index,
                               );
                             }
@@ -116,9 +116,8 @@ class _DeviceModalState extends State<DeviceModal> {
                       : ElevatedButton(
                           child: const Text("Add all available devices."),
                           onPressed: () {
-                            if (widget.index >= 0) {
-                              devicesModel.addAll();
-                            }
+                            devicesModel.addAllExisting();
+
                             Navigator.pop(context);
                           },
                         ),

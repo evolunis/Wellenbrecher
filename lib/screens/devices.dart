@@ -55,7 +55,7 @@ class _DevicesPageState extends State<DevicesPage> {
           if (devicesModel.shouldShow()) {
             //Gridview
             return GridView.count(crossAxisCount: 3, children: [
-              ...List.generate(devicesModel.read().length, (index) {
+              ...List.generate(devicesModel.readDb().length, (index) {
                 return Card(
                   color: devicesModel.getDeviceStatus(index) != false
                       ? Colors.blue
@@ -66,7 +66,8 @@ class _DevicesPageState extends State<DevicesPage> {
                       showDialog<void>(
                         context: context,
                         builder: (BuildContext context) {
-                          return DeviceModal(index, devicesModel.get(index));
+                          return DeviceModal(
+                              index, devicesModel.getDevice(index));
                         },
                       );
                     },
@@ -75,7 +76,7 @@ class _DevicesPageState extends State<DevicesPage> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "${devicesModel.get(index).name}\n",
+                              text: "${devicesModel.getDevice(index).name}\n",
                             ),
                             WidgetSpan(
                                 child: devicesModel.getDeviceStatus(index) !=

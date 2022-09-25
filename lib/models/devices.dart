@@ -41,25 +41,25 @@ class DevicesModel extends ChangeNotifier {
   }
 
 /* Local database */
-  read() {
+  readDb() {
     return devices != null ? devices?.values.toList() : [];
   }
 
-  get(int index) {
+  getDevice(int index) {
     return devices?.getAt(index);
   }
 
-  add(Device device) {
+  addDevice(Device device) {
     devices?.add(device);
     refresh();
   }
 
-  delete(int index) {
+  deleteDevice(int index) {
     devices?.deleteAt(index);
     refresh();
   }
 
-  update(int index, Device device) {
+  modifyDevice(int index, Device device) {
     devices?.putAt(index, device);
     notifyListeners();
   }
@@ -82,7 +82,7 @@ class DevicesModel extends ChangeNotifier {
     List statusList = [];
 
     Map status = await cloudServer.checkAllDevicesStatus();
-    List devList = read();
+    List devList = readDb();
     for (var i = 0; i < devList.length; i++) {
       var key = status.keys
           .firstWhere((element) => element == devList[i].id, orElse: () => -1);
@@ -96,13 +96,18 @@ class DevicesModel extends ChangeNotifier {
     return true;
   }
 
-  addAll() async {
+  addAllExisting() async {
     Map status = await cloudServer.checkAllDevicesStatus();
-    List devList = read();
+    List devList = readDb();
+    List devIds = [];
     for (var i = 0; i < devList.length; i++) {
-      var key = status.keys
-          .firstWhere((element) => element == devList[i].id, orElse: () => -1);
-      if (key != -1) {}
+      devIds.add(devList[i].id);
+    }
+    for (var i = 0; i < status.keys.length; i++) {
+      if (!devIds.contains(status.keys.elementAt(i))) {
+        String key = status.keys.elementAt(i);
+        addDevice(Device(id: key, name: status[key]['code']));
+      }
     }
   }
 

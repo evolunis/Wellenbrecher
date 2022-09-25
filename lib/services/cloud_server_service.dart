@@ -29,7 +29,7 @@ class CloudServerService {
     devicesModelCallback = cb;
   }
 
-  emitRefresh() {
+  notifyProviders() {
     devicesModelCallback!();
   }
 
@@ -85,7 +85,6 @@ class CloudServerService {
   dynamic checkAuthSettings() async {
     var res = await sendCommand("/device", {});
     if (res != false) {
-      print(res.statusCode);
       if (res.statusCode == 200) {
         isAuthValid = true;
         return true;

@@ -11,8 +11,7 @@ class SettingsModel extends ChangeNotifier {
         .setSettings(ServerAuth(serverAddress, apiKey))
         .then(((res) {
       return cloudServer.checkAuthSettings().then((res) {
-        cloudServer.emitRefresh();
-        print("have been checked now calling listerners");
+        cloudServer.notifyProviders();
         return res;
       });
     }));
