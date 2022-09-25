@@ -47,3 +47,18 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+/*
+class SnackBarModel extends ChangeNotifier {
+  String message = "";
+
+  showMessage(String message) {
+    message = message;
+    notifyListeners();
+  }
+
+  getMessage() {
+    return message;
+  }
+}
+*/
