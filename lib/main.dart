@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:wellenreiter/models/settings.dart';
 import 'package:wellenreiter/models/time_series.dart';
 import 'package:wellenreiter/models/devices.dart';
-import 'package:wellenreiter/screens/devices.dart';
+import 'package:wellenreiter/screens/devices/devices.dart';
 
 import 'package:wellenreiter/service_locator.dart';
 

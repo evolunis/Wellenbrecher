@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:wellenreiter/models/devices.dart';
 import 'package:wellenreiter/models/time_series.dart';
 
-import 'package:wellenreiter/screens/parts/settings.dart';
-import 'package:wellenreiter/screens/parts/modal.dart';
-import 'package:wellenreiter/screens/parts/time_series.dart';
+import 'package:wellenreiter/screens/settings.dart';
+import 'package:wellenreiter/screens/devices/parts/modal.dart';
+import 'package:wellenreiter/screens/devices/parts/time_series.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({super.key});
@@ -43,10 +43,15 @@ class _DevicesPageState extends State<DevicesPage> {
           Builder(
             builder: (context) => IconButton(
               icon: const Icon(Icons.settings),
-              onPressed: () => Scaffold.of(context).openEndDrawer(),
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        const SettingsForm()), //Scaffold.of(context).openEndDrawer(),
+                //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              ),
             ),
-          ),
+          )
         ],
         title: const Text("Devices"),
       ),

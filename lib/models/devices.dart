@@ -50,8 +50,15 @@ class DevicesModel extends ChangeNotifier {
   }
 
   addDevice(Device device) {
-    devices?.add(device);
-    refresh();
+    List devList = readDb();
+    List devIds = [];
+    for (var i = 0; i < devList.length; i++) {
+      devIds.add(devList[i].id);
+    }
+    if (!devIds.contains(device.id)) {
+      devices?.add(device);
+      refresh();
+    }
   }
 
   deleteDevice(int index) {
@@ -60,8 +67,15 @@ class DevicesModel extends ChangeNotifier {
   }
 
   modifyDevice(int index, Device device) {
-    devices?.putAt(index, device);
-    notifyListeners();
+    List devList = readDb();
+    List devIds = [];
+    for (var i = 0; i < devList.length; i++) {
+      devIds.add(devList[i].id);
+    }
+    if (!devIds.contains(device.id)) {
+      devices?.putAt(index, device);
+      refresh();
+    }
   }
 
   getDeviceStatus(int index) {

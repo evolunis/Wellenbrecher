@@ -41,6 +41,11 @@ class _DeviceModalState extends State<DeviceModal> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                        (widget.index < 0) ? "Add device" : "Update device",
+                        style: Theme.of(context).textTheme.headlineSmall)),
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: nameController,
@@ -75,7 +80,7 @@ class _DeviceModalState extends State<DeviceModal> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                    child: const Text("Save Device"),
+                    child: const Text("Save device"),
                     onPressed: () {
                       if (widget.index >= 0) {
                         devicesModel.modifyDevice(
@@ -91,10 +96,10 @@ class _DeviceModalState extends State<DeviceModal> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: (widget.index >= 0)
-                      ? ElevatedButton(
+                (widget.index >= 0)
+                    ? Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith<Color>(
@@ -112,16 +117,24 @@ class _DeviceModalState extends State<DeviceModal> {
                             }
                             Navigator.pop(context);
                           },
-                        )
-                      : ElevatedButton(
-                          child: const Text("Add all available devices."),
-                          onPressed: () {
-                            devicesModel.addAllExisting();
-
-                            Navigator.pop(context);
-                          },
+                        ))
+                    : Column(children: [
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 1, 0, 9),
+                          child: Text("OR"),
                         ),
-                )
+                        Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: ElevatedButton(
+                            child: const Text("Add all available devices"),
+                            onPressed: () {
+                              devicesModel.addAllExisting();
+
+                              Navigator.pop(context);
+                            },
+                          ),
+                        )
+                      ])
               ],
             ),
           ),
