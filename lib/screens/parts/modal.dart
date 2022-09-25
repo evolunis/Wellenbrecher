@@ -113,7 +113,15 @@ class _DeviceModalState extends State<DeviceModal> {
                             Navigator.pop(context);
                           },
                         )
-                      : null,
+                      : ElevatedButton(
+                          child: const Text("Add all available devices."),
+                          onPressed: () {
+                            if (widget.index >= 0) {
+                              devicesModel.addAll();
+                            }
+                            Navigator.pop(context);
+                          },
+                        ),
                 )
               ],
             ),

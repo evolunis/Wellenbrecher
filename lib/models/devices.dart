@@ -20,16 +20,22 @@ class Device {
   });
 }
 
+//Not used yet.
+List supportedCodes = ["SHPL", "SHPLG-S"];
+
 class DevicesModel extends ChangeNotifier {
   CloudServerService cloudServer = serviceLocator<CloudServerService>();
+  bool hasLoaded = false;
   Box? devices;
+  List devicesStatus = [];
 
   init() async {
+    cloudServer.setCallback(refresh);
+    Hive.registerAdapter<Device>(DeviceAdapter());
+    devices = await Hive.openBox<Device>('devices');
     return cloudServer.checkAuthSettings().then((res) async {
-      Hive.registerAdapter<Device>(DeviceAdapter());
-      devices = await Hive.openBox<Device>('devices');
-      checkDevicesValidity();
-      notifyListeners();
+      hasLoaded = true;
+      refresh();
       return res;
     });
   }
@@ -45,12 +51,12 @@ class DevicesModel extends ChangeNotifier {
 
   add(Device device) {
     devices?.add(device);
-    notifyListeners();
+    refresh();
   }
 
   delete(int index) {
     devices?.deleteAt(index);
-    notifyListeners();
+    refresh();
   }
 
   update(int index, Device device) {
@@ -58,12 +64,49 @@ class DevicesModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  checkDevicesValidity() async {
-    var validList = [];
+  getDeviceStatus(int index) {
+    return devicesStatus[index];
+  }
 
-    for (var i = 0; i < read().length; i++) {
-      validList.add(await cloudServer.checkDeviceStatus(get(i).id));
+  refresh() {
+    if (cloudServer.getIsAuthValid()) {
+      checkDevicesStatus().then((val) {
+        notifyListeners();
+      });
+    } else {
+      notifyListeners();
     }
-    return validList;
+  }
+
+  checkDevicesStatus() async {
+    List statusList = [];
+
+    Map status = await cloudServer.checkAllDevicesStatus();
+    List devList = read();
+    for (var i = 0; i < devList.length; i++) {
+      var key = status.keys
+          .firstWhere((element) => element == devList[i].id, orElse: () => -1);
+      if (key != -1) {
+        statusList.add(status[key]);
+      } else {
+        statusList.add(false);
+      }
+    }
+    devicesStatus = statusList;
+    return true;
+  }
+
+  addAll() async {
+    Map status = await cloudServer.checkAllDevicesStatus();
+    List devList = read();
+    for (var i = 0; i < devList.length; i++) {
+      var key = status.keys
+          .firstWhere((element) => element == devList[i].id, orElse: () => -1);
+      if (key != -1) {}
+    }
+  }
+
+  bool shouldShow() {
+    return cloudServer.getIsAuthValid();
   }
 }

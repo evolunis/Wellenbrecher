@@ -50,72 +50,87 @@ class _DevicesPageState extends State<DevicesPage> {
         ],
         title: const Text("Devices"),
       ),
-      body: Center(
-        child: Consumer<DevicesModel>(
-          builder: (context, devicesModel, child) {
+      body: Consumer<DevicesModel>(builder: (context, devicesModel, child) {
+        if (devicesModel.hasLoaded) {
+          if (devicesModel.shouldShow()) {
             //Gridview
-            return FutureBuilder(
-                future: devicesModel.checkDevicesValidity(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData &&
-                      (snapshot.data as List).length ==
-                          devicesModel.read().length) {
-                    print("snapshot:" +
-                        (snapshot.data as List).length.toString());
-                    return GridView.count(crossAxisCount: 3, children: [
-                      ...List.generate(devicesModel.read().length, (index) {
-                        return Card(
-                          color: (snapshot.data as List)[index]
-                              ? Colors.green
-                              : Colors.grey,
-                          borderOnForeground: true,
-                          child: InkWell(
-                            onTap: () {
-                              showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return DeviceModal(
-                                      index, devicesModel.get(index));
-                                },
-                              );
-                            },
-                            child: Center(
-                              child: Text(
-                                '${devicesModel.get(index).name}',
-                                style: Theme.of(context).textTheme.headline5,
-                              ),
+            return GridView.count(crossAxisCount: 3, children: [
+              ...List.generate(devicesModel.read().length, (index) {
+                return Card(
+                  color: devicesModel.getDeviceStatus(index) != false
+                      ? Colors.blue
+                      : Colors.grey,
+                  borderOnForeground: true,
+                  child: InkWell(
+                    onTap: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeviceModal(index, devicesModel.get(index));
+                        },
+                      );
+                    },
+                    child: Center(
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "${devicesModel.get(index).name}\n",
                             ),
-                          ),
-                        );
-                      }),
-                      SizedBox(
-                        child: Center(
-                          child: InkWell(
-                            onTap: () {
-                              showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return DeviceModal(
-                                      -1, Device(id: "", name: ""));
-                                },
-                              );
-                            },
-                            child: Icon(
-                              Icons.add,
-                              size: 100,
-                              color: Colors.black.withOpacity(0.9),
-                            ),
-                          ),
+                            WidgetSpan(
+                                child: devicesModel.getDeviceStatus(index) !=
+                                        false
+                                    ? devicesModel
+                                            .getDeviceStatus(index)['online']
+                                        ? const Icon(
+                                            Icons.wifi,
+                                            size: 20,
+                                            color: Colors.yellow,
+                                          )
+                                        : const Icon(Icons.wifi_off,
+                                            size: 20, color: Colors.yellow)
+                                    : const Icon(Icons.warning_amber,
+                                        size: 20, color: Colors.red)),
+                          ],
                         ),
                       ),
-                    ]);
-                  } else {
-                    return const Text('Loading');
-                  }
-                });
-          },
-        ),
-      ),
+                    ),
+                  ),
+                );
+              }),
+              SizedBox(
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeviceModal(-1, Device(id: "", name: ""));
+                        },
+                      );
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 100,
+                      color: Colors.black.withOpacity(0.9),
+                    ),
+                  ),
+                ),
+              ),
+            ]);
+          } else {
+            return const Center(
+              child: Text(
+                  "No server available, check settings or internet connection !"),
+            );
+          }
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      }),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
           showModalBottomSheet(
