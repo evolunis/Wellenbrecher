@@ -7,6 +7,8 @@ import 'package:wellenreiter/models/time_series.dart';
 import 'package:wellenreiter/models/devices.dart';
 import 'package:wellenreiter/screens/devices.dart';
 
+import 'package:wellenreiter/service_locator.dart';
+
 //firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -18,6 +20,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  setUp();
   runApp(const MyApp());
 }
 

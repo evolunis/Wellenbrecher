@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:wellenreiter/models/settings.dart';
 import 'package:wellenreiter/models/devices.dart';
 import 'package:wellenreiter/models/time_series.dart';
 
@@ -21,11 +20,18 @@ class _DevicesPageState extends State<DevicesPage> {
 
   //Initialization, data fetching
   void initState() {
-    Provider.of<DevicesModel>(context, listen: false).init();
-    Provider.of<SettingsModel>(context, listen: false).init();
-    Provider.of<TimeSeriesModel>(context, listen: false).init();
-
     super.initState();
+    Provider.of<DevicesModel>(context, listen: false).init().then((res) {
+      if (res == true) {
+      } else {
+        Future<void>.delayed(Duration.zero, () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(res['message'])),
+          );
+        });
+      }
+      Provider.of<TimeSeriesModel>(context, listen: false).init();
+    });
   }
 
   @override
@@ -48,49 +54,65 @@ class _DevicesPageState extends State<DevicesPage> {
         child: Consumer<DevicesModel>(
           builder: (context, devicesModel, child) {
             //Gridview
-            return GridView.count(crossAxisCount: 3, children: [
-              ...List.generate(devicesModel.read().length, (index) {
-                return Card(
-                  color: Colors.green,
-                  borderOnForeground: true,
-                  child: InkWell(
-                    onTap: () {
-                      showDialog<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DeviceModal(index, devicesModel.get(index));
-                        },
-                      );
-                    },
-                    child: Center(
-                      child: Text(
-                        '${devicesModel.get(index).name}',
-                        style: Theme.of(context).textTheme.headline5,
+            return FutureBuilder(
+                future: devicesModel.checkDevicesValidity(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData &&
+                      (snapshot.data as List).length ==
+                          devicesModel.read().length) {
+                    print("snapshot:" +
+                        (snapshot.data as List).length.toString());
+                    return GridView.count(crossAxisCount: 3, children: [
+                      ...List.generate(devicesModel.read().length, (index) {
+                        return Card(
+                          color: (snapshot.data as List)[index]
+                              ? Colors.green
+                              : Colors.grey,
+                          borderOnForeground: true,
+                          child: InkWell(
+                            onTap: () {
+                              showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DeviceModal(
+                                      index, devicesModel.get(index));
+                                },
+                              );
+                            },
+                            child: Center(
+                              child: Text(
+                                '${devicesModel.get(index).name}',
+                                style: Theme.of(context).textTheme.headline5,
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                      SizedBox(
+                        child: Center(
+                          child: InkWell(
+                            onTap: () {
+                              showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DeviceModal(
+                                      -1, Device(id: "", name: ""));
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.add,
+                              size: 100,
+                              color: Colors.black.withOpacity(0.9),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                );
-              }),
-              SizedBox(
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      showDialog<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DeviceModal(-1, Device(id: "", name: ""));
-                        },
-                      );
-                    },
-                    child: Icon(
-                      Icons.add,
-                      size: 100,
-                      color: Colors.black.withOpacity(0.9),
-                    ),
-                  ),
-                ),
-              ),
-            ]);
+                    ]);
+                  } else {
+                    return const Text('Loading');
+                  }
+                });
           },
         ),
       ),

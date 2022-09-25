@@ -7,5 +7,5 @@ read(key) async {
 
 save(key, value) async {
   final prefs = await SharedPreferences.getInstance();
-  prefs.setString(key, value);
+  return await prefs.setString(key, value);
 }

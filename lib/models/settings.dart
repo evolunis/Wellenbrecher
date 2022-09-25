@@ -1,28 +1,24 @@
 import 'package:flutter/foundation.dart';
-import 'package:wellenreiter/utils/storage.dart' as prefs;
 
-class ServerSettings {
-  String serverAddress;
-  String apiKey;
-
-  ServerSettings(this.serverAddress, this.apiKey);
-}
+import 'package:wellenreiter/service_locator.dart';
+import 'package:wellenreiter/services/cloud_server_service.dart';
 
 class SettingsModel extends ChangeNotifier {
-  ServerSettings? serverSettings;
+  CloudServerService cloudServer = serviceLocator<CloudServerService>();
 
-  void init() async {
-    var var1 = await prefs.read("server");
-    var var2 = await prefs.read("apikey");
-    serverSettings = ServerSettings(var1, var2);
-    notifyListeners();
+  dynamic setSettings(String serverAddress, String apiKey) async {
+    return cloudServer
+        .setSettings(ServerAuth(serverAddress, apiKey))
+        .then(((res) {
+      return cloudServer.checkAuthSettings().then((res) {
+        notifyListeners();
+        return res;
+      });
+    }));
   }
 
-  void set(ServerSettings serverSettings) {
-    this.serverSettings = serverSettings;
-    prefs.save("server", serverSettings.serverAddress);
-    prefs.save("apikey", serverSettings.apiKey);
-
-    notifyListeners();
+  Map getSettings() {
+    ServerAuth? auth = cloudServer.getSettings();
+    return {"serverAddress": auth?.serverAddress, "apiKey": auth?.apiKey};
   }
 }

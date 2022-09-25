@@ -19,10 +19,10 @@ class SettingsFormState extends State<SettingsForm> {
     // Allows to fill fields with settings values.
     final SettingsModel settingsModel =
         Provider.of<SettingsModel>(context, listen: false);
-    final serverController = TextEditingController(
-        text: settingsModel.serverSettings?.serverAddress);
-    final keyController =
-        TextEditingController(text: settingsModel.serverSettings?.apiKey);
+    Map settings = settingsModel.getSettings();
+    final serverController =
+        TextEditingController(text: settings['serverAddress']);
+    final keyController = TextEditingController(text: settings['apiKey']);
 
     // Build a Form widget using the _formKey created above.
     return Form(
@@ -64,14 +64,21 @@ class SettingsFormState extends State<SettingsForm> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  Provider.of<SettingsModel>(context, listen: false).set(
-                      ServerSettings(
-                          serverController.text, keyController.text));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Saved !')),
-                  );
+                  Provider.of<SettingsModel>(context, listen: false)
+                      .setSettings(serverController.text, keyController.text)
+                      .then((res) {
+                    if (res == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Saved !')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(res['message'])),
+                      );
+                    }
+                  });
                 }
               },
               child: const Text('Submit'),

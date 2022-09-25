@@ -2,7 +2,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:wellenreiter/utils/api_calls.dart';
-import 'dart:convert';
 
 import 'package:wellenreiter/utils/helpers.dart';
 
@@ -62,7 +61,7 @@ class TimeSeriesModel extends ChangeNotifier {
       String url =
           'https://www.smard.de/app/chart_data/$item/DE/index_quarterhour.json';
       var response = await fetchGet(url);
-      timestamps.add(jsonDecode(response.body)['timestamps'].last);
+      timestamps.add(response['timestamps'].last);
     }
 
     timestamps.sort();
@@ -77,7 +76,7 @@ class TimeSeriesModel extends ChangeNotifier {
       String url =
           'https://www.smard.de/app/chart_data/$item/DE/${item}_DE_quarterhour_$timeStamp.json';
       var response = await fetchGet(url);
-      var timeSerie = jsonDecode(response.body)['series'];
+      var timeSerie = response['series'];
       for (var i = timeSerie.length - 1; i > 0; i--) {
         if (timeSerie[i][1] != null) {
           index.add(i);

@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
+import 'package:wellenreiter/service_locator.dart';
+import 'package:wellenreiter/services/cloud_server_service.dart';
+
 part 'devices.g.dart';
 
 @HiveType(typeId: 0) // 1
@@ -18,20 +21,26 @@ class Device {
 }
 
 class DevicesModel extends ChangeNotifier {
+  CloudServerService cloudServer = serviceLocator<CloudServerService>();
   Box? devices;
 
   init() async {
-    Hive.registerAdapter<Device>(DeviceAdapter());
-    devices = await Hive.openBox<Device>('devices');
-    notifyListeners();
+    return cloudServer.checkAuthSettings().then((res) async {
+      Hive.registerAdapter<Device>(DeviceAdapter());
+      devices = await Hive.openBox<Device>('devices');
+      checkDevicesValidity();
+      notifyListeners();
+      return res;
+    });
   }
 
+/* Local database */
   read() {
     return devices != null ? devices?.values.toList() : [];
   }
 
   get(int index) {
-    return devices?.values.toList()[index];
+    return devices?.getAt(index);
   }
 
   add(Device device) {
@@ -47,5 +56,14 @@ class DevicesModel extends ChangeNotifier {
   update(int index, Device device) {
     devices?.putAt(index, device);
     notifyListeners();
+  }
+
+  checkDevicesValidity() async {
+    var validList = [];
+
+    for (var i = 0; i < read().length; i++) {
+      validList.add(await cloudServer.checkDeviceStatus(get(i).id));
+    }
+    return validList;
   }
 }
