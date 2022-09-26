@@ -22,8 +22,7 @@ class _DevicesPageState extends State<DevicesPage> {
   void initState() {
     super.initState();
     Provider.of<DevicesModel>(context, listen: false).init().then((res) {
-      if (res == true) {
-      } else {
+      if (res != true) {
         Future<void>.delayed(Duration.zero, () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(res['message'])),

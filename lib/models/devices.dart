@@ -34,6 +34,7 @@ class DevicesModel extends ChangeNotifier {
     Hive.registerAdapter<Device>(DeviceAdapter());
     devices = await Hive.openBox<Device>('devices');
     return cloudServer.checkAuthSettings().then((res) async {
+      print('hasloadded');
       hasLoaded = true;
       refresh();
       return res;
