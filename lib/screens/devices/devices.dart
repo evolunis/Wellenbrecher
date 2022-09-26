@@ -62,7 +62,11 @@ class _DevicesPageState extends State<DevicesPage> {
               ...List.generate(devicesModel.readDb().length, (index) {
                 return Card(
                   color: devicesModel.getDeviceStatus(index) != false
-                      ? Colors.blue
+                      ? (devicesModel.getDeviceStatus(index)['online']
+                          ? (devicesModel.getDeviceStatus(index)['ison']
+                              ? Colors.green
+                              : Colors.red)
+                          : Colors.blue)
                       : Colors.grey,
                   borderOnForeground: true,
                   child: InkWell(
@@ -116,6 +120,34 @@ class _DevicesPageState extends State<DevicesPage> {
                     },
                     child: Icon(
                       Icons.add,
+                      size: 100,
+                      color: Colors.black.withOpacity(0.9),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+                      devicesModel.switchDevices(true);
+                    },
+                    child: Icon(
+                      Icons.power,
+                      size: 100,
+                      color: Colors.black.withOpacity(0.9),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+                      devicesModel.switchDevices(false);
+                    },
+                    child: Icon(
+                      Icons.power_off,
                       size: 100,
                       color: Colors.black.withOpacity(0.9),
                     ),

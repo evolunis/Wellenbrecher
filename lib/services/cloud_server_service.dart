@@ -18,6 +18,7 @@ class CloudServerService {
   ServerAuth serverAuth = ServerAuth("", "");
   bool isAuthValid = false;
   VoidCallback? devicesModelCallback;
+  DateTime lastTime = DateTime.now();
 
   init() async {
     var var1 = await prefs.read("server");
@@ -51,11 +52,23 @@ class CloudServerService {
   }
 
   sendCommand(String command, Map<String, String> args) async {
-    String url = serverAuth.serverAddress + command;
-    args.addAll({"auth_key": serverAuth.apiKey});
-    dynamic response = await fetchPost(url, args);
-    //print("error?:" + response.toString());
-    return response;
+    //Server accepts only one request per second
+    DateTime now = DateTime.now();
+    int diff = now.difference(lastTime).inMilliseconds;
+    lastTime = DateTime.now();
+    int delay = 0;
+
+    if (diff < 100) {
+      delay = 100 - diff;
+    }
+
+    return Future.delayed(Duration(milliseconds: delay), () async {
+      String url = serverAuth.serverAddress + command;
+      args.addAll({"auth_key": serverAuth.apiKey});
+      dynamic response = await fetchPost(url, args);
+      // print("error?:" + jsonDecode(response.body).toString());
+      return response;
+    });
   }
 
   checkDeviceStatus(String id) async {
@@ -80,11 +93,26 @@ class CloudServerService {
       for (var device in devices) {
         statusClean[device] = {
           "online": status[device]["_dev_info"]['online'],
-          "code": status[device]["_dev_info"]['code']
+          "code": status[device]["_dev_info"]['code'],
+          "ison": status[device]["relays"][0]['ison'] ?? false
         };
       }
       return statusClean;
     }
+  }
+
+  Future<void> switchAllDevices(List ids, bool state) async {
+    List devices = [];
+    for (var i = 0; i < ids.length; i++) {
+      devices.add({"id": ids[i].toString(), "channel": "0"});
+    }
+    return sendCommand("/device/relay/bulk_control", {
+      "devices": jsonEncode(devices),
+      "turn": state ? "on" : "off"
+    }).then((v) {
+      print("called1");
+      return v;
+    });
   }
 
 //Willr only check the key, not the server address

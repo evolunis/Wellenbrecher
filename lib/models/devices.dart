@@ -82,6 +82,20 @@ class DevicesModel extends ChangeNotifier {
     return devicesStatus[index];
   }
 
+  switchDevices(bool state) async {
+    List devList = readDb();
+    List ids = [];
+    for (var i = 0; i < devList.length; i++) {
+      if (devicesStatus[i] != false && devicesStatus[i]["online"]) {
+        ids.add(devList[i].id);
+      }
+    }
+    cloudServer.switchAllDevices(ids, state).then((v) {
+      print("called2");
+      refresh();
+    });
+  }
+
   refresh() {
     if (cloudServer.getIsAuthValid()) {
       checkDevicesStatus().then((val) {
