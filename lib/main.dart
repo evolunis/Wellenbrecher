@@ -21,7 +21,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   setUp();
-  runApp(const MyApp());
+  serviceLocator.allReady().then((value) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
