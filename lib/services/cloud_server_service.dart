@@ -22,11 +22,11 @@ class CloudServerService {
   init() async {
     var var1 = await prefs.read("server");
     var var2 = await prefs.read("apikey");
-    if (var1 == "") {
+    /* if (var1 == "") {
       var1 = "https://shelly-49-eu.shelly.cloud";
       var2 =
           "MTMyM2Q1dWlk4B040153E8CA30FE156F71E0690071FC939261A7AB38761AC9E1FFF9065D3D19A5EDAF878EBF5291";
-    }
+    }*/
     serverAuth = ServerAuth(var1, var2);
   }
 
