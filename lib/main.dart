@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:wellenreiter/models/settings.dart';
-import 'package:wellenreiter/models/time_series.dart';
-import 'package:wellenreiter/models/devices.dart';
-import 'package:wellenreiter/screens/devices/devices.dart';
+import 'package:wellenflieger/models/settings.dart';
+import 'package:wellenflieger/models/time_series.dart';
+import 'package:wellenflieger/models/devices.dart';
+import 'package:wellenflieger/screens/devices/devices.dart';
 
-import 'package:wellenreiter/service_locator.dart';
+import 'package:wellenflieger/service_locator.dart';
 
 //firebase
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TimeSeriesModel())
       ],
       child: MaterialApp(
-        title: 'Wellenreiter',
+        title: 'wellenflieger',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           primaryColor: const Color(0xFF3399FF),

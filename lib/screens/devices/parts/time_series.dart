@@ -3,8 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-import 'package:wellenreiter/models/time_series.dart';
-import 'package:wellenreiter/utils/helpers.dart';
+import 'package:wellenflieger/models/time_series.dart';
+import 'package:wellenflieger/utils/helpers.dart';
 
 class TimeSeries extends StatelessWidget {
   const TimeSeries({super.key});

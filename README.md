@@ -1,4 +1,4 @@
-# Wellenreiter
+#Wellenflieger
 
 A simple open-source mobile application allowing to control smart wifi plugs and turn them off when the price of electricity is expected to rise due to increased energy consomation.
 

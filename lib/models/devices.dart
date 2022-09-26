@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
-import 'package:wellenreiter/service_locator.dart';
-import 'package:wellenreiter/services/cloud_server_service.dart';
+import 'package:wellenflieger/service_locator.dart';
+import 'package:wellenflieger/services/cloud_server_service.dart';
 
 part 'devices.g.dart';
 

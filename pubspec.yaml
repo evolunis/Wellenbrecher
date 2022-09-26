@@ -1,4 +1,4 @@
-name: wellenreiter
+name: wellenflieger
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -45,6 +45,7 @@ dependencies:
   firebase_messaging: ^13.0.2
   firebase_database: ^9.1.4
   get_it: ^7.2.0
+  rename: ^2.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,9 @@
 //flutter run -d chrome --web-renderer html
 import 'package:flutter/foundation.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:wellenreiter/utils/api_calls.dart';
+import 'package:wellenflieger/utils/api_calls.dart';
 
-import 'package:wellenreiter/utils/helpers.dart';
+import 'package:wellenflieger/utils/helpers.dart';
 
 //Firebase
 import 'package:firebase_database/firebase_database.dart';

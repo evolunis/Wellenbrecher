@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wellenreiter/models/devices.dart';
+import 'package:wellenflieger/models/devices.dart';
 
 class DeviceModal extends StatefulWidget {
   final int index;

@@ -1,4 +1,4 @@
-package com.evolunis.wellenreiter
+package com.evolunis.wellenflieger
 
 import io.flutter.embedding.android.FlutterActivity
 

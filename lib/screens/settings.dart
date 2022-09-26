@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wellenreiter/models/settings.dart';
+import 'package:wellenflieger/models/settings.dart';
 
 class SettingsForm extends StatefulWidget {
   const SettingsForm({super.key});

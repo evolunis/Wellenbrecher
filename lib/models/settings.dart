@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:wellenreiter/service_locator.dart';
-import 'package:wellenreiter/services/cloud_server_service.dart';
+import 'package:wellenflieger/service_locator.dart';
+import 'package:wellenflieger/services/cloud_server_service.dart';
 
 class SettingsModel extends ChangeNotifier {
   CloudServerService cloudServer = serviceLocator<CloudServerService>();
