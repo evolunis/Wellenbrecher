@@ -8,23 +8,11 @@ import 'package:wellenflieger/models/devices.dart';
 import 'package:wellenflieger/screens/devices/devices.dart';
 
 import 'package:wellenflieger/service_locator.dart';
+import 'package:wellenflieger/services/firebase_notifications.dart';
 
 //firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:wellenflieger/utils/storage.dart' as prefs;
-
-//Handler
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  //await Firebase.initializeApp();
-  //prefs.reload();
-  await prefs.save("message", message.messageId.toString());
-
-  //print("Handling a background message: ${message.messageId}");
-}
 
 void main() async {
   await Hive.initFlutter();
@@ -33,28 +21,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  String? token = "";
-  FirebaseMessaging.instance.getToken().then((value) {
-    token = value;
-
-    setUp();
-    serviceLocator.allReady().then((value) {
-      runApp(MyApp(token: token));
+  setUp();
+  serviceLocator.allReady().then((value) {
+    FirebaseNotifications notifications = FirebaseNotifications();
+    notifications.init().then((token) {
+      runApp(const MyApp());
     });
   });
+
 /*
   setUp();
   serviceLocator.allReady().then((value) {
@@ -81,7 +56,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           primaryColor: const Color(0xFF3399FF),
         ),
-        home: DevicesPage(token: token),
+        home: const DevicesPage(),
       ),
     );
   }

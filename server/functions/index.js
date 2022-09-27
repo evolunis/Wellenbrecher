@@ -219,3 +219,28 @@ function sumSeries(timeSeries) {
 
   return timeSerie;
 }
+
+
+
+exports.sendHttpPushNotification = functions.https.onRequest((req, res) => {
+  
+  const payload = {
+    token: FCMToken,
+      notification: {
+          title: 'cloud function demo',
+          body: message
+      },
+      data: {
+          body: message,
+      }
+  };
+  
+  admin.messaging().send(payload).then((response) => {
+      // Response is a message ID string.
+      console.log('Successfully sent message:', response);
+      return {success: true};
+  }).catch((error) => {
+      return {error: error.code};
+  });
+  
+})

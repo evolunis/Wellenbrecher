@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:wellenflieger/service_locator.dart';
 import 'package:wellenflieger/services/cloud_server_service.dart';
 
-import 'package:wellenflieger/utils/storage.dart' as prefs;
+import 'package:wellenflieger/utils/local_storage.dart' as prefs;
 
 part 'devices.g.dart';
 
