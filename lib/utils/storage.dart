@@ -9,3 +9,8 @@ save(key, value) async {
   final prefs = await SharedPreferences.getInstance();
   return await prefs.setString(key, value);
 }
+
+reload() async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.reload();
+}

@@ -4,6 +4,8 @@ import 'package:hive/hive.dart';
 import 'package:wellenflieger/service_locator.dart';
 import 'package:wellenflieger/services/cloud_server_service.dart';
 
+import 'package:wellenflieger/utils/storage.dart' as prefs;
+
 part 'devices.g.dart';
 
 @HiveType(typeId: 0) // 1
@@ -28,9 +30,14 @@ class DevicesModel extends ChangeNotifier {
   bool hasLoaded = false;
   Box? devices;
   List devicesStatus = [];
+  String message = "";
 
   init() async {
     cloudServer.setCallback(refresh);
+    prefs.reload();
+    prefs.read("message").then((messagex) {
+      message = messagex;
+    });
     Hive.registerAdapter<Device>(DeviceAdapter());
     devices = await Hive.openBox<Device>('devices');
     return cloudServer.checkAuthSettings().then((res) async {
@@ -140,5 +147,9 @@ class DevicesModel extends ChangeNotifier {
 
   bool shouldShow() {
     return cloudServer.getIsAuthValid();
+  }
+
+  String retrieveMessage() {
+    return message;
   }
 }

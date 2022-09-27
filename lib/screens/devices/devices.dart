@@ -154,6 +154,11 @@ class _DevicesPageState extends State<DevicesPage> {
                   ),
                 ),
               ),
+              SizedBox(
+                child: Center(
+                  child: Text(devicesModel.retrieveMessage()),
+                ),
+              ),
             ]);
           } else {
             return const Center(
