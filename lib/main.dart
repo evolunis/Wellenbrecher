@@ -20,8 +20,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   //await Firebase.initializeApp();
-  prefs.reload();
-  prefs.save("message", message.messageId);
+  //prefs.reload();
+  await prefs.save("message", message.messageId.toString());
 
   //print("Handling a background message: ${message.messageId}");
 }
@@ -47,12 +47,18 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   String? token = "";
-  FirebaseMessaging.instance.getToken().then((value) {
+  /*FirebaseMessaging.instance.getToken().then((value) {
     token = value;
+
     setUp();
     serviceLocator.allReady().then((value) {
-      runApp(MyApp(token: token));
+    runApp(MyApp(token: token));
     });
+  });*/
+
+  setUp();
+  serviceLocator.allReady().then((value) {
+    runApp(MyApp(token: token));
   });
 }
 

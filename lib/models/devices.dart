@@ -34,10 +34,12 @@ class DevicesModel extends ChangeNotifier {
 
   init() async {
     cloudServer.setCallback(refresh);
-    prefs.reload();
-    prefs.read("message").then((messagex) {
-      message = messagex;
+    prefs.reload().then(() {
+      prefs.read("message").then((messagex) {
+        message = messagex;
+      });
     });
+
     Hive.registerAdapter<Device>(DeviceAdapter());
     devices = await Hive.openBox<Device>('devices');
     return cloudServer.checkAuthSettings().then((res) async {

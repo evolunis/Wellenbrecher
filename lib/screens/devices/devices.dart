@@ -13,31 +13,6 @@ class DevicesPage extends StatefulWidget {
 
   final token;
 
-  showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = TextButton(
-      child: Text("OK"),
-      onPressed: () {},
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("FB token"),
-      content: SelectableText(token!),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   @override
   State<DevicesPage> createState() => _DevicesPageState();
 }

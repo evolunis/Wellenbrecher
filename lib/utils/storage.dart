@@ -12,5 +12,7 @@ save(key, value) async {
 
 reload() async {
   final prefs = await SharedPreferences.getInstance();
-  prefs.reload();
+  prefs.reload().then((v) {
+    return v;
+  });
 }
