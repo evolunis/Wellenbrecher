@@ -47,19 +47,19 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   String? token = "";
-  /*FirebaseMessaging.instance.getToken().then((value) {
+  FirebaseMessaging.instance.getToken().then((value) {
     token = value;
 
     setUp();
     serviceLocator.allReady().then((value) {
-    runApp(MyApp(token: token));
+      runApp(MyApp(token: token));
     });
-  });*/
-
+  });
+/*
   setUp();
   serviceLocator.allReady().then((value) {
     runApp(MyApp(token: token));
-  });
+  });*/
 }
 
 class MyApp extends StatelessWidget {

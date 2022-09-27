@@ -34,7 +34,7 @@ class DevicesModel extends ChangeNotifier {
 
   init() async {
     cloudServer.setCallback(refresh);
-    prefs.reload().then(() {
+    prefs.reload().then((v) {
       prefs.read("message").then((messagex) {
         message = messagex;
       });
