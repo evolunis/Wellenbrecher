@@ -50,7 +50,6 @@ void main() async {
   FirebaseMessaging.instance.getToken().then((value) {
     token = value;
     setUp();
-    token = "test_token";
     serviceLocator.allReady().then((value) {
       runApp(MyApp(token: token));
     });
