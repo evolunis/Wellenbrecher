@@ -2,8 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 dynamic fetchGet(url) async {
-  var response =
-      await http.get(Uri.parse(url), headers: {'Content-Type': 'text/plain'});
+  var response = await http.get(Uri.parse(url), headers: {});
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {

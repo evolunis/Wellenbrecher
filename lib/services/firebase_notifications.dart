@@ -6,20 +6,14 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 //Handler
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  var url =
-      "https://us-central1-wellenflieger-ef341.cloudfunctions.net/testCalled";
-  http.get(Uri.parse(url));
-  //await Firebase.initializeApp();
-  prefs.reload();
-  await prefs.save("message", message.messageId.toString());
-
-  //print("Handling a background message: ${message.messageId}");
-}
 
 Future<void> _firebaseMessagingForegroundHandler(RemoteMessage message) async {
   print('Got a message whilst in the foreground!');
   print('Message data: ${message.data}');
+
+  var url =
+      "https://us-central1-wellenflieger-ef341.cloudfunctions.net/testCalled";
+  http.get(Uri.parse(url));
 
   if (message.notification != null) {
     print('Message also contained a notification: ${message.notification}');
@@ -41,7 +35,6 @@ class FirebaseNotifications {
     );
 
     //Background handler
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     //Foreground handler
     FirebaseMessaging.onMessage.listen(_firebaseMessagingForegroundHandler);

@@ -9,12 +9,27 @@ import 'package:wellenflieger/screens/devices/devices.dart';
 
 import 'package:wellenflieger/service_locator.dart';
 import 'package:wellenflieger/services/firebase_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'package:wellenflieger/utils/local_storage.dart' as prefs;
+import 'package:http/http.dart' as http;
 //firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  var url =
+      "https://us-central1-wellenflieger-ef341.cloudfunctions.net/testCalled";
+  http.get(Uri.parse(url));
+  //await Firebase.initializeApp();
+  prefs.reload();
+  await prefs.save("message", message.messageId.toString());
+
+  //print("Handling a background message: ${message.messageId}");
+}
+
 void main() async {
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await Hive.initFlutter();
 
   //Firebase init

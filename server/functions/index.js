@@ -226,10 +226,21 @@ function sumSeries(timeSeries) {
 exports.sendHttpPushNotification = functions.https.onRequest((req, res) => {
   
   sendNotification().then((r)=>{
-    const ref = db.ref('/testCalled');
+    const ref = db.ref('/testNotif');
   return ref.set((new Date()).toISOString()).then(()=>{
     res.end();});
-    res.end();
+
+  })
+  
+})
+
+exports.sendHttpServerPushed = functions.https.onRequest((req, res) => {
+  
+  sendServerPush().then((r)=>{
+    const ref = db.ref('/testPushed');
+  return ref.set((new Date()).toISOString()).then(()=>{
+    res.end();});
+  
   })
   
 })
@@ -241,12 +252,42 @@ const topic = "All";
   const payload = {
       "notification": {
           "title": 'cloud function demo',
-          "body": message
+          "body": message,
+          "content_available": true
       },
       "data": {
           "body": message,
       },
-      "topic":topic,
+      "android":{
+        "priority":"normal"
+      },
+      "apns":{
+        "headers":{
+          "apns-priority":"10"
+        }
+      },
+      "token":"c_z7v2VciEC0rFCG-Z9_tZ:APA91bEuZxL5UmQAiqhV-16vDX_mDI64sb2EV0HaeQfGjwj6XvBZIgE8RC7dzW4vL27Ld6NWCejbI98f2Dg4d8ehHFSkvJh84Fa41Pmj3xAO-6BSDCdwgpj1IM2UWJ6IyIPH40KXdckD",
+  };
+
+  return admin.messaging().send(payload).then((response) => {
+    // Response is a message ID string.
+    console.log('Successfully sent message:', response);
+    return {success: true};
+}).catch((error) => {
+    return {error: error.code};
+});
+
+}
+
+async function sendServerPush() 
+{ 
+const topic = "All";
+  const message = "This is test";
+  const payload = {
+          "data": {
+          "body": message,
+          "content_available": true
+      },
       "android":{
         "priority":"normal"
       },
@@ -255,6 +296,8 @@ const topic = "All";
           "apns-priority":"5"
         }
       },
+      "token":"c_z7v2VciEC0rFCG-Z9_tZ:APA91bEuZxL5UmQAiqhV-16vDX_mDI64sb2EV0HaeQfGjwj6XvBZIgE8RC7dzW4vL27Ld6NWCejbI98f2Dg4d8ehHFSkvJh84Fa41Pmj3xAO-6BSDCdwgpj1IM2UWJ6IyIPH40KXdckD",
+      //"click_action": "FLUTTER_NOTIFICATION_CLICK",
   };
   
   return admin.messaging().send(payload).then((response) => {
@@ -274,6 +317,5 @@ exports.testCalled = functions.https.onRequest((req, res) => {
   return ref.set((new Date()).toISOString()).then(()=>{
     res.end();});
     
-  
-  
 })
+
