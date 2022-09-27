@@ -3,16 +3,27 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:wellenflieger/utils/local_storage.dart' as prefs;
 import 'package:wellenflieger/utils/remote_database.dart' as db;
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 //Handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
+  var url =
+      "https://us-central1-wellenflieger-ef341.cloudfunctions.net/testCalled";
+  http.get(Uri.parse(url));
   //await Firebase.initializeApp();
-  //prefs.reload();
+  prefs.reload();
   await prefs.save("message", message.messageId.toString());
 
   //print("Handling a background message: ${message.messageId}");
+}
+
+Future<void> _firebaseMessagingForegroundHandler(RemoteMessage message) async {
+  print('Got a message whilst in the foreground!');
+  print('Message data: ${message.data}');
+
+  if (message.notification != null) {
+    print('Message also contained a notification: ${message.notification}');
+  }
 }
 
 class FirebaseNotifications {
@@ -29,7 +40,11 @@ class FirebaseNotifications {
       sound: true,
     );
 
+    //Background handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    //Foreground handler
+    FirebaseMessaging.onMessage.listen(_firebaseMessagingForegroundHandler);
 
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {

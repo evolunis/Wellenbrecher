@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const admin = require('firebase-admin');
 const fetch = require("node-fetch");
+const { topic } = require("firebase-functions/v1/pubsub");
 admin.initializeApp(functions.config().firebase);
 db = admin.database();
 
@@ -224,23 +225,55 @@ function sumSeries(timeSeries) {
 
 exports.sendHttpPushNotification = functions.https.onRequest((req, res) => {
   
+  sendNotification().then((r)=>{
+    const ref = db.ref('/testCalled');
+  return ref.set((new Date()).toISOString()).then(()=>{
+    res.end();});
+    res.end();
+  })
+  
+})
+
+async function sendNotification() 
+{ 
+const topic = "All";
+  const message = "This is test";
   const payload = {
-    token: FCMToken,
-      notification: {
-          title: 'cloud function demo',
-          body: message
+      "notification": {
+          "title": 'cloud function demo',
+          "body": message
       },
-      data: {
-          body: message,
-      }
+      "data": {
+          "body": message,
+      },
+      "topic":topic,
+      "android":{
+        "priority":"normal"
+      },
+      "apns":{
+        "headers":{
+          "apns-priority":"5"
+        }
+      },
   };
   
-  admin.messaging().send(payload).then((response) => {
+  return admin.messaging().send(payload).then((response) => {
       // Response is a message ID string.
       console.log('Successfully sent message:', response);
       return {success: true};
   }).catch((error) => {
       return {error: error.code};
   });
+
+}
+
+
+exports.testCalled = functions.https.onRequest((req, res) => {
+  
+  const ref = db.ref('/testReceived');
+  return ref.set((new Date()).toISOString()).then(()=>{
+    res.end();});
+    
+  
   
 })
