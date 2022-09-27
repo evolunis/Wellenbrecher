@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TimeSeriesModel())
       ],
       child: MaterialApp(
-        title: 'wellenflieger',
+        title: 'Wellenflieger',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           primaryColor: const Color(0xFF3399FF),

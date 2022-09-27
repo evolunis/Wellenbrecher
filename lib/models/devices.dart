@@ -91,7 +91,6 @@ class DevicesModel extends ChangeNotifier {
       }
     }
     cloudServer.switchAllDevices(ids, state).then((v) {
-      print("called2");
       refresh();
     });
   }
