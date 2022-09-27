@@ -46,15 +46,20 @@ void main() async {
   );
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  setUp();
-  serviceLocator.allReady().then((value) {
-    runApp(const MyApp());
+  String? token = "";
+  FirebaseMessaging.instance.getToken().then((value) {
+    token = value;
+    setUp();
+    token = "test_token";
+    serviceLocator.allReady().then((value) {
+      runApp(MyApp(token: token));
+    });
   });
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, this.token});
+  final String? token;
 
   // This widget is the root of your application.
   @override
@@ -71,7 +76,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           primaryColor: const Color(0xFF3399FF),
         ),
-        home: const DevicesPage(),
+        home: DevicesPage(token: token),
       ),
     );
   }
