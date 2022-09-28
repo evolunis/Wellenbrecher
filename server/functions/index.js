@@ -250,10 +250,16 @@ async function sendNotification()
 const topic = "All";
   const message = "This is test";
   const payload = {
-      "notification": {
-          "title": 'cloud function demo',
-          "body": message,
-      },
+      "mutable_content": true,
+    "notification": {
+        "badge": 9,
+        "title": "awd4",
+        "mutable-content": true,
+        "body": "bod",
+       // "image_url": "https://www.imgonline.com.ua/examples/jpeg-quality-10.jpg"
+    },
+    //"image_url": "https://www.imgonline.com.ua/examples/jpeg-quality-10.jpg",
+    "priority": "high",
       "data": {
           "body": message,
       },

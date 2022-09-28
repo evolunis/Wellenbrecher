@@ -7,6 +7,10 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
 
+        let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/testCalled")!)
+        let task = URLSession.shared.dataTask(with: getRequest) { data, response, error}
+        task.resume()
+
         defer {
             contentHandler(bestAttemptContent ?? request.content)
         }
