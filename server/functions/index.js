@@ -253,11 +253,11 @@ const topic = "All";
       "notification": {
           "title": 'cloud function demo',
           "body": message,
-          "content_available": true
       },
       "data": {
           "body": message,
       },
+      "content_available": true,
       "android":{
         "priority":"normal"
       },
@@ -286,8 +286,8 @@ const topic = "All";
   const payload = {
           "data": {
           "body": message,
-          "content_available": true
       },
+      "content_available": true,
       "android":{
         "priority":"normal"
       },
