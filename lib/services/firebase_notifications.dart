@@ -1,13 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import 'package:wellenflieger/utils/local_storage.dart' as prefs;
 import 'package:wellenflieger/utils/remote_database.dart' as db;
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 //Handler
 
-Future<void> _firebaseMessagingForegroundHandler(RemoteMessage message) async {
+/*Future<void> _firebaseMessagingForegroundHandler(RemoteMessage message) async {
   print('Got a message whilst in the foreground!');
   print('Message data: ${message.data}');
 
@@ -18,7 +17,7 @@ Future<void> _firebaseMessagingForegroundHandler(RemoteMessage message) async {
   if (message.notification != null) {
     print('Message also contained a notification: ${message.notification}');
   }
-}
+}*/
 
 class FirebaseNotifications {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -37,7 +36,7 @@ class FirebaseNotifications {
     //Background handler
 
     //Foreground handler
-    FirebaseMessaging.onMessage.listen(_firebaseMessagingForegroundHandler);
+    //FirebaseMessaging.onMessage.listen(_firebaseMessagingForegroundHandler);
 
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {

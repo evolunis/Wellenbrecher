@@ -257,7 +257,6 @@ const topic = "All";
       "data": {
           "body": message,
       },
-      "content_available": true,
       "android":{
         "priority":"normal"
       },
@@ -266,7 +265,7 @@ const topic = "All";
           "apns-priority":"10"
         }
       },
-      "token":"c_z7v2VciEC0rFCG-Z9_tZ:APA91bEuZxL5UmQAiqhV-16vDX_mDI64sb2EV0HaeQfGjwj6XvBZIgE8RC7dzW4vL27Ld6NWCejbI98f2Dg4d8ehHFSkvJh84Fa41Pmj3xAO-6BSDCdwgpj1IM2UWJ6IyIPH40KXdckD",
+      "token":"evGbKFWA10fFoD2rsTUVOX:APA91bHfOZDkkcim2SjHB1-H5ldZu37OsE3G91s4xRYkbp4vK3PUodvNkzLurAONzxI5NUjf5tzmokfGUBu9avT4y_Uz3L6DpKJ_pMR43knNVctFAobtQupcdy_P_H58q1EtRU02TZ8D",
   };
 
   return admin.messaging().send(payload).then((response) => {
@@ -284,19 +283,26 @@ async function sendServerPush()
 const topic = "All";
   const message = "This is test";
   const payload = {
-          "data": {
+      "data": {
           "body": message,
       },
-      "content_available": true,
       "android":{
-        "priority":"normal"
+        "priority":"high"
       },
       "apns":{
+        "payload": {
+          "aps": {
+            "contentAvailable": "false",
+            "mutable-content":1,
+          },
+        },
         "headers":{
           "apns-priority":"5"
         }
       },
-      "token":"c_z7v2VciEC0rFCG-Z9_tZ:APA91bEuZxL5UmQAiqhV-16vDX_mDI64sb2EV0HaeQfGjwj6XvBZIgE8RC7dzW4vL27Ld6NWCejbI98f2Dg4d8ehHFSkvJh84Fa41Pmj3xAO-6BSDCdwgpj1IM2UWJ6IyIPH40KXdckD",
+      mutableContent: true,
+      "priority": "high",
+      "token":"evGbKFWA10fFoD2rsTUVOX:APA91bHfOZDkkcim2SjHB1-H5ldZu37OsE3G91s4xRYkbp4vK3PUodvNkzLurAONzxI5NUjf5tzmokfGUBu9avT4y_Uz3L6DpKJ_pMR43knNVctFAobtQupcdy_P_H58q1EtRU02TZ8D",
       //"click_action": "FLUTTER_NOTIFICATION_CLICK",
   };
   
