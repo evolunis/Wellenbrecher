@@ -250,37 +250,42 @@ async function sendNotification()
 const topic = "All";
   const message = "This is test";
   const payload = {
-      "mutable_content": true,
-    "notification": {
-        "badge": 9,
-        "title": "awd4",
-        "mutable-content": true,
-        "body": "bod",
-       // "image_url": "https://www.imgonline.com.ua/examples/jpeg-quality-10.jpg"
-    },
-    //"image_url": "https://www.imgonline.com.ua/examples/jpeg-quality-10.jpg",
-    "priority": "high",
-      "data": {
-          "body": message,
-      },
-      "android":{
-        "priority":"normal"
+      "token":"evGbKFWA10fFoD2rsTUVOX:APA91bHfOZDkkcim2SjHB1-H5ldZu37OsE3G91s4xRYkbp4vK3PUodvNkzLurAONzxI5NUjf5tzmokfGUBu9avT4y_Uz3L6DpKJ_pMR43knNVctFAobtQupcdy_P_H58q1EtRU02TZ8D",
+      "notification": {
+        "title": 'cloud function demo',
+        "body": message,
       },
       "apns":{
         "headers":{
-          "apns-priority":"10"
-        }
-      },
-      "token":"evGbKFWA10fFoD2rsTUVOX:APA91bHfOZDkkcim2SjHB1-H5ldZu37OsE3G91s4xRYkbp4vK3PUodvNkzLurAONzxI5NUjf5tzmokfGUBu9avT4y_Uz3L6DpKJ_pMR43knNVctFAobtQupcdy_P_H58q1EtRU02TZ8D",
+          "apns-priority":10,
+        },
+        "payload": {
+          "aps" : {
+            "category" : "SECRET",
+            "mutable-content" : 1,
+            "alert" : {
+              "title" : "Secret Message!",
+                "body"  : "(Encrypted)"
+            },
+          },
+          "ENCRYPTED_DATA" : "Salted__·öîQÊ$UDì_¶Ù∞èΩ^¬%gq∞NÿÒQùw"
+        },
+      }
   };
-
+  try{
   return admin.messaging().send(payload).then((response) => {
     // Response is a message ID string.
     console.log('Successfully sent message:', response);
     return {success: true};
+  
+
 }).catch((error) => {
+  functions.logger.log(error.message);
     return {error: error.code};
 });
+  }catch(e){
+    functions.logger.log(e.message);
+  }
 
 }
 
@@ -298,8 +303,7 @@ const topic = "All";
       "apns":{
         "payload": {
           "aps": {
-            "contentAvailable": "false",
-            "mutable-content":1,
+            "contentAvailable": "true",
           },
         },
         "headers":{
@@ -307,6 +311,7 @@ const topic = "All";
         }
       },
       mutableContent: true,
+      contentAvailable: true,
       "priority": "high",
       "token":"evGbKFWA10fFoD2rsTUVOX:APA91bHfOZDkkcim2SjHB1-H5ldZu37OsE3G91s4xRYkbp4vK3PUodvNkzLurAONzxI5NUjf5tzmokfGUBu9avT4y_Uz3L6DpKJ_pMR43knNVctFAobtQupcdy_P_H58q1EtRU02TZ8D",
       //"click_action": "FLUTTER_NOTIFICATION_CLICK",
