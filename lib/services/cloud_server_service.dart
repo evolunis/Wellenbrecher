@@ -54,8 +54,8 @@ class CloudServerService {
     lastTime = DateTime.now();
     int delay = 0;
 
-    if (diff < 500) {
-      delay = 500 - diff;
+    if (diff < 800) {
+      delay = 800 - diff;
     }
 
     return Future.delayed(Duration(milliseconds: delay), () async {

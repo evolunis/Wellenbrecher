@@ -17,7 +17,7 @@ public class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-        let server = NSUserDefaults.standard.string(forKey: "flutter.serverAddress") 
+        let server = UserDefaults.standard.string(forKey: "flutter.serverAddress") 
         
         
 
