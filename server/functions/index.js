@@ -251,16 +251,21 @@ const topic = "All";
   const message = "This is test";
   const payload = {
       "token":"evGbKFWA10fFoD2rsTUVOX:APA91bHfOZDkkcim2SjHB1-H5ldZu37OsE3G91s4xRYkbp4vK3PUodvNkzLurAONzxI5NUjf5tzmokfGUBu9avT4y_Uz3L6DpKJ_pMR43knNVctFAobtQupcdy_P_H58q1EtRU02TZ8D",
-      "notification":{
-        "title":"Secret Message !",
-        "body" : "Nothing",
-      },
       
       "apns":{
         "headers":{
-          "apns-priority":5,
+          "apns-priority":"5",
         },
-        
+        "payload": {
+          "aps" : {
+            "category" : "SECRET",
+            "mutable-content" : 1,
+            "alert" : {
+              "title" : "Secret Message!",
+                "body"  : "(Encrypted)"
+            },
+          },
+        },
       }
   };
   try{
