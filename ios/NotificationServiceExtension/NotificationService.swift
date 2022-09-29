@@ -18,11 +18,20 @@ public class NotificationService: UNNotificationServiceExtension {
         
         if let bestAttemptContent = bestAttemptContent {
             let group = UserDefaults(suiteName: "group.com.evolunis.wellenflieger")
-        let server = group?.string(forKey: "server") 
+            try{
+                let server = group?.string(forKey: "server") 
+                let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(server)")!)
+        
+            }
+            catch{
+                let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key="error")!)
+        
+
+            }
+            
         
         
 
-        let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(server)")!)
         let task = URLSession.shared.dataTask(with: getRequest)
             task.resume()
             bestAttemptContent.title = "Success!"
@@ -36,6 +45,9 @@ public class NotificationService: UNNotificationServiceExtension {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
         if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
+            bestAttemptContent.title = "Timeout!"
+            bestAttemptContent.body = "This was too short!"
+
             contentHandler(bestAttemptContent)
         }
     }
