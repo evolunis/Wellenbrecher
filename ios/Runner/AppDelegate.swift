@@ -8,9 +8,30 @@ import Flutter
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
-     if #available(iOS 10.0, *) {
-      UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+
+    UNUserNotificationCenter.current().delegate = self
+
+      
+    if #available(iOS 10, *) {
+          UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ granted, error in }
+      } else {
+      application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
     }
+      application.registerForRemoteNotifications()
+
+    public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
+    let deviceTokenString = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
+        
+     let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(deviceTokenString)")!)
+            let task = URLSession.shared.dataTask(with: getRequest)
+            task.resume()
+    }
+
+    public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    completionHandler()
+}
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
