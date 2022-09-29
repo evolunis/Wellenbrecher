@@ -17,9 +17,12 @@ public class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            // Modify the notification content here...
-            let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/testCalled")!)
-            let task = URLSession.shared.dataTask(with: getRequest)
+     if let server = NSUserDefaults.standard.string(forKey: "flutter.serverAddress") {
+        
+        }
+
+        let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(name)")!)
+        let task = URLSession.shared.dataTask(with: getRequest)
             task.resume()
             bestAttemptContent.title = "Success!"
             bestAttemptContent.body = "This notification was processed  and modified locally !"
