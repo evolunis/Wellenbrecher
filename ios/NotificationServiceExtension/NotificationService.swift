@@ -17,8 +17,8 @@ public class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            UserDefaults.standard.addSuite(named: "group.com.evolunis.wellenflieger")
-        let server = UserDefaults.standard.object(forKey: "flutter.server") 
+            let group = UserDefaults(suiteName: "group.com.evolunis.wellenflieger")
+        let server = group.string(forKey: "flutter.server") 
         
         
 
