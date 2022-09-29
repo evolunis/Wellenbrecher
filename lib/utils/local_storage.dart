@@ -25,7 +25,7 @@ read(key) async {
 }
 
 save(key, value) async {
-  if (false && defaultTargetPlatform == TargetPlatform.iOS) {
+  if (defaultTargetPlatform == TargetPlatform.iOS) {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     return await SharedPreferenceAppGroup.setString(key, value);
   } else {

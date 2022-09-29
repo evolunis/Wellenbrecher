@@ -250,7 +250,7 @@ async function sendNotification()
 const topic = "All";
   const message = "This is test";
   const payload = {
-      "token":"d76Z6VHCBE1Ql7R4VZAoNV:APA91bH-1CptUgyZArwkTfuoSMEmtLYTp-kQlNToNvwaX5u3LiqzrkgJ6w1Xu91U5BYTeNhJ4XhhSw-f6Picye6TL9X0W13eJBRY2cHVhj8HxSqqNHUAwsJoUmEnhFlpmf5bST-8m5rg",
+      "token":"fAUK74eUpU_cr2rU6rjIMO:APA91bF1zsQ0KsGvZUMY9YuMJPrVVTMjIPLoVjtq5k3nqVMvIkz-bOjIgn_wNJEXwD_ekLv3BwiplGnhKz2vbVjlxY2OAEeWKwBZxmImYoxmRQRbdi3a5e5WW7PNyp-_OKXXJ1TKW4KU",
       
       "apns":{
         "headers":{
