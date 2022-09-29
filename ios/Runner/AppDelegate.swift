@@ -15,11 +15,11 @@ import Flutter
     if #available(iOS 10, *) {
           UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ granted, error in }
       } else {
-      application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+      UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
     }
 
 
-      application.registerForRemoteNotifications()
+      UIApplication.shared.registerForRemoteNotifications()
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
