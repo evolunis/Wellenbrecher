@@ -17,23 +17,22 @@ import Flutter
       } else {
       UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
     }
-
-
       UIApplication.shared.registerForRemoteNotifications()
 
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+}
+
+public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
     let deviceTokenString = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
         
      let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(deviceTokenString)")!)
             let task = URLSession.shared.dataTask(with: getRequest)
             task.resume()
-    }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    completionHandler()
 }
 
-    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-  }
+public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    completionHandler()
 }
