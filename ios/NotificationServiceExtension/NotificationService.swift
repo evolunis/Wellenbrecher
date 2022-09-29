@@ -24,7 +24,7 @@ public class NotificationService: UNNotificationServiceExtension {
         
             }
             catch{
-                let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key="error")!)
+                let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=error")!)
         
 
             }
