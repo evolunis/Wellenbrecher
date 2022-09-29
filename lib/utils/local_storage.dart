@@ -9,7 +9,7 @@ read(key) async {
   if (defaultTargetPlatform == TargetPlatform.iOS) {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     try {
-      String value = await SharedPreferenceAppGroup.get(key);
+      var value = await SharedPreferenceAppGroup.get(key);
       fetchGet(
           "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=${value.toString()}");
       value ??= "";
