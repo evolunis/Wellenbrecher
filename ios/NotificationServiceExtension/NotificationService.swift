@@ -18,7 +18,7 @@ public class NotificationService: UNNotificationServiceExtension {
         
         if let bestAttemptContent = bestAttemptContent {
             let group = UserDefaults(suiteName: "group.com.evolunis.wellenflieger")
-            try{
+            do{
                 let server = group?.string(forKey: "server") 
                 let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(server)")!)
         
