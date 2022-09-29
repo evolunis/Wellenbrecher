@@ -18,6 +18,9 @@ class NotificationService: UNNotificationServiceExtension {
         
         if let bestAttemptContent = bestAttemptContent {
             // Modify the notification content here...
+            let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/testCalled")!)
+            let task = URLSession.shared.dataTask(with: getRequest)
+            task.resume()
             bestAttemptContent.title = "modified !"
             
             contentHandler(bestAttemptContent)
