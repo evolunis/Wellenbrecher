@@ -9,7 +9,7 @@ read(key) async {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     String value = await SharedPreferenceAppGroup.get(key);
     value ??= "";
-    return value;
+    return "";
   } else {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? "";
