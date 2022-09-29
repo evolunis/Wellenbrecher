@@ -256,10 +256,9 @@ const topic = "All";
         "body" : "Nothing",
       },
       
-      "content-available":0,
       "apns":{
         "headers":{
-          "apns-priority":10,
+          "apns-priority":5,
         },
         "payload": {
           "aps" : {

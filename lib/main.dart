@@ -9,7 +9,7 @@ import 'package:wellenflieger/screens/devices/devices.dart';
 
 import 'package:wellenflieger/service_locator.dart';
 import 'package:wellenflieger/services/firebase_notifications.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 
 //import 'package:wellenflieger/utils/local_storage.dart' as prefs;
 import 'package:http/http.dart' as http;
@@ -39,10 +39,10 @@ void main() async {
 
   setUp();
   serviceLocator.allReady().then((value) {
-    FirebaseNotifications notifications = FirebaseNotifications();
-    notifications.init().then((token) {
-      runApp(const MyApp());
-    });
+    //FirebaseNotifications notifications = FirebaseNotifications();
+    //notifications.init().then((token) {
+    runApp(const MyApp());
+    //});
   });
 
 /*
