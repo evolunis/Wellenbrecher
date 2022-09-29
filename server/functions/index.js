@@ -260,17 +260,7 @@ const topic = "All";
         "headers":{
           "apns-priority":5,
         },
-        "payload": {
-          "aps" : {
-            "category" : "SECRET",
-            "mutable-content" : 1,
-            "alert" : {
-              "title" : "Secret Message!",
-                "body"  : "(Encrypted)"
-            },
-          },
-          "ENCRYPTED_DATA" : "Salted__·öîQÊ$UDì_¶Ù∞èΩ^¬%gq∞NÿÒQùw"
-        },
+        
       }
   };
   try{
