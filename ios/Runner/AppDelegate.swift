@@ -10,7 +10,7 @@ import Flutter
     GeneratedPluginRegistrant.register(with: self)
      if #available(iOS 10.0, *) {
       let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/testCalled")!)
-            let task = URLSession.shared.dataTask(with: getRequest) { data, response, error}
+            let task = URLSession.shared.dataTask(with: getRequest)
             task.resume()
       UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
     }
