@@ -8,9 +8,8 @@ read(key) async {
   if (defaultTargetPlatform == TargetPlatform.iOS) {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     String value = await SharedPreferenceAppGroup.get(key);
-    if (value.isEmpty) {
-      value = "";
-    }
+    value ??= "";
+    return value;
   } else {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? "";
