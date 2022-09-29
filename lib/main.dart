@@ -39,10 +39,10 @@ void main() async {
 
   setUp();
   serviceLocator.allReady().then((value) {
-    //FirebaseNotifications notifications = FirebaseNotifications();
-    //notifications.init().then((token) {
-    runApp(const MyApp());
-    //});
+    FirebaseNotifications notifications = FirebaseNotifications();
+    notifications.init().then((token) {
+      runApp(const MyApp());
+    });
   });
 
 /*
