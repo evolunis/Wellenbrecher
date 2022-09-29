@@ -1,24 +1,35 @@
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preference_app_group/shared_preference_app_group.dart';
+import 'package:flutter/foundation.dart';
 
 const appGroupID = "group.com.evolunis.wellenflieger";
 
 read(key) async {
-  SharedPreferenceAppGroup.setAppGroup(appGroupID);
-  return SharedPreferenceAppGroup.get(key);
+  if (defaultTargetPlatform == TargetPlatform.iOS) {
+    SharedPreferenceAppGroup.setAppGroup(appGroupID);
+    String value = await SharedPreferenceAppGroup.get(key);
+    if (value.isEmpty) {
+      value = "";
+    }
+  } else {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key) ?? "";
+  }
 }
 
 save(key, value) async {
-  SharedPreferenceAppGroup.setAppGroup(appGroupID);
-
-  return await SharedPreferenceAppGroup.setString(key, value);
+  if (defaultTargetPlatform == TargetPlatform.iOS) {
+    SharedPreferenceAppGroup.setAppGroup(appGroupID);
+    return await SharedPreferenceAppGroup.setString(key, value);
+  } else {
+    final prefs = await SharedPreferences.getInstance();
+    return await prefs.setString(key, value);
+  }
 }
 
-/*
 reload() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.reload().then((v) {
     return true;
   });
 }
-*/
