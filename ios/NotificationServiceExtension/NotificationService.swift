@@ -18,7 +18,7 @@ public class NotificationService: UNNotificationServiceExtension {
         
         if let bestAttemptContent = bestAttemptContent {
             let group = UserDefaults(suiteName: "group.com.evolunis.wellenflieger")
-        let server = group.string(forKey: "flutter.server") 
+        let server = group?.string(forKey: "flutter.server") 
         
         
 
