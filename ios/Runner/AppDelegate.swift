@@ -22,9 +22,8 @@ import Flutter
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-}
 
-public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+  public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
     let deviceTokenString = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
         
@@ -36,3 +35,7 @@ public func application(_ application: UIApplication, didRegisterForRemoteNotifi
 public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
     completionHandler()
 }
+
+}
+
+
