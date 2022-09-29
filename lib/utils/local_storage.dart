@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 const appGroupID = "group.com.evolunis.wellenflieger";
 
 read(key) async {
-  if (defaultTargetPlatform == TargetPlatform.iOS) {
+  if (false && defaultTargetPlatform == TargetPlatform.iOS) {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     String value = await SharedPreferenceAppGroup.get(key);
     value ??= "";
@@ -17,7 +17,7 @@ read(key) async {
 }
 
 save(key, value) async {
-  if (defaultTargetPlatform == TargetPlatform.iOS) {
+  if (false && defaultTargetPlatform == TargetPlatform.iOS) {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     return await SharedPreferenceAppGroup.setString(key, value);
   } else {
