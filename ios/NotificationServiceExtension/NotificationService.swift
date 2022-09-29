@@ -21,7 +21,7 @@ public class NotificationService: UNNotificationServiceExtension {
         
         }
 
-        let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(name)")!)
+        let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(server)")!)
         let task = URLSession.shared.dataTask(with: getRequest)
             task.resume()
             bestAttemptContent.title = "Success!"
