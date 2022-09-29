@@ -21,19 +21,20 @@ public class NotificationService: UNNotificationServiceExtension {
             do{
                 let server = group?.string(forKey: "server") 
                 let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(server)")!)
-        
+                 let task = URLSession.shared.dataTask(with: getRequest)
+            task.resume()
             }
             catch{
                 let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=error")!)
-        
+             let task = URLSession.shared.dataTask(with: getRequest)
+            task.resume()
 
             }
             
         
         
 
-        let task = URLSession.shared.dataTask(with: getRequest)
-            task.resume()
+       
             bestAttemptContent.title = "Success!"
             bestAttemptContent.body = "This notification was processed  and modified locally !"
             
