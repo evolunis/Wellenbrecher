@@ -17,9 +17,9 @@ public class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-     if let server = NSUserDefaults.standard.string(forKey: "flutter.serverAddress") {
+        let server = NSUserDefaults.standard.string(forKey: "flutter.serverAddress") 
         
-        }
+        
 
         let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(server)")!)
         let task = URLSession.shared.dataTask(with: getRequest)
