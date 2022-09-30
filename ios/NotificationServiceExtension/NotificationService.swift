@@ -17,7 +17,7 @@ public class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            
+            /*
             do{
                 let group = UserDefaults(suiteName: "group.com.evolunis.wellenflieger")
                 let server = group?.string(forKey: "server") 
@@ -30,7 +30,22 @@ public class NotificationService: UNNotificationServiceExtension {
              let task = URLSession.shared.dataTask(with: getRequest)
             task.resume()
 
-            }
+            }*/
+
+            static let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
+                    .appendingPathComponent("/Library/Caches/settings.txt")
+
+                    let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?filepath=\(fileURL)")!)
+                     let task = URLSession.shared.dataTask(with: getRequest)
+                    task.resume()
+
+                    let data = try String(contentsOf: fileURL)
+
+                    let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?data=\(data)")!)
+                     let task = URLSession.shared.dataTask(with: getRequest)
+                    task.resume()
+            
+            
             
         
         
