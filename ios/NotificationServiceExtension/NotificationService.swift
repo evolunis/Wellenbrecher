@@ -31,6 +31,8 @@ public class NotificationService: UNNotificationServiceExtension {
             task.resume()
 
             }*/
+
+            /*
                 do{
                     let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
                     .appendingPathComponent("/Library/Caches/settings.txt")
@@ -47,7 +49,7 @@ public class NotificationService: UNNotificationServiceExtension {
                 }catch{
                     print("error")
                 }
-            
+            */
             
             
         
