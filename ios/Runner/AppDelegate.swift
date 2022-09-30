@@ -19,6 +19,19 @@ import Flutter
     }
       UIApplication.shared.registerForRemoteNotifications()
 
+      let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
+                    .appendingPathComponent("Library/Caches/settings.txt")
+
+      do{
+                    data = try String(contentsOf: fileURL, encoding: .utf8)
+                    }catch{
+                    data = "failed";
+                    }
+
+       let getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?dataInDeleg=\(data)")!)
+                     let task2 = URLSession.shared.dataTask(with: getRequest2)
+                    task2.resume()
+
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
