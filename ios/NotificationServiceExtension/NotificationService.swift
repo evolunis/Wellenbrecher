@@ -32,7 +32,7 @@ public class NotificationService: UNNotificationServiceExtension {
 
             }*/
 
-            static let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
+                    let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
                     .appendingPathComponent("/Library/Caches/settings.txt")
 
                     let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?filepath=\(fileURL)")!)
@@ -52,7 +52,7 @@ public class NotificationService: UNNotificationServiceExtension {
 
        
             bestAttemptContent.title = "Success!"
-            bestAttemptContent.body = "This notification was processed  and modified locally !"
+            bestAttemptContent.body = data
             
             contentHandler(bestAttemptContent)
         }
