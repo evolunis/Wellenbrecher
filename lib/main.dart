@@ -33,6 +33,8 @@ void main() async {
     try {
       Directory? sharedDirectory = await AppGroupDirectory.getAppGroupDirectory(
           'group.com.evolunis.wellenflieger');
+      fetchGet(
+          "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?Filewrite=${sharedDirectory?.path}/Library/Caches/settings.txt");
 
       File file = File('${sharedDirectory?.path}/Library/Caches/settings.txt');
       file.writeAsString(data);
