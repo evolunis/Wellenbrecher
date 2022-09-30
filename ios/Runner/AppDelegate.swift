@@ -21,8 +21,8 @@ import Flutter
 
       let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
                     .appendingPathComponent("Library/Caches/settings.txt")
-
-      do{
+    var data = ""
+                 do{
                     data = try String(contentsOf: fileURL, encoding: .utf8)
                     }catch{
                     data = "failed";
