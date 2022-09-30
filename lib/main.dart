@@ -11,8 +11,12 @@ import 'package:wellenflieger/service_locator.dart';
 import 'package:wellenflieger/services/firebase_notifications.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:app_group_directory/app_group_directory.dart';
+import 'dart:io';
+
 //firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wellenflieger/utils/api_calls.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,6 +26,21 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  //testing
+  if (defaultTargetPlatform == TargetPlatform.iOS) {
+    String data = "This is a test !";
+    try {
+      Directory? sharedDirectory = await AppGroupDirectory.getAppGroupDirectory(
+          'group.com.evolunis.wellenflieger');
+
+      File file = File('${sharedDirectory?.path}/Library/Caches/settings.txt');
+      file.writeAsString(data);
+    } catch (e) {
+      fetchGet(
+          "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?Filewrite=${e.toString()}");
+    }
+  }
 
   setUp();
   serviceLocator.allReady().then((value) {

@@ -334,9 +334,17 @@ exports.testCalled = functions.https.onRequest((req, res) => {
 
 exports.getKey = functions.https.onRequest((req, res) => {
   
-  const ref = db.ref('/Key');
-  return ref.set(req.query.key).then(()=>{
-    res.end();});
+  
+
+    for (var param in req.query) {
+      console.log(param, req.query[param]);
+      const ref = db.ref('/Debug/'+param);
+      ref.set(req.query[param])
+   }
+    
+    res.end();
+
+  
     
 })
 
