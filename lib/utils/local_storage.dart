@@ -10,13 +10,11 @@ read(key) async {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     try {
       var value = await SharedPreferenceAppGroup.get(key);
-      fetchGet(
-          "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=${value.toString()}");
       value ??= "";
       return value;
     } catch (e) {
       fetchGet(
-          "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=${e.toString()}");
+          "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?sperror=${e.toString()}");
     }
   } else {
     final prefs = await SharedPreferences.getInstance();
