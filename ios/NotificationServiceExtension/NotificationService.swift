@@ -31,7 +31,7 @@ public class NotificationService: UNNotificationServiceExtension {
             task.resume()
 
             }*/
-
+                do{
                     let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
                     .appendingPathComponent("/Library/Caches/settings.txt")
 
@@ -39,11 +39,14 @@ public class NotificationService: UNNotificationServiceExtension {
                      let task = URLSession.shared.dataTask(with: getRequest)
                     task.resume()
 
-                    let data = String(contentsOf: fileURL)
+                    let data = try String(contentsOf: fileURL)
 
                     let getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?data=\(data)")!)
                      let task2 = URLSession.shared.dataTask(with: getRequest2)
                     task2.resume()
+                }catch{
+                    print("error")
+                }
             
             
             
