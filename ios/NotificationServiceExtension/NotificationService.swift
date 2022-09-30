@@ -6,6 +6,7 @@
 //
 
 import UserNotifications
+import Foundation
 
 public class NotificationService: UNNotificationServiceExtension {
 
@@ -41,11 +42,7 @@ public class NotificationService: UNNotificationServiceExtension {
                      let task = URLSession.shared.dataTask(with: getRequest)
                     task.resume()
                     var data = ""
-                    /*do{
-                    data = try String(contentsOf: fileURL)
-                    }catch{
-                    data = "failed";
-                    }*/
+                  
 
                     if FileManager.default.fileExists(atPath: fileURL.path) {
                         data = "yes"
