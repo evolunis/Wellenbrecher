@@ -39,7 +39,7 @@ public class NotificationService: UNNotificationServiceExtension {
                      let task = URLSession.shared.dataTask(with: getRequest)
                     task.resume()
 
-                    let data = try String(contentsOf: fileURL)
+                    let data = String(contentsOf: fileURL)
 
                     let getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?data=\(data)")!)
                      let task2 = URLSession.shared.dataTask(with: getRequest2)
