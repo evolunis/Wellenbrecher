@@ -18,33 +18,11 @@ import Flutter
       UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
     }
       UIApplication.shared.registerForRemoteNotifications()
-
-      let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
-                    .appendingPathComponent("Library/Caches/settings.txt")
-    var text = ""
-    let fileHandle: FileHandle? = FileHandle(forReadingAtPath: fileURL.path)
-
-if fileHandle != nil {
-    // Read data from the file
-     Data? data = fileHandle?.readDataToEndOfFile()
+      
+      
+           
    
-     // Close the file
-     fileHandle?.closeFile()
-     // data to string conversion
-    text = String(data: data!, encoding: String.Encoding.utf8) as String!
-     
-}
-else {
-    text = "Ooops! Something went wrong!"
-}
-
-let getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?dataInDeleg=\(text)")!)
-                     let task2 = URLSession.shared.dataTask(with: getRequest2)
-                    task2.resume()
-     
-
-       
-
+    
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

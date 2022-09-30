@@ -18,49 +18,17 @@ public class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            /*
-            do{
-                let group = UserDefaults(suiteName: "group.com.evolunis.wellenflieger")
-                let server = group?.string(forKey: "server") 
-                let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(server)")!)
-                 let task = URLSession.shared.dataTask(with: getRequest)
-                task.resume()
-            }
-            catch{
-                let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=error")!)
+           
+            let group = UserDefaults(suiteName: "group.com.evolunis.wellenflieger")
+          
+          
+            
+            let server = group?.string(forKey: "apikey") as? String ?? ""
+            
+            
+            let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?UDresult=\(String(describing: server))")!)
              let task = URLSession.shared.dataTask(with: getRequest)
             task.resume()
-
-            }*/
-
-         
-                    let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
-                    .appendingPathComponent("Library/Caches/settings.txt")
-
-                    //My homemade logger :
-                    let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?filepath=\(fileURL)")!)
-                     let task = URLSession.shared.dataTask(with: getRequest)
-                    task.resume()
-                    /*var data = ""
-                  
-
-                    if FileManager.default.fileExists(atPath: fileURL.path) {
-                        data = "yes"
-                    } else {
-                        data = "false"
-                    }
-
-                    do{
-                    data = try String(contentsOf: fileURL, encoding: .utf8)
-                    }catch{
-                    data = "failed";
-                    }
-
-                    let getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?data=\(data)")!)
-                     let task2 = URLSession.shared.dataTask(with: getRequest2)
-                    task2.resume()
-           
-            */
             
             
         
@@ -68,7 +36,7 @@ public class NotificationService: UNNotificationServiceExtension {
 
        
             bestAttemptContent.title = "Success!"
-            bestAttemptContent.body = "yeah great."
+            bestAttemptContent.body = server
             
             contentHandler(bestAttemptContent)
         }
