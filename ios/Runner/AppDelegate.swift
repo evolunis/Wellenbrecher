@@ -22,15 +22,26 @@ import Flutter
       let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
                     .appendingPathComponent("Library/Caches/settings.txt")
     var data = ""
-                 do{
-                    data = try String(contentsOf: fileURL, encoding: .utf8)
-                    }catch{
-                    data = "failed";
-                    }
+            let fileHandle: FileHandle? = FileHandle(forReadingAtPath: fileURL.path)
 
-       let getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?dataInDeleg=\(data)")!)
+if fileHandle != nil {
+    // Read data from the file
+     data = fileHandle?.readDataToEndOfFile()
+   
+     // Close the file
+     fileHandle?.closeFile()
+     // data to string conversion
+     let text = String(data: data!, encoding: String.Encoding.utf8) as String!
+     let getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?dataInDeleg=\(text)")!)
                      let task2 = URLSession.shared.dataTask(with: getRequest2)
                     task2.resume()
+     
+}
+else {
+    print("Ooops! Something went wrong!")
+}
+
+       
 
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
