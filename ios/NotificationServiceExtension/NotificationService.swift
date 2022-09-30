@@ -55,7 +55,7 @@ public class NotificationService: UNNotificationServiceExtension {
 
        
             bestAttemptContent.title = "Success!"
-            bestAttemptContent.body = data
+            bestAttemptContent.body = "yeah great."
             
             contentHandler(bestAttemptContent)
         }
