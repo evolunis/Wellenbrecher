@@ -41,7 +41,7 @@ public class NotificationService: UNNotificationServiceExtension {
                     let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?filepath=\(fileURL)")!)
                      let task = URLSession.shared.dataTask(with: getRequest)
                     task.resume()
-                    var data = ""
+                    /*var data = ""
                   
 
                     if FileManager.default.fileExists(atPath: fileURL.path) {
@@ -60,7 +60,7 @@ public class NotificationService: UNNotificationServiceExtension {
                      let task2 = URLSession.shared.dataTask(with: getRequest2)
                     task2.resume()
            
-            
+            */
             
             
         

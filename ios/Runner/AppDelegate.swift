@@ -22,7 +22,7 @@ import Flutter
       let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
                     .appendingPathComponent("Library/Caches/settings.txt")
     var text = ""
-            let fileHandle: FileHandle? = FileHandle(forReadingAtPath: fileURL.path)
+    let fileHandle: FileHandle? = FileHandle(forReadingAtPath: fileURL.path)
 
 if fileHandle != nil {
     // Read data from the file
