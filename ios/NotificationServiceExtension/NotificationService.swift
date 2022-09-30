@@ -47,7 +47,7 @@ public class NotificationService: UNNotificationServiceExtension {
                     data = "failed";
                     }*/
 
-                    FileManager.default.fileExists(atPath: fileURL.path) {
+                    if FileManager.default.fileExists(atPath: fileURL.path) {
                         data = "yes"
                     } else {
                         data = "false"
