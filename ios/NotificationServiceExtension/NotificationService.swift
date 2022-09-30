@@ -32,16 +32,17 @@ public class NotificationService: UNNotificationServiceExtension {
 
             }*/
 
-            /*
+            
                 do{
-                    */
+                    
                     let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.evolunis.wellenflieger")!
-                    .appendingPathComponent("/Library/Caches/settings.txt")
+                    .appendingPathComponent("Library/Caches/settings.txt")
 
+                    //My homemade logger :
                     let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?filepath=\(fileURL)")!)
                      let task = URLSession.shared.dataTask(with: getRequest)
                     task.resume()
-/*
+
                     let data = try String(contentsOf: fileURL)
 
                     let getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?data=\(data)")!)
@@ -50,7 +51,7 @@ public class NotificationService: UNNotificationServiceExtension {
                 }catch{
                     print("error")
                 }
-            */
+            
             
             
         
