@@ -28,7 +28,12 @@ public class NotificationService: UNNotificationServiceExtension {
             let devices = group?.string(forKey: "devices") as? String ?? "[]"
             let autoToggle = (group?.string(forKey: "autoToggle") as? String) == "true" ? true:false
             let showNotif = (group?.string(forKey: "showNotifs") as? String) == "true" ? true:false
-
+                
+            var getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=\(devices)")!)
+            let task = URLSession.shared.dataTask(with: getRequest)
+            task.resume();
+            
+            
             if(authValid){
                 if(autoToggle){
 

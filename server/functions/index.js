@@ -265,9 +265,10 @@ const topic = "All";
               "body"  : "(Encrypted)"
             },
           },
+          "toState":"false",
         },
-        "toState":"false",
-      }
+        
+      },
   };
   try{
   return admin.messaging().send(payload).then((response) => {
