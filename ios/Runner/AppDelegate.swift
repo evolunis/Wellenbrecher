@@ -26,16 +26,8 @@ import Flutter
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-/*
-  public override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
-    let deviceTokenString = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
-        
-     let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?key=\(deviceTokenString)")!)
-            let task = URLSession.shared.dataTask(with: getRequest)
-            task.resume()
-}
-*/
+
+
 public override func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
     completionHandler()
 }

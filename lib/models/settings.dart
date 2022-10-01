@@ -7,6 +7,9 @@ class SettingsModel extends ChangeNotifier {
   CloudServerService cloudServer = serviceLocator<CloudServerService>();
 
   dynamic setSettings(String serverAddress, String apiKey) async {
+    if (serverAddress[serverAddress.length - 1] == "/") {
+      serverAddress = serverAddress.substring(0, serverAddress.length - 1);
+    }
     return cloudServer
         .setSettings(ServerAuth(serverAddress, apiKey))
         .then(((res) {

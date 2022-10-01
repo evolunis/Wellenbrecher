@@ -4,8 +4,6 @@ import 'package:hive/hive.dart';
 import 'package:wellenflieger/service_locator.dart';
 import 'package:wellenflieger/services/cloud_server_service.dart';
 
-import 'package:wellenflieger/utils/local_storage.dart' as prefs;
-
 part 'devices.g.dart';
 
 @HiveType(typeId: 0) // 1
@@ -101,7 +99,7 @@ class DevicesModel extends ChangeNotifier {
 
   refresh() {
     if (cloudServer.getIsAuthValid()) {
-      checkDevicesStatus().then((val) {
+      updateDevicesStatusList().then((val) {
         notifyListeners();
       });
     } else {
@@ -109,7 +107,7 @@ class DevicesModel extends ChangeNotifier {
     }
   }
 
-  checkDevicesStatus() async {
+  updateDevicesStatusList() async {
     List statusList = [];
 
     Map status = await cloudServer.checkAllDevicesStatus();
@@ -119,6 +117,7 @@ class DevicesModel extends ChangeNotifier {
           .firstWhere((element) => element == devList[i].id, orElse: () => -1);
       if (key != -1) {
         statusList.add(status[key]);
+        print(status[key]);
       } else {
         statusList.add(false);
       }

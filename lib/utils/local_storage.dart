@@ -10,7 +10,7 @@ read(key) async {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     try {
       var value = await SharedPreferenceAppGroup.get(key);
-      value ??= "";
+      value;
       return value;
     } catch (e) {
       fetchGet(
@@ -18,11 +18,11 @@ read(key) async {
     }
   } else {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key) ?? "";
+    return prefs.getString(key);
   }
 }
 
-save(key, value) async {
+save(String key, String value) async {
   if (defaultTargetPlatform == TargetPlatform.iOS) {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     return await SharedPreferenceAppGroup.setString(key, value);
@@ -30,11 +30,4 @@ save(key, value) async {
     final prefs = await SharedPreferences.getInstance();
     return await prefs.setString(key, value);
   }
-}
-
-reload() async {
-  final prefs = await SharedPreferences.getInstance();
-  prefs.reload().then((v) {
-    return true;
-  });
 }

@@ -10,21 +10,22 @@ import 'package:wellenflieger/utils/api_calls.dart';
 class ServerAuth {
   String serverAddress;
   String apiKey;
+  bool isAuthValid;
 
-  ServerAuth(this.serverAddress, this.apiKey);
+  ServerAuth(this.serverAddress, this.apiKey, [this.isAuthValid = false]);
 }
 
 class CloudServerService {
   ServerAuth serverAuth = ServerAuth("", "");
-  bool isAuthValid = false;
   VoidCallback? devicesModelCallback;
   DateTime lastTime = DateTime.now();
 
   init() async {
-    var var1 = await prefs.read("server");
-    var var2 = await prefs.read("apikey");
+    var serverAddr = await prefs.read("serverAddr") ?? "";
+    var apiKey = await prefs.read("apiKey") ?? "";
+    var isAuthValid = await prefs.read("isAuthValid") == "true" ? true : false;
 
-    serverAuth = ServerAuth(var1, var2);
+    serverAuth = ServerAuth(serverAddr, apiKey, isAuthValid);
   }
 
   setCallback(VoidCallback cb) {
@@ -37,8 +38,8 @@ class CloudServerService {
 
   Future<bool> setSettings(ServerAuth serverAuth) async {
     this.serverAuth = serverAuth;
-    var res1 = await prefs.save("server", serverAuth.serverAddress);
-    var res2 = await prefs.save("apikey", serverAuth.apiKey);
+    var res1 = await prefs.save("serverAddr", serverAuth.serverAddress);
+    var res2 = await prefs.save("apiKey", serverAuth.apiKey);
 
     return res1 && res2;
   }
@@ -115,17 +116,17 @@ class CloudServerService {
     var res = await sendCommand("/device", {});
     if (res != false) {
       if (res.statusCode == 200) {
-        isAuthValid = true;
+        setIsAuthValid(true);
         return true;
       } else {
-        isAuthValid = false;
+        setIsAuthValid(false);
         return {
           "status": "error",
           "message": "API key invalid, please update settings !"
         };
       }
     } else {
-      isAuthValid = false;
+      setIsAuthValid(false);
       return {
         "status": "error",
         "message":
@@ -135,10 +136,11 @@ class CloudServerService {
   }
 
   getIsAuthValid() {
-    return isAuthValid;
+    return serverAuth.isAuthValid;
   }
 
-  setIsAuthValid(val) {
-    isAuthValid = val;
+  setIsAuthValid(bool valid) {
+    serverAuth.isAuthValid = valid;
+    prefs.save("isAuthValid", valid.toString());
   }
 }

@@ -2,7 +2,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:wellenflieger/utils/remote_database.dart' as db;
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 
 //Background handler : Only on Android, iOS is handled natively.
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}

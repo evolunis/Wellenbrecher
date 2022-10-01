@@ -23,6 +23,8 @@ class SettingsFormState extends State<SettingsForm> {
     final serverController =
         TextEditingController(text: settings['serverAddress']);
     final keyController = TextEditingController(text: settings['apiKey']);
+    bool notifs = false;
+    bool autoToggle = false;
 
     // Build a Form widget using the _formKey created above.
     return Scaffold(
@@ -53,22 +55,27 @@ class SettingsFormState extends State<SettingsForm> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextFormField(
-                  controller: keyController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Secret key',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                ),
-              ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Switch(
+                      // This bool value toggles the switch.
+                      value: notifs,
+                      activeColor: Colors.red,
+                      onChanged: (bool value) {
+                        // This is called when the user toggles the switch.
+                        notifs = value;
+                      })),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Switch(
+                      // This bool value toggles the switch.
+                      value: autoToggle,
+                      activeColor: Colors.red,
+                      onChanged: (bool value) {
+                        // This is called when the user toggles the switch.
+                        autoToggle = value;
+                      })),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
