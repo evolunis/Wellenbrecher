@@ -24,10 +24,10 @@ public class NotificationService: UNNotificationServiceExtension {
             
             let serverAddr = group?.string(forKey: "serverAddr") as? String ?? ""
             let apiKey = group?.string(forKey: "apiKey") as? String ?? ""
-            let authValid = (group?.string(forKey: "authValid") as? String) == "true" ? true:false
+            let authValid = (group?.string(forKey: "isAuthValid") as? String) == "true" ? true:false
             let devices = group?.string(forKey: "devices") as? String ?? "[]"
             let autoToggle = (group?.string(forKey: "autoToggle") as? String) == "true" ? true:false
-            let showNotif = (group?.string(forKey: "showNotif") as? String) == "true" ? true:false
+            let showNotif = (group?.string(forKey: "showNotifs") as? String) == "true" ? true:false
 
             if(authValid){
                 if(autoToggle){
@@ -62,7 +62,7 @@ public class NotificationService: UNNotificationServiceExtension {
             
             
             bestAttemptContent.title = "Success!"
-            bestAttemptContent.body = server
+            bestAttemptContent.body = serverAddr
             
             contentHandler(bestAttemptContent)
         }
