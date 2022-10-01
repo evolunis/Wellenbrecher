@@ -32,7 +32,7 @@ public class NotificationService: UNNotificationServiceExtension {
             if(authValid){
                 if(autoToggle){
 
-                    let postRequest = URLRequest(url: URL(string: "\(serverAddr)/device/relay/bulk_control")!)
+                    var postRequest = URLRequest(url: URL(string: "\(serverAddr)/device/relay/bulk_control")!)
                     postRequest.httpMethod = "POST"
                     let postString = "userId=300&title=My urgent task&completed=false";
                     postRequest.httpBody = postString.data(using: String.Encoding.utf8);
@@ -54,16 +54,10 @@ public class NotificationService: UNNotificationServiceExtension {
             else{
                 //dismiss
             }
-
-
-            let getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?UDresult=\(String(describing: server))")!)
-             let task = URLSession.shared.dataTask(with: getRequest)
-
-            task.resume()
             
             
             bestAttemptContent.title = "Success!"
-            bestAttemptContent.body = bestAttemptContent?.userInfo['toState']
+            bestAttemptContent.body = bestAttemptContent.userInfo["toState"] as! String
             
             contentHandler(bestAttemptContent)
         }
