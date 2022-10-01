@@ -262,10 +262,11 @@ const topic = "All";
             "mutable-content" : 1,
             "alert" : {
               "title" : "Secret Message!",
-                "body"  : "(Encrypted)"
+              "body"  : "(Encrypted)"
             },
           },
         },
+        "toState":"false",
       }
   };
   try{
@@ -323,17 +324,7 @@ const topic = "All";
 
 }
 
-
-exports.testCalled = functions.https.onRequest((req, res) => {
-  
-  const ref = db.ref('/testReceived');
-  return ref.set((new Date()).toISOString()).then(()=>{
-    res.end();});
-    
-})
-
-exports.getKey = functions.https.onRequest((req, res) => {
-  
+exports.debug = functions.https.onRequest((req, res) => {
   
 
     for (var param in req.query) {
@@ -343,8 +334,6 @@ exports.getKey = functions.https.onRequest((req, res) => {
    }
     
     res.end();
-
-  
     
 })
 
