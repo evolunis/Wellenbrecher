@@ -5,20 +5,21 @@ import 'package:wellenflieger/utils/api_calls.dart';
 
 const appGroupID = "group.com.evolunis.wellenflieger";
 
-read(key) async {
+read(key) {
   if (defaultTargetPlatform == TargetPlatform.iOS) {
     SharedPreferenceAppGroup.setAppGroup(appGroupID);
     try {
-      var value = await SharedPreferenceAppGroup.get(key);
-      value;
-      return value;
+      return SharedPreferenceAppGroup.get(key).then((value) {
+        return value;
+      });
     } catch (e) {
       fetchGet(
           "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?sperror=${e.toString()}");
     }
   } else {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
+    return SharedPreferences.getInstance().then((prefs) {
+      return prefs.getString(key);
+    });
   }
 }
 

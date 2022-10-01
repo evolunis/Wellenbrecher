@@ -2,26 +2,33 @@ import 'package:flutter/foundation.dart';
 
 import 'package:wellenflieger/service_locator.dart';
 import 'package:wellenflieger/services/cloud_server_service.dart';
+import 'package:wellenflieger/utils/local_storage.dart' as ls;
 
 class SettingsModel extends ChangeNotifier {
   CloudServerService cloudServer = serviceLocator<CloudServerService>();
 
-  dynamic setSettings(String serverAddress, String apiKey) async {
+  Future<bool> setSettings(String serverAddress, String apiKey, bool showNotifs,
+      bool autoToggle) async {
+    ls.save("autoToggle", autoToggle.toString());
+    ls.save("showNotifs", showNotifs.toString());
+
     if (serverAddress[serverAddress.length - 1] == "/") {
       serverAddress = serverAddress.substring(0, serverAddress.length - 1);
     }
-    return cloudServer
-        .setSettings(ServerAuth(serverAddress, apiKey))
-        .then(((res) {
-      return cloudServer.checkAuthSettings().then((res) {
-        cloudServer.notifyProviders();
-        return res;
-      });
-    }));
+    ls.save("serverAddr", serverAddress);
+    ls.save("apiKey", apiKey);
+    cloudServer.updateSettings();
+    return true;
   }
 
-  Map getSettings() {
-    ServerAuth? auth = cloudServer.getSettings();
-    return {"serverAddress": auth?.serverAddress, "apiKey": auth?.apiKey};
+  getSettings() async {
+    Map settings = {};
+    settings['serverAddress'] = await ls.read('serverAddr') ?? "";
+    settings['apiKey'] = await ls.read('apiKey') ?? "";
+    settings['showNotifs'] =
+        await ls.read('showNotifs') == "false" ? false : true;
+    settings['autoToggle'] =
+        await ls.read('autoToggle') == "false" ? false : true;
+    return settings;
   }
 }

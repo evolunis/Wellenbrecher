@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
 import 'package:wellenflieger/service_locator.dart';
 import 'package:wellenflieger/services/cloud_server_service.dart';
+import 'package:wellenflieger/utils/local_storage.dart' as ls;
 
 part 'devices.g.dart';
 
@@ -30,15 +33,19 @@ class DevicesModel extends ChangeNotifier {
   List devicesStatus = [];
   String message = "";
 
-  init() async {
+  dynamic init() async {
     cloudServer.setCallback(refresh);
 
     Hive.registerAdapter<Device>(DeviceAdapter());
     devices = await Hive.openBox<Device>('devices');
     return cloudServer.checkAuthSettings().then((res) async {
+      dynamic message = true;
+      if (res != true) {
+        message = cloudServer.serverAuth.errorMessage;
+      }
       hasLoaded = true;
       refresh();
-      return res;
+      return message;
     });
   }
 
@@ -98,8 +105,11 @@ class DevicesModel extends ChangeNotifier {
   }
 
   refresh() {
+    notifyListeners();
     if (cloudServer.getIsAuthValid()) {
+      hasLoaded = false;
       updateDevicesStatusList().then((val) {
+        hasLoaded = true;
         notifyListeners();
       });
     } else {
@@ -112,17 +122,20 @@ class DevicesModel extends ChangeNotifier {
 
     Map status = await cloudServer.checkAllDevicesStatus();
     List devList = readDb();
+    //this is a summary for extension isolates
+    List saveList = [];
     for (var i = 0; i < devList.length; i++) {
       var key = status.keys
           .firstWhere((element) => element == devList[i].id, orElse: () => -1);
       if (key != -1) {
         statusList.add(status[key]);
-        print(status[key]);
+        saveList.add({"id": devList[i].id, "name": devList[i].name});
       } else {
         statusList.add(false);
       }
     }
     devicesStatus = statusList;
+    ls.save("devices", jsonEncode(saveList));
     return true;
   }
 

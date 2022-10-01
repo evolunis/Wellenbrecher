@@ -11,8 +11,10 @@ class ServerAuth {
   String serverAddress;
   String apiKey;
   bool isAuthValid;
+  String errorMessage;
 
-  ServerAuth(this.serverAddress, this.apiKey, [this.isAuthValid = false]);
+  ServerAuth(this.serverAddress, this.apiKey,
+      [this.isAuthValid = false, this.errorMessage = ""]);
 }
 
 class CloudServerService {
@@ -36,16 +38,15 @@ class CloudServerService {
     devicesModelCallback!();
   }
 
-  Future<bool> setSettings(ServerAuth serverAuth) async {
-    this.serverAuth = serverAuth;
-    var res1 = await prefs.save("serverAddr", serverAuth.serverAddress);
-    var res2 = await prefs.save("apiKey", serverAuth.apiKey);
+  updateSettings() async {
+    var serverAddr = await prefs.read("serverAddr") ?? "";
+    var apiKey = await prefs.read("apiKey") ?? "";
+    var isAuthValid = false;
+    serverAuth = ServerAuth(serverAddr, apiKey, isAuthValid);
 
-    return res1 && res2;
-  }
-
-  ServerAuth? getSettings() {
-    return serverAuth;
+    checkAuthSettings().then((res) {
+      notifyProviders();
+    });
   }
 
   sendCommand(String command, Map<String, String> args) async {
@@ -112,7 +113,7 @@ class CloudServerService {
   }
 
 //Willr only check the key, not the server address
-  dynamic checkAuthSettings() async {
+  Future<bool> checkAuthSettings() async {
     var res = await sendCommand("/device", {});
     if (res != false) {
       if (res.statusCode == 200) {
@@ -120,18 +121,14 @@ class CloudServerService {
         return true;
       } else {
         setIsAuthValid(false);
-        return {
-          "status": "error",
-          "message": "API key invalid, please update settings !"
-        };
+        serverAuth.errorMessage = "API key invalid, please update settings !";
+        return false;
       }
     } else {
       setIsAuthValid(false);
-      return {
-        "status": "error",
-        "message":
-            "Can't connect to server, please update settings or check connection !"
-      };
+      serverAuth.errorMessage =
+          "Can't connect to server, please update settings or check connection !";
+      return false;
     }
   }
 

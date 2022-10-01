@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:wellenflieger/utils/local_storage.dart' as ls;
+
 import 'package:wellenflieger/models/devices.dart';
 import 'package:wellenflieger/models/time_series.dart';
 
@@ -20,12 +22,17 @@ class _DevicesPageState extends State<DevicesPage> {
 
   //Initialization, data fetching
   void initState() {
+    ls.read('firstInit').then((value) {
+      if (value == "true") {
+        //// special start !
+      }
+    });
     super.initState();
     Provider.of<DevicesModel>(context, listen: false).init().then((res) {
       if (res != true) {
         Future<void>.delayed(Duration.zero, () {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(res['message'])),
+            SnackBar(content: Text(res)),
           );
         });
       }
@@ -91,11 +98,7 @@ class _DevicesPageState extends State<DevicesPage> {
                                         false
                                     ? devicesModel
                                             .getDeviceStatus(index)['online']
-                                        ? const Icon(
-                                            Icons.wifi,
-                                            size: 20,
-                                            color: Colors.yellow,
-                                          )
+                                        ? const SizedBox.shrink()
                                         : const Icon(Icons.wifi_off,
                                             size: 20, color: Colors.yellow)
                                     : const Icon(Icons.warning_amber,
@@ -107,53 +110,6 @@ class _DevicesPageState extends State<DevicesPage> {
                   ),
                 );
               }),
-              SizedBox(
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      showDialog<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DeviceModal(-1, Device(id: "", name: ""));
-                        },
-                      );
-                    },
-                    child: Icon(
-                      Icons.add,
-                      size: 100,
-                      color: Colors.black.withOpacity(0.9),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      devicesModel.switchDevices(true);
-                    },
-                    child: Icon(
-                      Icons.power,
-                      size: 100,
-                      color: Colors.black.withOpacity(0.9),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      devicesModel.switchDevices(false);
-                    },
-                    child: Icon(
-                      Icons.power_off,
-                      size: 100,
-                      color: Colors.black.withOpacity(0.9),
-                    ),
-                  ),
-                ),
-              ),
               SizedBox(
                 child: Center(
                   child: Text(devicesModel.retrieveMessage()),
@@ -188,7 +144,53 @@ class _DevicesPageState extends State<DevicesPage> {
         },
         tooltip: 'Show chart',
         child: const Icon(Icons.area_chart),
-      ), // This traili
+      ),
+      bottomNavigationBar:
+          Consumer<DevicesModel>(builder: (context, devicesModel, child) {
+        if (devicesModel.shouldShow()) {
+          return BottomAppBar(
+            //shape: shape,
+            color: Colors.blue,
+            child: IconTheme(
+              data:
+                  IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+              child: Row(
+                children: <Widget>[
+                  IconButton(
+                    tooltip: 'Switch all devices on',
+                    icon: const Icon(Icons.power),
+                    onPressed: (() {
+                      devicesModel.switchDevices(true);
+                    }),
+                  ),
+                  IconButton(
+                    tooltip: 'Switch all devices off',
+                    icon: const Icon(Icons.power_off),
+                    onPressed: () {
+                      devicesModel.switchDevices(false);
+                    },
+                  ),
+                  IconButton(
+                    tooltip: 'Add a device',
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeviceModal(-1, Device(id: "", name: ""));
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      }),
+      // This traili
       //Settings drawer
       endDrawer: Drawer(
         child: ListView(
