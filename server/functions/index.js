@@ -225,7 +225,8 @@ function sumSeries(timeSeries) {
 
 exports.sendHttpPushNotification = functions.https.onRequest((req, res) => {
   
-  sendNotification().then((r)=>{
+  
+  sendNotification(req.query.toState).then((r)=>{
     const ref = db.ref('/testNotif');
   return ref.set((new Date()).toISOString()).then(()=>{
     res.end();});
@@ -245,12 +246,12 @@ exports.sendHttpServerPushed = functions.https.onRequest((req, res) => {
   
 })
 
-async function sendNotification() 
+async function sendNotification(toState) 
 { 
 const topic = "All";
   const message = "This is test";
   const payload = {
-      "token":"fAUK74eUpU_cr2rU6rjIMO:APA91bF1zsQ0KsGvZUMY9YuMJPrVVTMjIPLoVjtq5k3nqVMvIkz-bOjIgn_wNJEXwD_ekLv3BwiplGnhKz2vbVjlxY2OAEeWKwBZxmImYoxmRQRbdi3a5e5WW7PNyp-_OKXXJ1TKW4KU",
+      "token":"dnsr5MVK_EMjvz2_qKpjyo:APA91bEhYU1jStRc0z4Dycic833-emjj-uYvsb4FHAABMnD_oE-qxjCCfvqdY7x3qaLR_d4N0ezTWazTu5ysYXCL2ii8aHlVJh4ORd9jZTOgzsQxZJcWtLxK7Xvf0m_TjlZSFW4TtXcL",
       
       "apns":{
         "headers":{
@@ -265,7 +266,7 @@ const topic = "All";
               "body"  : "(Encrypted)"
             },
           },
-          "toState":"false",
+          "toState":toState,
         },
         
       },

@@ -129,7 +129,7 @@ class DevicesModel extends ChangeNotifier {
           .firstWhere((element) => element == devList[i].id, orElse: () => -1);
       if (key != -1) {
         statusList.add(status[key]);
-        saveList.add({"id": devList[i].id, "name": devList[i].name});
+        saveList.add({"id": devList[i].id, "name": devList[i].name, "channel": "0"});
       } else {
         statusList.add(false);
       }

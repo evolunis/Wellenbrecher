@@ -11,7 +11,7 @@ import Flutter
 
     UNUserNotificationCenter.current().delegate = self
 
-      //notification()
+      notification()
     if #available(iOS 10, *) {
           UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ granted, error in }
       } else {
@@ -48,6 +48,7 @@ func notification(){
     struct Device: Codable {
         var id: String
         var name: String
+        var channel:String
     }
     
     let jsonData = Data(devicesIds.utf8)
@@ -62,14 +63,6 @@ func notification(){
     var myId = "disabled";
     
     
-    
-    
-    var getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=\(myId)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=was_nil")!)
-    var task = URLSession.shared.dataTask(with: getRequest)
-    task.resume();
-    
-    
-    
     if(authValid){
         if(autoToggle){
             
@@ -81,25 +74,38 @@ func notification(){
                 myId = String(devices.count)
             }
             
+            var getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=\(myId)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=was_nil")!)
+            var task2 = URLSession.shared.dataTask(with: getRequest2)
+            task2.resume();
+            
+            
+            var toState = "on";
+            
 
             var postRequest = URLRequest(url: URL(string: "\(serverAddr)/device/relay/bulk_control")!)
             postRequest.httpMethod = "POST"
-            let postString = "userId=300&title=My urgent task&completed=false";
+            let postString = "auth_key=\(apiKey)&turn=\(toState)&devices=\(devicesIds)";
             postRequest.httpBody = postString.data(using: String.Encoding.utf8);
-            let task = URLSession.shared.dataTask(with: postRequest){ (data, response, error) in
+            let task3 = URLSession.shared.dataTask(with: postRequest){ (data, response, error) in
 
                 // Check for Error
                 if let error = error {
-                    print("Error took place \(error)")
+                    var getRequest4 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?error=\(error)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?error=was_nil")!)
+                    var task4 = URLSession.shared.dataTask(with: getRequest4)
+                    task4.resume();
                 }
 
                 // Convert HTTP Response Data to a String
                 if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                    print("Response data string:\n \(dataString)")
+                    var getRequest5 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?datastring=\(response)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?datastring=was_nil")!)
+                    var task5 = URLSession.shared.dataTask(with: getRequest5)
+                    task5.resume();
                 }
             }
-            task.resume()
+            task3.resume()
+ 
             }
+ 
     }
     else{
         //dismiss
