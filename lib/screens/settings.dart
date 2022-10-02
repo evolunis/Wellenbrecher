@@ -17,8 +17,6 @@ class SettingsFormState extends State<SettingsForm> {
   late SettingsModel settingsModel;
   late TextEditingController serverController;
   late TextEditingController keyController;
-  late bool autoToggle;
-  late bool showNotifs;
 
   late bool loading;
   late Map settings;
@@ -28,7 +26,6 @@ class SettingsFormState extends State<SettingsForm> {
     super.initState();
     settings = {};
     loading = true;
-    autoToggle = showNotifs = true;
     keyController = TextEditingController(text: "");
     serverController = TextEditingController(text: "");
     settingsModel = Provider.of<SettingsModel>(context, listen: false);
@@ -43,8 +40,8 @@ class SettingsFormState extends State<SettingsForm> {
         serverController =
             TextEditingController(text: settings['serverAddress']);
         keyController = TextEditingController(text: settings['apiKey']);
-        autoToggle = settings['autoToggle'];
-        showNotifs = settings['showNotifs'];
+
+        //showNotifs = settings['showNotifs'];
       });
     });
   }
@@ -56,7 +53,7 @@ class SettingsFormState extends State<SettingsForm> {
     // Build a Form widget using the _formKey created above.
     return WillPopScope(
         onWillPop: () => settingsModel.setSettings(
-            serverController.text, keyController.text, showNotifs, autoToggle),
+            serverController.text, keyController.text),
         child: Scaffold(
             //Appbar
             appBar: AppBar(
@@ -103,16 +100,7 @@ class SettingsFormState extends State<SettingsForm> {
                             },
                           ),
                         ),
-                        ListTile(
-                          title: const Text("Toggle power automatically  "),
-                          trailing: Switch(
-                              value: autoToggle,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  autoToggle = value;
-                                });
-                              }),
-                        ),
+
                         /*ListTile(
                           title: const Text("Show notifications "),
                           trailing: Switch(

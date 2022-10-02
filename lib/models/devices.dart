@@ -129,7 +129,8 @@ class DevicesModel extends ChangeNotifier {
           .firstWhere((element) => element == devList[i].id, orElse: () => -1);
       if (key != -1) {
         statusList.add(status[key]);
-        saveList.add({"id": devList[i].id, "name": devList[i].name, "channel": "0"});
+        saveList.add(
+            {"id": devList[i].id, "name": devList[i].name, "channel": "0"});
       } else {
         statusList.add(false);
       }
@@ -160,5 +161,15 @@ class DevicesModel extends ChangeNotifier {
 
   String retrieveMessage() {
     return message;
+  }
+
+  getAutoToggle() {
+    return ls.read("autoToggle").then((state) {
+      return state == "true" ? true : false;
+    });
+  }
+
+  void setAutoToggle(bool state) {
+    ls.save("autoToggle", state.toString());
   }
 }

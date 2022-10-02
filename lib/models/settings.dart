@@ -7,12 +7,8 @@ import 'package:wellenflieger/utils/local_storage.dart' as ls;
 class SettingsModel extends ChangeNotifier {
   CloudServerService cloudServer = serviceLocator<CloudServerService>();
 
-  Future<bool> setSettings(String serverAddress, String apiKey, bool showNotifs,
-      bool autoToggle) async {
-    ls.save("autoToggle", autoToggle.toString());
-    ls.save("showNotifs", showNotifs.toString());
-
-    if (serverAddress[serverAddress.length - 1] == "/") {
+  Future<bool> setSettings(String serverAddress, String apiKey) async {
+    if (serverAddress != "" && serverAddress[serverAddress.length - 1] == "/") {
       serverAddress = serverAddress.substring(0, serverAddress.length - 1);
     }
     ls.save("serverAddr", serverAddress);
@@ -25,10 +21,6 @@ class SettingsModel extends ChangeNotifier {
     Map settings = {};
     settings['serverAddress'] = await ls.read('serverAddr') ?? "";
     settings['apiKey'] = await ls.read('apiKey') ?? "";
-    settings['showNotifs'] =
-        await ls.read('showNotifs') == "false" ? false : true;
-    settings['autoToggle'] =
-        await ls.read('autoToggle') == "false" ? false : true;
     return settings;
   }
 }

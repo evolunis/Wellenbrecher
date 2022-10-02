@@ -9,6 +9,7 @@ import 'package:wellenflieger/models/time_series.dart';
 import 'package:wellenflieger/screens/settings.dart';
 import 'package:wellenflieger/screens/devices/parts/modal.dart';
 import 'package:wellenflieger/screens/devices/parts/time_series.dart';
+import 'package:wellenflieger/screens/devices/parts/switch.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({super.key});
@@ -17,19 +18,22 @@ class DevicesPage extends StatefulWidget {
   State<DevicesPage> createState() => _DevicesPageState();
 }
 
-class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver{
-  @override
- 
+class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
+  late bool autoToggle;
+
   //Initialization, data fetching
+  @override
   void initState() {
+    var devicesModel = Provider.of<DevicesModel>(context, listen: false);
     ls.read('firstInit').then((value) {
       if (value == "true") {
         //// special start !
       }
     });
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
-    Provider.of<DevicesModel>(context, listen: false).init().then((res) {
+    autoToggle = true;
+    WidgetsBinding.instance.addObserver(this);
+    devicesModel.init().then((res) {
       if (res != true) {
         Future<void>.delayed(Duration.zero, () {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -37,15 +41,27 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver{
           );
         });
       }
+      devicesModel.getAutoToggle().then((state) {
+        setState(() {
+          autoToggle = true;
+        });
+      });
       Provider.of<TimeSeriesModel>(context, listen: false).init();
     });
   }
+
   @override
   didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       Provider.of<DevicesModel>(context, listen: false).refresh();
     }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -59,10 +75,7 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver{
               icon: const Icon(Icons.settings),
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const SettingsForm()), //Scaffold.of(context).openEndDrawer(),
-                //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                MaterialPageRoute(builder: (context) => const SettingsForm()),
               ),
             ),
           )
@@ -157,43 +170,77 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver{
           Consumer<DevicesModel>(builder: (context, devicesModel, child) {
         if (devicesModel.shouldShow()) {
           return BottomAppBar(
-            //shape: shape,
-            color: Colors.blue,
-            child: IconTheme(
-              data:
-                  IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+              //shape: shape,
+              color: Colors.blue,
               child: Row(
-                children: <Widget>[
-                  IconButton(
-                    tooltip: 'Switch all devices on',
-                    icon: const Icon(Icons.power),
-                    onPressed: (() {
-                      devicesModel.switchDevices(true);
-                    }),
-                  ),
-                  IconButton(
-                    tooltip: 'Switch all devices off',
-                    icon: const Icon(Icons.power_off),
-                    onPressed: () {
-                      devicesModel.switchDevices(false);
-                    },
-                  ),
-                  IconButton(
-                    tooltip: 'Add a device',
-                    icon: const Icon(Icons.add),
-                    onPressed: () {
-                      showDialog<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DeviceModal(-1, Device(id: "", name: ""));
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconTheme(
+                      data: IconThemeData(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                      child: Row(children: <Widget>[
+                        IconButton(
+                          tooltip: 'Switch all devices on',
+                          icon: const Icon(Icons.power),
+                          onPressed: (() {
+                            devicesModel.switchDevices(true);
+                          }),
+                        ),
+                        IconButton(
+                          tooltip: 'Switch all devices off',
+                          icon: const Icon(Icons.power_off),
+                          onPressed: () {
+                            devicesModel.switchDevices(false);
+                          },
+                        ),
+                      ]),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 30),
+                      child: IconTheme(
+                        data: IconThemeData(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                        child: Row(children: <Widget>[
+                          IconButton(
+                            tooltip: 'Add a device',
+                            icon: const Icon(Icons.add),
+                            onPressed: () {
+                              showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DeviceModal(
+                                      -1, Device(id: "", name: ""));
+                                },
+                              );
+                            },
+                          ),
+                        ]),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(right: 10),
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.bolt, color: Colors.white),
+                          const Text("Auto : ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                          ShadowSwitch(
+                            value: autoToggle,
+                            onChanged: (state) {
+                              setState(() {
+                                autoToggle = state;
+                                devicesModel.setAutoToggle(state);
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  ]));
         } else {
           return const SizedBox.shrink();
         }

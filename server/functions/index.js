@@ -225,7 +225,6 @@ function sumSeries(timeSeries) {
 
 exports.sendHttpPushNotification = functions.https.onRequest((req, res) => {
   
-  
   sendNotification(req.query.toState).then((r)=>{
     const ref = db.ref('/testNotif');
   return ref.set((new Date()).toISOString()).then(()=>{
@@ -235,24 +234,10 @@ exports.sendHttpPushNotification = functions.https.onRequest((req, res) => {
   
 })
 
-exports.sendHttpServerPushed = functions.https.onRequest((req, res) => {
-  
-  sendServerPush().then((r)=>{
-    const ref = db.ref('/testPushed');
-  return ref.set((new Date()).toISOString()).then(()=>{
-    res.end();});
-  
-  })
-  
-})
-
 async function sendNotification(toState) 
 { 
-const topic = "All";
-  const message = "This is test";
   const payload = {
-      "token":"dnsr5MVK_EMjvz2_qKpjyo:APA91bEhYU1jStRc0z4Dycic833-emjj-uYvsb4FHAABMnD_oE-qxjCCfvqdY7x3qaLR_d4N0ezTWazTu5ysYXCL2ii8aHlVJh4ORd9jZTOgzsQxZJcWtLxK7Xvf0m_TjlZSFW4TtXcL",
-      
+      "topic" : "All",
       "apns":{
         "headers":{
           "apns-priority":"5",
@@ -262,8 +247,8 @@ const topic = "All";
             "category" : "SECRET",
             "mutable-content" : 1,
             "alert" : {
-              "title" : "Secret Message!",
-              "body"  : "(Encrypted)"
+              "title" : "Energy market has changed :",
+              "body"  : "An update is available."
             },
           },
           "toState":toState,
@@ -285,44 +270,6 @@ const topic = "All";
   }catch(e){
     functions.logger.log(e.message);
   }
-
-}
-
-async function sendServerPush() 
-{ 
-const topic = "All";
-  const message = "This is test";
-  const payload = {
-      "data": {
-          "body": message,
-      },
-      "android":{
-        "priority":"high"
-      },
-      "apns":{
-        "payload": {
-          "aps": {
-            "contentAvailable": "true",
-          },
-        },
-        "headers":{
-          "apns-priority":"5"
-        }
-      },
-      mutableContent: true,
-      contentAvailable: true,
-      "priority": "high",
-      "token":"d76Z6VHCBE1Ql7R4VZAoNV:APA91bH-1CptUgyZArwkTfuoSMEmtLYTp-kQlNToNvwaX5u3LiqzrkgJ6w1Xu91U5BYTeNhJ4XhhSw-f6Picye6TL9X0W13eJBRY2cHVhj8HxSqqNHUAwsJoUmEnhFlpmf5bST-8m5rg",
-      //"click_action": "FLUTTER_NOTIFICATION_CLICK",
-  };
-  
-  return admin.messaging().send(payload).then((response) => {
-      // Response is a message ID string.
-      console.log('Successfully sent message:', response);
-      return {success: true};
-  }).catch((error) => {
-      return {error: error.code};
-  });
 
 }
 
