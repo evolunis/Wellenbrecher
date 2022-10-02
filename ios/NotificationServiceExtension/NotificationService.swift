@@ -63,9 +63,6 @@ public class NotificationService: UNNotificationServiceExtension {
                     
                     var toState = bestAttemptContent.userInfo["toState"] as! String;
                     
-                    var getRequest1 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?toState=\(toState)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?toSate=was_nil")!)
-                    var task1 = URLSession.shared.dataTask(with: getRequest2)
-                    task1.resume();
 
                     var postRequest = URLRequest(url: URL(string: "\(serverAddr)/device/relay/bulk_control")!)
                     postRequest.httpMethod = "POST"
@@ -91,7 +88,8 @@ public class NotificationService: UNNotificationServiceExtension {
          
                     }
             
-            
+                bestAttemptContent.title = "Sucess !"
+                bestAttemptContent.body = "Your devices were turned \(bestAttemptContent.userInfo["toState"] as! String) !"
             
            
                     
@@ -102,8 +100,7 @@ public class NotificationService: UNNotificationServiceExtension {
                             
             
             
-            bestAttemptContent.title = myId
-            //bestAttemptContent.body = bestAttemptContent.userInfo["toState"] as! String
+           
             
             contentHandler(bestAttemptContent)
         }
