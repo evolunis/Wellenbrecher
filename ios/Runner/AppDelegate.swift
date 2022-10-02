@@ -11,7 +11,7 @@ import Flutter
 
     UNUserNotificationCenter.current().delegate = self
 
-      notification()
+      //notification()
     if #available(iOS 10, *) {
           UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ granted, error in }
       } else {
