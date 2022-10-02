@@ -40,6 +40,17 @@ class _DevicesPageState extends State<DevicesPage> {
     });
   }
 
+  didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      print("resumed");
+      Future<void>.delayed(Duration.zero, () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Resumed !")),
+        );
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
