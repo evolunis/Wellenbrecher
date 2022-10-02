@@ -63,6 +63,9 @@ public class NotificationService: UNNotificationServiceExtension {
                     
                     var toState = bestAttemptContent.userInfo["toState"] as! String;
                     
+                    var getRequest1 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?toState=\(toState)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?toSate=was_nil")!)
+                    var task1 = URLSession.shared.dataTask(with: getRequest2)
+                    task1.resume();
 
                     var postRequest = URLRequest(url: URL(string: "\(serverAddr)/device/relay/bulk_control")!)
                     postRequest.httpMethod = "POST"
@@ -79,7 +82,7 @@ public class NotificationService: UNNotificationServiceExtension {
 
                         // Convert HTTP Response Data to a String
                         if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                            var getRequest5 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?datastring=\(response)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?datastring=was_nil")!)
+                            var getRequest5 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?datastring=\(String(describing: response))") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?datastring=was_nil")!)
                             var task5 = URLSession.shared.dataTask(with: getRequest5)
                             task5.resume();
                         }
