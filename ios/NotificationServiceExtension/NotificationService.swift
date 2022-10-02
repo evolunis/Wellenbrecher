@@ -34,15 +34,22 @@ public class NotificationService: UNNotificationServiceExtension {
                 var id: String
                 var name: String
             }
-            var devices = [Device]()
+            
             let jsonData = Data(devicesIds.utf8)
+            
+            var devices = [Device]()
             do {
                 devices = try JSONDecoder().decode([Device].self, from: jsonData)
             } catch {
                 print(error.localizedDescription)
             }
             
-            var getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=\(devices[0].id)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=was_nil")!)
+            var myId = "disabled";
+            
+            
+            
+            
+            var getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=\(myId)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=was_nil")!)
             var task = URLSession.shared.dataTask(with: getRequest)
             task.resume();
             
@@ -50,6 +57,15 @@ public class NotificationService: UNNotificationServiceExtension {
             
             if(authValid){
                 if(autoToggle){
+                    
+                    if(devices.count != 0 ){
+                        
+                        myId = devices[0].id
+                    }
+                    else{
+                        myId = String(devices.count)
+                    }
+                    
 
                     var postRequest = URLRequest(url: URL(string: "\(serverAddr)/device/relay/bulk_control")!)
                     postRequest.httpMethod = "POST"
@@ -57,26 +73,27 @@ public class NotificationService: UNNotificationServiceExtension {
                     postRequest.httpBody = postString.data(using: String.Encoding.utf8);
                     let task = URLSession.shared.dataTask(with: postRequest){ (data, response, error) in
 
-        // Check for Error
-        if let error = error {
-            print("Error took place \(error)")
-        }
+                        // Check for Error
+                        if let error = error {
+                            print("Error took place \(error)")
+                        }
 
-        // Convert HTTP Response Data to a String
-        if let data = data, let dataString = String(data: data, encoding: .utf8) {
-            print("Response data string:\n \(dataString)")
-        }
-            }
-                task.resume()
-                }
+                        // Convert HTTP Response Data to a String
+                        if let data = data, let dataString = String(data: data, encoding: .utf8) {
+                            print("Response data string:\n \(dataString)")
+                        }
+                    }
+                    task.resume()
+                    }
             }
             else{
                 //dismiss
             }
+                            
             
             
-            bestAttemptContent.title = devices[0].id
-            bestAttemptContent.body = bestAttemptContent.userInfo["toState"] as! String
+            bestAttemptContent.title = myId
+            //bestAttemptContent.body = bestAttemptContent.userInfo["toState"] as! String
             
             contentHandler(bestAttemptContent)
         }
