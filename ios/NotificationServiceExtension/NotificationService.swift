@@ -19,19 +19,33 @@ public class NotificationService: UNNotificationServiceExtension {
         
         if let bestAttemptContent = bestAttemptContent {
            
-           //Opening user settings :
+            
+            
             let group = UserDefaults(suiteName: "group.com.evolunis.wellenflieger")
             
             let serverAddr = group?.string(forKey: "serverAddr") as? String ?? ""
             let apiKey = group?.string(forKey: "apiKey") as? String ?? ""
             let authValid = (group?.string(forKey: "isAuthValid") as? String) == "true" ? true:false
-            let devices = group?.string(forKey: "devices") as? String ?? "[]"
+            let devicesIds = group?.string(forKey: "devicesIds") as? String ?? "[]"
             let autoToggle = (group?.string(forKey: "autoToggle") as? String) == "true" ? true:false
             let showNotif = (group?.string(forKey: "showNotifs") as? String) == "true" ? true:false
                 
-            var getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=\(devices)")!)
-            let task = URLSession.shared.dataTask(with: getRequest)
+            struct Device: Codable {
+                var id: String
+                var name: String
+            }
+            var devices = [Device]()
+            let jsonData = Data(devicesIds.utf8)
+            do {
+                devices = try JSONDecoder().decode([Device].self, from: jsonData)
+            } catch {
+                print(error.localizedDescription)
+            }
+            
+            var getRequest = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=\(devices[0].id)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=was_nil")!)
+            var task = URLSession.shared.dataTask(with: getRequest)
             task.resume();
+            
             
             
             if(authValid){
@@ -42,12 +56,12 @@ public class NotificationService: UNNotificationServiceExtension {
                     let postString = "userId=300&title=My urgent task&completed=false";
                     postRequest.httpBody = postString.data(using: String.Encoding.utf8);
                     let task = URLSession.shared.dataTask(with: postRequest){ (data, response, error) in
-        
-        // Check for Error 
+
+        // Check for Error
         if let error = error {
             print("Error took place \(error)")
         }
- 
+
         // Convert HTTP Response Data to a String
         if let data = data, let dataString = String(data: data, encoding: .utf8) {
             print("Response data string:\n \(dataString)")
@@ -61,7 +75,7 @@ public class NotificationService: UNNotificationServiceExtension {
             }
             
             
-            bestAttemptContent.title = "Success!"
+            bestAttemptContent.title = devices[0].id
             bestAttemptContent.body = bestAttemptContent.userInfo["toState"] as! String
             
             contentHandler(bestAttemptContent)

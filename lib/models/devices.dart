@@ -135,7 +135,7 @@ class DevicesModel extends ChangeNotifier {
       }
     }
     devicesStatus = statusList;
-    ls.save("devices", jsonEncode(saveList));
+    ls.save("devicesIds", jsonEncode(saveList));
     return true;
   }
 
