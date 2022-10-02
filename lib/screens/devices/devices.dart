@@ -17,9 +17,9 @@ class DevicesPage extends StatefulWidget {
   State<DevicesPage> createState() => _DevicesPageState();
 }
 
-class _DevicesPageState extends State<DevicesPage> {
+class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver{
   @override
-
+ 
   //Initialization, data fetching
   void initState() {
     ls.read('firstInit').then((value) {
@@ -28,6 +28,7 @@ class _DevicesPageState extends State<DevicesPage> {
       }
     });
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
     Provider.of<DevicesModel>(context, listen: false).init().then((res) {
       if (res != true) {
         Future<void>.delayed(Duration.zero, () {
@@ -39,15 +40,11 @@ class _DevicesPageState extends State<DevicesPage> {
       Provider.of<TimeSeriesModel>(context, listen: false).init();
     });
   }
-
+  @override
   didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      print("resumed");
-      Future<void>.delayed(Duration.zero, () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Resumed !")),
-        );
-      });
+      Provider.of<DevicesModel>(context, listen: false).refresh();
     }
   }
 

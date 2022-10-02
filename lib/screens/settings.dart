@@ -113,7 +113,7 @@ class SettingsFormState extends State<SettingsForm> {
                                 });
                               }),
                         ),
-                        ListTile(
+                        /*ListTile(
                           title: const Text("Show notifications "),
                           trailing: Switch(
                               value: showNotifs,
@@ -122,7 +122,7 @@ class SettingsFormState extends State<SettingsForm> {
                                   showNotifs = value;
                                 });
                               }),
-                        ),
+                        ),*/
                       ],
                     ),
                   )));

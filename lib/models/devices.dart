@@ -81,7 +81,7 @@ class DevicesModel extends ChangeNotifier {
     for (var i = 0; i < devList.length; i++) {
       devIds.add(devList[i].id);
     }
-    if (!devIds.contains(device.id)) {
+    if (!devIds.contains(device.id) || index == devIds.indexOf(device.id)) {
       devices?.putAt(index, device);
       refresh();
     }

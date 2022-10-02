@@ -85,18 +85,22 @@ public class NotificationService: UNNotificationServiceExtension {
                         }
                     }
                     task3.resume()
+                    
+                    bestAttemptContent.title = "Energy market has changed :"
+                    bestAttemptContent.body = "Your devices were turned \(bestAttemptContent.userInfo["toState"] as! String) !"
+                
          
                     }
+                else{
+                    bestAttemptContent.title = "Energy market has changed :"
+                    bestAttemptContent.body = "Time to turn your devices \(bestAttemptContent.userInfo["toState"] as! String) !"
+                }
+        }
             
-                bestAttemptContent.title = "Sucess !"
-                bestAttemptContent.body = "Your devices were turned \(bestAttemptContent.userInfo["toState"] as! String) !"
-            
-           
-                    
-            }
             else{
-                //dismiss
+                //Dismiss notification
             }
+                
                             
             
             
