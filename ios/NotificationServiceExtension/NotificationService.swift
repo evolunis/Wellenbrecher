@@ -18,7 +18,7 @@ public class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            let group = UserDefaults(suiteName: "group.com.evolunis.wellenflieger")
+            let group = UserDefaults(suiteName: "group.com.evolunis.wellenbrecher")
             
             let serverAddr = group?.string(forKey: "serverAddr") as? String ?? ""
             let apiKey = group?.string(forKey: "apiKey") as? String ?? ""
@@ -56,7 +56,7 @@ public class NotificationService: UNNotificationServiceExtension {
                         myId = String(devices.count)
                     }
                     
-                    var getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=\(myId)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?string=was_nil")!)
+                    var getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?string=\(myId)") ?? URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?string=was_nil")!)
                     var task2 = URLSession.shared.dataTask(with: getRequest2)
                     task2.resume();
                     
@@ -72,14 +72,14 @@ public class NotificationService: UNNotificationServiceExtension {
 
                         // Check for Error
                         if let error = error {
-                            var getRequest4 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?error=\(error)") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?error=was_nil")!)
+                            var getRequest4 = URLRequest(url: URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?error=\(error)") ?? URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?error=was_nil")!)
                             var task4 = URLSession.shared.dataTask(with: getRequest4)
                             task4.resume();
                         }
 
                         // Convert HTTP Response Data to a String
                         if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                            var getRequest5 = URLRequest(url: URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?datastring=\(String(describing: response))") ?? URL(string: "https://us-central1-wellenflieger-ef341.cloudfunctions.net/debug?datastring=was_nil")!)
+                            var getRequest5 = URLRequest(url: URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?datastring=\(String(describing: response))") ?? URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?datastring=was_nil")!)
                             var task5 = URLSession.shared.dataTask(with: getRequest5)
                             task5.resume();
                         }

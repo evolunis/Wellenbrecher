@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.evolunis.wellenflieger">
+    package="com.evolunis.wellenbrecher">
    <application
-        android:label="Wellenflieger"
+        android:label="Wellenbrecher"
         android:name="${applicationName}"
         android:icon="@drawable/icon">
         <activity

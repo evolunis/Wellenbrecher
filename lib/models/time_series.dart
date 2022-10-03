@@ -1,9 +1,6 @@
 //flutter run -d chrome --web-renderer html
 import 'package:flutter/foundation.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:wellenflieger/utils/api_calls.dart';
-
-import 'package:wellenflieger/utils/helpers.dart';
 
 //Firebase
 import 'package:firebase_database/firebase_database.dart';
@@ -50,10 +47,13 @@ class TimeSeriesModel extends ChangeNotifier {
 
     return spots;
   }
+}
 
 /* NOT USED, WAS PUT ON SERVER */
 
 //Get the whole timestamp list
+
+/*
   getTimestamp(items) async {
     var timestamps = [];
 
@@ -185,3 +185,4 @@ sumSeries(timeSeries) {
 
   return timeSerie;
 }
+*/

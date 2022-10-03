@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "wellenflieger" "\0"
+            VALUE "FileDescription", "wellenbrecher" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "wellenflieger" "\0"
+            VALUE "InternalName", "wellenbrecher" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "wellenflieger.exe" "\0"
-            VALUE "ProductName", "wellenflieger" "\0"
+            VALUE "OriginalFilename", "wellenbrecher.exe" "\0"
+            VALUE "ProductName", "wellenbrecher" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

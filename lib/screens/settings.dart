@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wellenflieger/models/settings.dart';
+import 'package:wellenbrecher/models/settings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsForm extends StatefulWidget {
   const SettingsForm({super.key});
@@ -111,6 +112,38 @@ class SettingsFormState extends State<SettingsForm> {
                                 });
                               }),
                         ),*/
+                        ListTile(
+                            title: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                                color:
+                                    Colors.black) // default style for all text
+                            ,
+                            children: [
+                              WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: InkWell(
+                                      onTap: () async {
+                                        await launchUrl(
+                                            Uri.parse(
+                                                'https://youtu.be/JMoZeLe6TS0'),
+                                            mode:
+                                                LaunchMode.externalApplication);
+                                      },
+                                      child: Row(children: [
+                                        const Icon(Icons.info_outline),
+                                        Text(
+                                          ' Setup video guide',
+                                          style: const TextStyle(
+                                                  color: Colors.black)
+                                              .merge(const TextStyle(
+                                                  color: Colors.blue,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                      ]))), // override default text styles with link-specific styles
+                            ],
+                          ),
+                        ))
                       ],
                     ),
                   )));

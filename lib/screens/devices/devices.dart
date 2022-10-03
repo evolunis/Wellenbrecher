@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:wellenflieger/utils/local_storage.dart' as ls;
+import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 
-import 'package:wellenflieger/models/devices.dart';
-import 'package:wellenflieger/models/time_series.dart';
+import 'package:wellenbrecher/models/devices.dart';
+import 'package:wellenbrecher/models/time_series.dart';
 
-import 'package:wellenflieger/screens/settings.dart';
-import 'package:wellenflieger/screens/devices/parts/modal.dart';
-import 'package:wellenflieger/screens/devices/parts/time_series.dart';
-import 'package:wellenflieger/screens/devices/parts/switch.dart';
+import 'package:wellenbrecher/screens/settings.dart';
+import 'package:wellenbrecher/screens/devices/parts/modal.dart';
+import 'package:wellenbrecher/screens/devices/parts/time_series.dart';
+import 'package:wellenbrecher/screens/devices/parts/switch.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({super.key});
@@ -78,7 +78,7 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
                 MaterialPageRoute(builder: (context) => const SettingsForm()),
               ),
             ),
-          )
+          ),
         ],
         title: const Text("Devices"),
       ),

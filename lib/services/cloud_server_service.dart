@@ -4,8 +4,8 @@ import 'dart:convert';
 
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:wellenflieger/utils/local_storage.dart' as prefs;
-import 'package:wellenflieger/utils/api_calls.dart';
+import 'package:wellenbrecher/utils/local_storage.dart' as prefs;
+import 'package:wellenbrecher/utils/api_calls.dart';
 
 class ServerAuth {
   String serverAddress;

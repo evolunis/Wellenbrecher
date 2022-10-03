@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.evolunis.wellenflieger</string>
+		<string>group.com.evolunis.wellenbrecher</string>
 	</array>
 </dict>
 </plist>

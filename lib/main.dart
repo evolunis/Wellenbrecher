@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:wellenflieger/models/settings.dart';
-import 'package:wellenflieger/models/time_series.dart';
-import 'package:wellenflieger/models/devices.dart';
-import 'package:wellenflieger/screens/devices/devices.dart';
+import 'package:wellenbrecher/models/settings.dart';
+import 'package:wellenbrecher/models/time_series.dart';
+import 'package:wellenbrecher/models/devices.dart';
+import 'package:wellenbrecher/screens/devices/devices.dart';
 
-import 'package:wellenflieger/service_locator.dart';
-import 'package:wellenflieger/services/firebase_notifications.dart';
+import 'package:wellenbrecher/service_locator.dart';
+import 'package:wellenbrecher/services/firebase_notifications.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:app_group_directory/app_group_directory.dart';
@@ -16,7 +16,6 @@ import 'dart:io';
 
 //firebase
 import 'package:firebase_core/firebase_core.dart';
-import 'package:wellenflieger/utils/api_calls.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -32,15 +31,12 @@ void main() async {
     String data = "This is a test !";
     try {
       Directory? sharedDirectory = await AppGroupDirectory.getAppGroupDirectory(
-          'group.com.evolunis.wellenflieger');
-      fetchGet(
-          "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?Filewrite=${sharedDirectory?.path}/Library/Caches/settings.txt");
+          'group.com.evolunis.wellenbrecher');
 
       File file = File('${sharedDirectory?.path}/Library/Caches/settings.txt');
       file.writeAsString(data);
     } catch (e) {
-      fetchGet(
-          "https://us-central1-wellenflieger-ef341.cloudfunctions.net/getKey?Filewrite=${e.toString()}");
+      print("false");
     }
   }
 
@@ -72,7 +68,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TimeSeriesModel())
       ],
       child: MaterialApp(
-        title: 'Wellenflieger',
+        title: 'Wellenbrecher',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           primaryColor: const Color(0xFF3399FF),

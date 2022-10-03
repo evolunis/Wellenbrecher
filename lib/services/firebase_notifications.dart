@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import 'package:wellenflieger/utils/remote_database.dart' as db;
+import 'package:wellenbrecher/utils/remote_database.dart' as db;
 import 'package:flutter/foundation.dart';
 
 //Background handler : Only on Android, iOS is handled natively.

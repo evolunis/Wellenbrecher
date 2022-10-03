@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
-import 'package:wellenflieger/service_locator.dart';
-import 'package:wellenflieger/services/cloud_server_service.dart';
-import 'package:wellenflieger/utils/local_storage.dart' as ls;
+import 'package:wellenbrecher/service_locator.dart';
+import 'package:wellenbrecher/services/cloud_server_service.dart';
+import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 
 part 'devices.g.dart';
 

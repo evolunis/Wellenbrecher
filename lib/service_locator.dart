@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:wellenflieger/services/cloud_server_service.dart';
+import 'package:wellenbrecher/services/cloud_server_service.dart';
 
 final serviceLocator = GetIt.instance; // GetIt.I is also valid
 void setUp() async {
