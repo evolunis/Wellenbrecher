@@ -67,8 +67,18 @@
     },
     {
       "idiom" : "ipad",
+      "scale" : "1x",
+      "size" : "29x29"
+    },
+    {
+      "idiom" : "ipad",
       "scale" : "2x",
       "size" : "29x29"
+    },
+    {
+      "idiom" : "ipad",
+      "scale" : "1x",
+      "size" : "40x40"
     },
     {
       "idiom" : "ipad",
@@ -97,12 +107,6 @@
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
-    },
-    {
-      "filename" : "Icon-83.5@2x.png",
-      "idiom" : "ipad",
-      "scale" : "1x",
-      "size" : "167x167"
     }
   ],
   "info" : {

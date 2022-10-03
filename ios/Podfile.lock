@@ -84,6 +84,8 @@ PODS:
     - Flutter
   - shared_preferences_ios (0.0.1):
     - Flutter
+  - url_launcher_ios (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - app_group_directory (from `.symlinks/plugins/app_group_directory/ios`)
@@ -94,6 +96,7 @@ DEPENDENCIES:
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - shared_preference_app_group (from `.symlinks/plugins/shared_preference_app_group/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
   trunk:
@@ -127,6 +130,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preference_app_group/ios"
   shared_preferences_ios:
     :path: ".symlinks/plugins/shared_preferences_ios/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
   app_group_directory: 7bf9f8f9819ead554de29da7c25fb7a680d6a9a0
@@ -149,6 +154,7 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   shared_preference_app_group: 83d2284f9e747839c40fc281403b5b60d83e2989
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 

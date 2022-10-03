@@ -245,22 +245,6 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
           return const SizedBox.shrink();
         }
       }),
-      // This traili
-      //Settings drawer
-      endDrawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: const Text('Settings'),
-            ),
-            const SettingsForm(),
-          ],
-        ),
-      ),
     );
   }
 }
