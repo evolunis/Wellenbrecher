@@ -108,7 +108,7 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
                       );
                     },
                     child: Center(
-                      child: RichText(
+                      child: RichText(textAlign: TextAlign.center,
                         text: TextSpan(
                           children: [
                             TextSpan(
@@ -140,7 +140,7 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
           } else {
             return const Center(
               child: Text(
-                  "No server available, check settings or internet connection !"),
+                  "No server available, check settings or internet connection !",textAlign: TextAlign.center,),
             );
           }
         } else {
