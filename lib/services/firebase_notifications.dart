@@ -2,15 +2,25 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:wellenbrecher/utils/remote_database.dart' as db;
 import 'package:flutter/foundation.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //Background handler : Only on Android, iOS is handled natively.
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
-//Foreground handler : Only on Android, iOS is handled natively.
 Future<void> _firebaseMessagingForegroundHandler(RemoteMessage message) async {}
 
 class FirebaseNotifications {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _localNotificationPlugin =
+      FlutterLocalNotificationsPlugin();
+  late DarwinInitializationSettings iosSettings;
+
+  late InitializationSettings localSettings;
+
+  FirebaseNotifications() {
+    iosSettings = const DarwinInitializationSettings();
+    localSettings = InitializationSettings(iOS: iosSettings);
+  }
 
   init() async {
     NotificationSettings settings = await messaging.requestPermission(
@@ -23,12 +33,17 @@ class FirebaseNotifications {
       sound: true,
     );
 
+    await _localNotificationPlugin.initialize(
+      localSettings,
+    );
+
+    //Foreground handler
+    FirebaseMessaging.onMessage.listen(_firebaseMessagingForegroundHandler);
+
     if (defaultTargetPlatform == TargetPlatform.android) {
       //Background handler
       FirebaseMessaging.onBackgroundMessage(
           _firebaseMessagingBackgroundHandler);
-      //Foreground handler
-      FirebaseMessaging.onMessage.listen(_firebaseMessagingForegroundHandler);
     }
 
     //Add the token to the database with timestamp for future optimisation
@@ -40,5 +55,19 @@ class FirebaseNotifications {
       messaging.subscribeToTopic('All');
       return true;
     });
+  }
+
+  showNotification() async {
+    const DarwinNotificationDetails iosNotificationDetails =
+        DarwinNotificationDetails(
+      categoryIdentifier: "plainCategory",
+    );
+
+    const NotificationDetails notificationDetails =
+        NotificationDetails(iOS: iosNotificationDetails);
+
+    await _localNotificationPlugin.show(
+        0, 'plain title', 'plain body', notificationDetails,
+        payload: 'item z');
   }
 }

@@ -46,7 +46,7 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
           autoToggle = state;
         });
       });
-      Provider.of<TimeSeriesModel>(context, listen: false).init();
+      Provider.of<TimeSeriesModel>(context, listen: false).update();
     });
   }
 
@@ -55,6 +55,7 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       Provider.of<DevicesModel>(context, listen: false).refresh();
+      Provider.of<TimeSeriesModel>(context, listen: false).update();
     }
   }
 
@@ -153,29 +154,35 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
         }
       }),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          showModalBottomSheet(
-              context: context,
-              backgroundColor: Colors.transparent,
-              builder: (ctx) {
-                return Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        topLeft: Radius.circular(20)),
-                    color: Colors.white,
-                  ),
-                  height: MediaQuery.of(context).size.height * 3,
-                  child: const Center(
-                    child: TimeSeries(),
-                  ),
-                );
-              })
-        },
-        tooltip: 'Show chart',
-        child: const Icon(Icons.area_chart),
-      ),
+      floatingActionButton:
+          Consumer<TimeSeriesModel>(builder: (context, timeSeries, child) {
+        return FloatingActionButton(
+            onPressed: () => {
+                  showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (ctx) {
+                        return Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                topLeft: Radius.circular(20)),
+                            color: Colors.white,
+                          ),
+                          height: MediaQuery.of(context).size.height * 3,
+                          child: const Center(
+                            child: TimeSeries(),
+                          ),
+                        );
+                      })
+                },
+            tooltip: 'Show chart',
+            backgroundColor: (timeSeries.getData() != null &&
+                    timeSeries.getData()['overProd'] != null)
+                ? (timeSeries.getData()['overProd'] ? Colors.green : Colors.red)
+                : Colors.blue,
+            child: const Icon(Icons.area_chart));
+      }),
       bottomNavigationBar:
           Consumer<DevicesModel>(builder: (context, devicesModel, child) {
         if (devicesModel.shouldShow()) {

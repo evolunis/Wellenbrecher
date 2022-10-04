@@ -8,7 +8,7 @@ import 'package:firebase_database/firebase_database.dart';
 class TimeSeriesModel extends ChangeNotifier {
   Map? data;
 
-  init() async {
+  update() async {
     data = await getDataFirebase();
     //data = await getPowerData();
     //data?['prodSerieSum'] = sumSeries(data?['prodSeries']);

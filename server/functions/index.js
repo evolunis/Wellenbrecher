@@ -32,25 +32,21 @@ async function updateGridData() {
 
     db.ref('/data/overProd').get().then((snapshot) => {
       if (snapshot.exists()) {
-        console.log("This is the value !")
-        console.log(snapshot.val());
         overProd = snapshot.val();
-      
-
-    if((data['prodSerieSum'].last >= data['consSerieSum'].last) && !overProd){
+      }
+  
+    if((data['prodSerieSum'][data['prodSerieSum'].length-1][1] >= data['consSerieSum'][data['consSerieSum'].length-1][1]) && !overProd){
       db.ref("/data/overProd").set(true).then(()=>{
         sendNotification("on");
         });
     }
 
-    if(!(data['prodSerieSum'].last >= data['consSerieSum'].last) && overProd){
+    if(!(data['prodSerieSum'][data['prodSerieSum'].length-1][1] >= data['consSerieSum'][data['consSerieSum'].length-1][1]) && overProd){
       db.ref("/data/overProd").set(false).then(()=>{
             sendNotification("off");
         });
-    }} else {
-      console.log("No data available");
-    }
-  })
+    }}
+  )
 
 
     

@@ -64,37 +64,44 @@ class TimeSeries extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
-          padding: const EdgeInsets.only(top: 5.0, left: 10, bottom: 2),
+          padding: const EdgeInsets.only(top: 8.0, left: 10, bottom: 2),
           child: SizedBox(
               height: 30,
               child: Consumer<TimeSeriesModel>(
                   builder: (context, timeSeries, child) {
-                return Row(children: [
-                  Text("Power market",
-                      style: Theme.of(context).textTheme.headlineSmall),
-                  RichText(
-                    text: TextSpan(children: [
-                      const TextSpan(
-                          text: "Prod: ",
-                          style: TextStyle(color: Colors.black)),
-                      TextSpan(
-                          text:
-                              "${(timeSeries.getData()['prodSerieSum'].last[1] / 1000).toStringAsFixed(1)}",
-                          style: const TextStyle(color: Colors.blue))
-                    ]),
-                  ),
-                  RichText(
-                    text: TextSpan(children: [
-                      const TextSpan(
-                          text: "Cons: ",
-                          style: TextStyle(color: Colors.black)),
-                      TextSpan(
-                          text:
-                              "${(timeSeries.getData()['consSerieSum'].last[1] / 1000).toStringAsFixed(1)}",
-                          style: const TextStyle(color: Colors.red))
-                    ]),
-                  )
-                ]);
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Power market",
+                          style: Theme.of(context).textTheme.headlineSmall),
+                      Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: Row(children: [
+                            RichText(
+                              text: TextSpan(children: [
+                                const TextSpan(
+                                    text: "Prod: ",
+                                    style: TextStyle(color: Colors.black)),
+                                TextSpan(
+                                    text:
+                                        "${(timeSeries.getData()['prodSerieSum'].last[1] / 1000).toStringAsFixed(1)}",
+                                    style: const TextStyle(color: Colors.blue))
+                              ]),
+                            ),
+                            RichText(
+                              text: TextSpan(children: [
+                                const TextSpan(
+                                    text: " Cons: ",
+                                    style: TextStyle(color: Colors.black)),
+                                TextSpan(
+                                    text:
+                                        "${(timeSeries.getData()['consSerieSum'].last[1] / 1000).toStringAsFixed(1)}",
+                                    style: const TextStyle(color: Colors.red))
+                              ]),
+                            ),
+                            const Text(" (GWh/15 minutes)")
+                          ]))
+                    ]);
               }))),
       Expanded(
         child: Center(
@@ -250,8 +257,10 @@ class TimeSeries extends StatelessWidget {
       Consumer<TimeSeriesModel>(builder: (context, timeSeries, child) {
         if (timeSeries.isLoaded()) {
           return Center(
-              child: Text(
-                  'Last update at ${timestampToString(timeSeries.lastUpdate(), "HH:mm")}.'));
+              child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Text(
+                      'Last update at ${timestampToString(timeSeries.lastUpdate(), "HH:mm")}.')));
         } else {
           return const SizedBox.shrink();
         }

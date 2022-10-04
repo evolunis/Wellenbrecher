@@ -45,6 +45,7 @@ void main() async {
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {
       FirebaseNotifications notifications = FirebaseNotifications();
+      notifications.showNotification();
       notifications.init().then((token) {
         runApp(const MyApp());
       });
