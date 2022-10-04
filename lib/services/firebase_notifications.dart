@@ -11,18 +11,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 class FirebaseNotifications {
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
-    //var title = message.notification?.title ?? "The market has changed :";
-    //var state = message.data['toState'] ?? "fail";
+    var title = message.notification?.title ?? "The market has changed :";
+    var state = message.data['toState'] ?? "fail";
     // var state = "off";
-/*
+
     ls.read('autoToggle').then((auto) {
+      auto = auto != "false" ? true : false;
       if (auto) {
         showNotification(title, "Your devices were turned $state !");
       } else {
         showNotification(title, "Time to turn your devices $state !");
       }
-    });*/
-    showNotification("title", "body");
+    });
   }
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
