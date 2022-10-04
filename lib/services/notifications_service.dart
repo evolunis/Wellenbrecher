@@ -1,14 +1,18 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:wellenbrecher/service_locator.dart';
 
 import 'package:wellenbrecher/utils/remote_database.dart' as db;
 import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:wellenbrecher/services/cloud_server_service.dart';
 
 //Background handler : Only on Android, iOS is handled natively.
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 class NotificationsService {
+  CloudServerService cloudServer = serviceLocator<CloudServerService>();
+
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
     var title = message.notification?.title ?? "The market has changed :";
@@ -73,7 +77,7 @@ class NotificationsService {
           {"timestamp": DateTime.now().microsecondsSinceEpoch});
 
       //Notification channel
-      messaging.subscribeToTopic('All');
+      updateSettings();
       return true;
     });
   }
@@ -109,6 +113,10 @@ class NotificationsService {
       messaging.subscribeToTopic("All");
     } else {
       messaging.unsubscribeFromTopic("All");
+    }
+    if (autoToggle) {
+      bool state = db.read("/data/overProd");
+      cloudServer.catchUp(state);
     }
   }
 }

@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:wellenbrecher/utils/local_storage.dart' as prefs;
+import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 import 'package:wellenbrecher/utils/api_calls.dart';
 
 class ServerAuth {
@@ -23,9 +23,9 @@ class CloudServerService {
   DateTime lastTime = DateTime.now();
 
   init() async {
-    var serverAddr = await prefs.read("serverAddr") ?? "";
-    var apiKey = await prefs.read("apiKey") ?? "";
-    var isAuthValid = await prefs.read("isAuthValid") == "true" ? true : false;
+    var serverAddr = await ls.read("serverAddr") ?? "";
+    var apiKey = await ls.read("apiKey") ?? "";
+    var isAuthValid = await ls.read("isAuthValid") == "true" ? true : false;
 
     serverAuth = ServerAuth(serverAddr, apiKey, isAuthValid);
   }
@@ -39,8 +39,8 @@ class CloudServerService {
   }
 
   updateSettings() async {
-    var serverAddr = await prefs.read("serverAddr") ?? "";
-    var apiKey = await prefs.read("apiKey") ?? "";
+    var serverAddr = await ls.read("serverAddr") ?? "";
+    var apiKey = await ls.read("apiKey") ?? "";
     var isAuthValid = false;
     serverAuth = ServerAuth(serverAddr, apiKey, isAuthValid);
 
@@ -112,6 +112,16 @@ class CloudServerService {
     });
   }
 
+  catchUp(state) async {
+    String devicesIds = await ls.read('devicesIds');
+    var devices = jsonDecode(devicesIds);
+    var ids;
+    for (var device in devices) {
+      ids.add(device['id']);
+    }
+    switchAllDevices(ids, state);
+  }
+
 //Willr only check the key, not the server address
   Future<bool> checkAuthSettings() async {
     var res = await sendCommand("/device", {});
@@ -138,6 +148,6 @@ class CloudServerService {
 
   setIsAuthValid(bool valid) {
     serverAuth.isAuthValid = valid;
-    prefs.save("isAuthValid", valid.toString());
+    ls.save("isAuthValid", valid.toString());
   }
 }
