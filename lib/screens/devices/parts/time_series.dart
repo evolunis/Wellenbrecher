@@ -64,18 +64,18 @@ class TimeSeries extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 10, bottom: 2),
+          padding: const EdgeInsets.only(top: 10.0, left: 20, bottom: 2),
           child: SizedBox(
               height: 30,
               child: Consumer<TimeSeriesModel>(
                   builder: (context, timeSeries, child) {
-                return Row(
+                return Row(crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Power market",
                           style: Theme.of(context).textTheme.headlineSmall),
                       Padding(
-                          padding: const EdgeInsets.only(right: 20),
+                          padding: const EdgeInsets.only(top:2,right:20),
                           child: Row(children: [
                             RichText(
                               text: TextSpan(children: [
@@ -99,7 +99,7 @@ class TimeSeries extends StatelessWidget {
                                     style: const TextStyle(color: Colors.red))
                               ]),
                             ),
-                            const Text(" (GWh/15 minutes)")
+                            const Text(" (GWh)")
                           ]))
                     ]);
               }))),
@@ -258,7 +258,7 @@ class TimeSeries extends StatelessWidget {
         if (timeSeries.isLoaded()) {
           return Center(
               child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
+                  padding: const EdgeInsets.only(bottom: 12),
                   child: Text(
                       'Last update at ${timestampToString(timeSeries.lastUpdate(), "HH:mm")}.')));
         } else {

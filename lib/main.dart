@@ -6,6 +6,7 @@ import 'package:wellenbrecher/models/settings.dart';
 import 'package:wellenbrecher/models/time_series.dart';
 import 'package:wellenbrecher/models/devices.dart';
 import 'package:wellenbrecher/screens/devices/devices.dart';
+import 'package:wellenbrecher/utils/api_calls.dart';
 
 import 'package:wellenbrecher/service_locator.dart';
 import 'package:wellenbrecher/services/firebase_notifications.dart';
@@ -39,13 +40,13 @@ void main() async {
       print("false");
     }
   }
-
+  
   setUp();
   serviceLocator.allReady().then((value) {
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {
       FirebaseNotifications notifications = FirebaseNotifications();
-      notifications.showNotification();
+      notifications.showNotification("title","body");
       notifications.init().then((token) {
         runApp(const MyApp());
       });
