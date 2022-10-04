@@ -38,6 +38,7 @@ class DevicesModel extends ChangeNotifier {
   dynamic init() async {
     cloudServer.setCallback(refresh);
     notifications.setCallback(refresh);
+    notifications.setup();
 
     Hive.registerAdapter<Device>(DeviceAdapter());
     devices = await Hive.openBox<Device>('devices');

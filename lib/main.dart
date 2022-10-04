@@ -24,10 +24,8 @@ void main() async {
 
   setUp();
   serviceLocator.allReady().then((value) {
-    if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android) {
-      runApp(const MyApp());
-    }
+    
+    runApp(const MyApp());
   });
 }
 

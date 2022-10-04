@@ -11,7 +11,7 @@ import 'package:wellenbrecher/services/cloud_server_service.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 class NotificationsService {
-  CloudServerService cloudServer = serviceLocator<CloudServerService>();
+  late CloudServerService cloudServer;
 
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
@@ -48,6 +48,8 @@ class NotificationsService {
   }
 
   init() async {
+
+   
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -76,10 +78,13 @@ class NotificationsService {
       db.write("FCMTokens/${value!}",
           {"timestamp": DateTime.now().microsecondsSinceEpoch});
 
-      //Notification channel
-      updateSettings();
       return true;
     });
+  }
+
+  setup(){
+     cloudServer = serviceLocator<CloudServerService>();
+     updateSettings();
   }
 
   showNotification(String title, String body) async {
@@ -115,7 +120,8 @@ class NotificationsService {
       messaging.unsubscribeFromTopic("All");
     }
     if (autoToggle) {
-      bool state = db.read("/data/overProd");
+      var state = await db.read("/data/overProd");
+      
       cloudServer.catchUp(state);
     }
   }

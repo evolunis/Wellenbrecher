@@ -14,7 +14,7 @@ class ShadowSwitch extends StatefulWidget {
 class _ShadowSwitchState extends State<ShadowSwitch> {
   late Timer timer;
   late bool large;
-  late bool value;
+  bool value = false;
   SettingsModel? settingsModel;
 
   @override

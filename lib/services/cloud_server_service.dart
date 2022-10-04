@@ -21,6 +21,7 @@ class CloudServerService {
   ServerAuth serverAuth = ServerAuth("", "");
   VoidCallback? devicesModelCallback;
   DateTime lastTime = DateTime.now();
+  bool loading = true;
 
   init() async {
     var serverAddr = await ls.read("serverAddr") ?? "";
@@ -115,11 +116,16 @@ class CloudServerService {
   catchUp(state) async {
     String devicesIds = await ls.read('devicesIds');
     var devices = jsonDecode(devicesIds);
-    var ids;
+    var ids = [];
     for (var device in devices) {
       ids.add(device['id']);
     }
+    print(ids);
+    Future.delayed(Duration(milliseconds: 2000), () async {
     switchAllDevices(ids, state);
+    print("called");
+    notifyProviders();
+    });
   }
 
 //Willr only check the key, not the server address

@@ -9,5 +9,6 @@ write(String place, Map value) async {
 
 read(String place) async {
   DatabaseReference ref = database.ref(place);
-  return ref.get();
+  var snapshot = await ref.get();
+  return snapshot.value ;
 }

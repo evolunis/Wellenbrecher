@@ -4,6 +4,7 @@ import 'package:wellenbrecher/services/notifications_service.dart';
 
 final serviceLocator = GetIt.instance; // GetIt.I is also valid
 void setUp() async {
+
   serviceLocator.registerSingletonAsync<CloudServerService>(() async {
     final cloudServer = CloudServerService();
     await cloudServer.init();
@@ -16,3 +17,4 @@ void setUp() async {
     return firebaseNotifications;
   });
 }
+
