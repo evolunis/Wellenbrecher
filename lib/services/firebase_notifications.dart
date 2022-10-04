@@ -8,16 +8,16 @@ import 'package:wellenbrecher/utils/api_calls.dart';
 //Background handler : Only on Android, iOS is handled natively.
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
-
-
 class FirebaseNotifications {
+  Future<void> _firebaseMessagingForegroundHandler(
+      RemoteMessage message) async {
+    var title = message.notification?.title ?? "null";
+    var body = message.notification?.body ?? "null";
+    fetchGet(
+        "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?notifdata=$body");
+    showNotification(title, body);
+  }
 
-  Future<void> _firebaseMessagingForegroundHandler(RemoteMessage message) async {
-  var title = message.notification.toString();
-  var body = message.notification.toString();
-  fetchGet("https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?notifdata="+body);
-  showNotification(title,body);
-}
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _localNotificationPlugin =
       FlutterLocalNotificationsPlugin();
@@ -65,7 +65,7 @@ class FirebaseNotifications {
     });
   }
 
-  showNotification(String title,String body) async {
+  showNotification(String title, String body) async {
     const DarwinNotificationDetails iosNotificationDetails =
         DarwinNotificationDetails(
       categoryIdentifier: "plainCategory",
@@ -74,8 +74,7 @@ class FirebaseNotifications {
     const NotificationDetails notificationDetails =
         NotificationDetails(iOS: iosNotificationDetails);
 
-    await _localNotificationPlugin.show(
-        0, title, body, notificationDetails,
+    await _localNotificationPlugin.show(0, title, body, notificationDetails,
         payload: 'item z');
   }
 }
