@@ -12,13 +12,13 @@ class FirebaseNotifications {
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
     var title = message.notification?.title ?? "The market has changed :";
-    var state = message.data['toState'];
+    var state = message.data['toState'] ?? "fail";
 
     ls.read('autoToggle').then((auto) {
       if (auto) {
-        showNotification(title, "Your devices were turned ${state}!");
+        showNotification(title, "Your devices were turned $state !");
       } else {
-        showNotification(title, "Time to turn your devices ${state}!");
+        showNotification(title, "Time to turn your devices $state !");
       }
     });
   }
