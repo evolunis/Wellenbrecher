@@ -4,7 +4,6 @@ import 'package:wellenbrecher/utils/remote_database.dart' as db;
 import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:wellenbrecher/utils/api_calls.dart';
 
 //Background handler : Only on Android, iOS is handled natively.
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
@@ -13,15 +12,13 @@ class FirebaseNotifications {
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
     var title = message.notification?.title ?? "The market has changed :";
-    var state = db.write("/Debug/messagedata", message.data); //ERROR
-    fetchGet(
-        "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?test=$state");
+    var state = message.data['toState'];
 
-    ls.read('autoToggle').then((state) {
-      if (state) {
-        showNotification(title, "Your devices were toggled !");
+    ls.read('autoToggle').then((auto) {
+      if (auto) {
+        showNotification(title, "Your devices were turned ${state}!");
       } else {
-        showNotification(title, "Time to toggle your devices !");
+        showNotification(title, "Time to turn your devices ${state}!");
       }
     });
   }
