@@ -19,6 +19,8 @@ class SettingsFormState extends State<SettingsForm> {
   late TextEditingController serverController;
   late TextEditingController keyController;
 
+  late bool showNotifs;
+
   late bool loading;
   late Map settings;
 
@@ -42,7 +44,7 @@ class SettingsFormState extends State<SettingsForm> {
             TextEditingController(text: settings['serverAddress']);
         keyController = TextEditingController(text: settings['apiKey']);
 
-        //showNotifs = settings['showNotifs'];
+        showNotifs = settings['showNotifs'];
       });
     });
   }
@@ -54,7 +56,7 @@ class SettingsFormState extends State<SettingsForm> {
     // Build a Form widget using the _formKey created above.
     return WillPopScope(
         onWillPop: () => settingsModel.setSettings(
-            serverController.text, keyController.text),
+            serverController.text, keyController.text, showNotifs),
         child: Scaffold(
             //Appbar
             appBar: AppBar(
@@ -101,9 +103,8 @@ class SettingsFormState extends State<SettingsForm> {
                             },
                           ),
                         ),
-
-                        /*ListTile(
-                          title: const Text("Show notifications "),
+                        ListTile(
+                          title: const Text("Show reminders "),
                           trailing: Switch(
                               value: showNotifs,
                               onChanged: (bool value) {
@@ -111,7 +112,7 @@ class SettingsFormState extends State<SettingsForm> {
                                   showNotifs = value;
                                 });
                               }),
-                        ),*/
+                        ),
                         ListTile(
                             title: RichText(
                           text: TextSpan(
