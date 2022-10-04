@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:wellenbrecher/utils/remote_database.dart' as db;
+import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wellenbrecher/utils/api_calls.dart';
@@ -11,11 +12,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 class FirebaseNotifications {
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
-    var title = message.notification?.title ?? "null";
-    var body = message.notification?.body ?? "null";
+    var title = message.notification?.title ?? "The market has changed :";
+    var state = message.toString();
     fetchGet(
-        "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?notifdata=$body");
-    showNotification(title, body);
+        "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?test=$state");
+
+    ls.read('autoToggle').then((state) {
+      if (state) {
+        showNotification(title, "Your devices were toggled !");
+      } else {
+        showNotification(title, "Time to toggle your devices !");
+      }
+    });
   }
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;

@@ -64,18 +64,19 @@ class TimeSeries extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
-          padding: const EdgeInsets.only(top: 10.0, left: 20, bottom: 2),
+          padding: const EdgeInsets.only(top: 10.0, left: 15, bottom: 2),
           child: SizedBox(
               height: 30,
               child: Consumer<TimeSeriesModel>(
                   builder: (context, timeSeries, child) {
-                return Row(crossAxisAlignment: CrossAxisAlignment.center,
+                return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Power market",
                           style: Theme.of(context).textTheme.headlineSmall),
                       Padding(
-                          padding: const EdgeInsets.only(top:2,right:20),
+                          padding: const EdgeInsets.only(top: 2, right: 15),
                           child: Row(children: [
                             RichText(
                               text: TextSpan(children: [
