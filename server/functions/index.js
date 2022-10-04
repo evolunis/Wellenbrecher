@@ -9,26 +9,49 @@ db = admin.database();
 
 
 exports.smartGridApiCall = functions.pubsub.schedule('every 15 minutes').onRun((context) => {
-    return update().then(()=> {
+    return updateGridData().then(()=> {
       return null;});
   });
-  
-  /* TEST
-  exports.smartGridApiCall = functions.https.onRequest((request, res) => {
-       functions.logger.info("Hello logs!", {structuredData: true});
-       update().then(()=>{res.end()});
-     });
-*/
 
-async function update() {
+  // TEST
+  exports.smartGridApiCallMan = functions.https.onRequest((request, res) => {
+       functions.logger.info("Hello logs!", {structuredData: true});
+       updateGridData().then(()=>{res.end()});
+     });
+
+  
+
+async function updateGridData() {
     var data = await getPowerData();
     data['prodSerieSum'] = sumSeries(data['prodSeries']);
     data['consSerieSum'] = sumSeries(data['consSeries']);
     delete data['prodSeries'];
     delete data['consSeries'];
 
-    const ref = db.ref('/data');
-    return ref.set(data).then(()=>{
+    overProd = true;
+
+    db.ref('/data/overProd').get().then((snapshot) => {
+      if (snapshot.exists()) {
+        overProd = snapshot.val();
+      } else {
+        console.log("No data available");
+      }
+    })
+
+    if((data['prodSerieSum'].last >= data['consSerieSum'].last) && !overProd){
+      db.ref("/data/overProd").set(true).then(()=>{
+        sendNotification("on");
+        });
+    }
+
+    if(!(data['prodSerieSum'].last >= data['consSerieSum'].last) && overProd){
+      db.ref("/data/overProd").set(false).then(()=>{
+            sendNotification("off");
+        });
+    }
+    
+    
+      return db.ref('/data/').update(data).then(()=>{
       return true;});
     
   }

@@ -108,7 +108,8 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
                       );
                     },
                     child: Center(
-                      child: RichText(textAlign: TextAlign.center,
+                      child: RichText(
+                        textAlign: TextAlign.center,
                         text: TextSpan(
                           children: [
                             TextSpan(
@@ -140,7 +141,9 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
           } else {
             return const Center(
               child: Text(
-                  "No server available, check settings or internet connection !",textAlign: TextAlign.center,),
+                "No server available, check settings or internet connection !",
+                textAlign: TextAlign.center,
+              ),
             );
           }
         } else {
@@ -154,8 +157,15 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
         onPressed: () => {
           showModalBottomSheet(
               context: context,
+              backgroundColor: Colors.transparent,
               builder: (ctx) {
-                return SizedBox(
+                return Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20)),
+                    color: Colors.white,
+                  ),
                   height: MediaQuery.of(context).size.height * 3,
                   child: const Center(
                     child: TimeSeries(),

@@ -41,7 +41,9 @@ class TimeSeriesModel extends ChangeNotifier {
 
   toFlSpots(List list, int interval) {
     List<FlSpot> spots = [];
-    for (var i = 0; i < list.length; i += interval) {
+    for (var i = (list.length / 7 * 2).floor();
+        i < list.length;
+        i += interval) {
       spots.add(FlSpot(list[i][0].toDouble(), list[i][1].toDouble() ?? 0.0));
     }
 

@@ -62,14 +62,36 @@ class TimeSeries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
-          padding: const EdgeInsets.all(1.0),
+          padding: const EdgeInsets.only(top: 5.0, left: 10, bottom: 2),
           child: SizedBox(
               height: 30,
-              child: Text("Power market",
-                  style: Theme.of(context).textTheme.headlineSmall))),
+              child: Consumer<TimeSeriesModel>(
+                  builder: (context, timeSeries, child) {
+                return Row(children: [
+                  Text("Power market",
+                      style: Theme.of(context).textTheme.headlineSmall),
+                  RichText(
+                    text: TextSpan(children: [
+                      const TextSpan(text: "Prod: "),
+                      TextSpan(
+                          text:
+                              "${(timeSeries.getData()['prodSerieSum'].last[1] / 1000).toStringAsFixed(1)}",
+                          style: const TextStyle(color: Colors.blue))
+                    ]),
+                  ),
+                  RichText(
+                    text: TextSpan(children: [
+                      const TextSpan(text: "Cons: "),
+                      TextSpan(
+                          text:
+                              "${(timeSeries.getData()['consSerieSum'].last[1] / 1000).toStringAsFixed(1)}",
+                          style: const TextStyle(color: Colors.red))
+                    ]),
+                  )
+                ]);
+              }))),
       Expanded(
         child: Center(
           child:
@@ -81,8 +103,12 @@ class TimeSeries extends StatelessWidget {
               );
             } else {
               return Padding(
-                  padding: const EdgeInsets.fromLTRB(1, 15, 1, 1),
+                  padding: const EdgeInsets.fromLTRB(5, 30, 5, 1),
                   child: LineChart(LineChartData(
+                      betweenBarsData: [
+                        BetweenBarsData(
+                            fromIndex: 0, toIndex: 1, color: Colors.green)
+                      ],
                       lineTouchData: LineTouchData(
                           getTouchedSpotIndicator: (LineChartBarData barData,
                               List<int> spotIndexes) {
@@ -109,6 +135,7 @@ class TimeSeries extends StatelessWidget {
                             }).toList();
                           },
                           touchTooltipData: LineTouchTooltipData(
+                              tooltipBgColor: Colors.green,
                               fitInsideHorizontally: true,
                               maxContentWidth: 100,
                               getTooltipItems: (touchedSpots) {
@@ -145,9 +172,10 @@ class TimeSeries extends StatelessWidget {
                           handleBuiltInTouches: true,
                           getTouchLineStart: (data, index) => 0),
                       minX: timeSeries
-                          .getData()['consSerieSum']
-                          .first[0]
-                          .toDouble(),
+                              .getData()['consSerieSum']
+                              .first[0]
+                              .toDouble() +
+                          1000 * 60 * 60 * 24 * 2,
                       maxX: timeSeries
                           .getData()['consSerieSum']
                           .last[0]
@@ -224,6 +252,6 @@ class TimeSeries extends StatelessWidget {
           return const SizedBox.shrink();
         }
       })
-    ]));
+    ]);
   }
 }
