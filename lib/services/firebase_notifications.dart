@@ -13,7 +13,7 @@ class FirebaseNotifications {
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
     var title = message.notification?.title ?? "The market has changed :";
-    var state = message.toString();
+    var state = db.write("/Debug/messagedata", message.data); //ERROR
     fetchGet(
         "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?test=$state");
 
