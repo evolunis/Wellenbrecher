@@ -85,11 +85,12 @@ class FirebaseNotifications {
         payload: 'item z');
   }
 
-  toggleAuto(bool state) {
-    ls.read('reminders').then((reminders) {
+  toggleHandle(bool state) {
+    ls.read('showNotifs').then((notifs) {
+      notifs = notifs != "false" ? true : false;
       if (state) {
         messaging.subscribeToTopic("All");
-      } else if (!reminders) {
+      } else if (!notifs) {
         messaging.unsubscribeFromTopic("All");
       }
       ls.save('autoToggle', state.toString());
