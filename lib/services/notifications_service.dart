@@ -23,8 +23,8 @@ class NotificationsService {
         showNotification(title, "Time to turn your devices $state !");
       }
       Future.delayed(const Duration(seconds: 1), () async {
-      notifyProvider();
-      }
+        notifyProvider();
+      });
     });
   }
 
