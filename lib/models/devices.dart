@@ -165,14 +165,4 @@ class DevicesModel extends ChangeNotifier {
   String retrieveMessage() {
     return message;
   }
-
-  getAutoToggle() {
-    return ls.read("autoToggle").then((state) {
-      return state == "true" ? true : false;
-    });
-  }
-
-  void setAutoToggle(bool state) {
-    ls.save("autoToggle", state.toString());
-  }
 }

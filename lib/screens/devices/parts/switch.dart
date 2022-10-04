@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 
+import 'package:wellenbrecher/models/settings.dart';
+
 class ShadowSwitch extends StatefulWidget {
-  const ShadowSwitch({super.key, required this.value, required this.onChanged});
-  final bool value;
-  final Function onChanged;
+  const ShadowSwitch({super.key});
 
   @override
   State<ShadowSwitch> createState() => _ShadowSwitchState();
@@ -13,9 +14,14 @@ class ShadowSwitch extends StatefulWidget {
 class _ShadowSwitchState extends State<ShadowSwitch> {
   late Timer timer;
   late bool large;
+  late bool value;
+  SettingsModel? settingsModel;
+
   @override
   void initState() {
     super.initState();
+    settingsModel = Provider.of<SettingsModel>(context, listen: false);
+    value = settingsModel?.getAutoToggle();
     large = false;
     timer = Timer.periodic(
         const Duration(milliseconds: 1000),
@@ -39,7 +45,7 @@ class _ShadowSwitchState extends State<ShadowSwitch> {
         curve: Curves.linear,
         height: 20,
         width: 40,
-        decoration: widget.value
+        decoration: value
             ? BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
@@ -54,11 +60,14 @@ class _ShadowSwitchState extends State<ShadowSwitch> {
               )
             : null,
         child: Switch(
-            value: widget.value,
+            value: value,
             thumbColor: MaterialStateProperty.all(Colors.red),
             trackColor: MaterialStateProperty.all(Colors.white),
             onChanged: (state) {
-              widget.onChanged(state);
+              setState(() {
+                value = state;
+              });
+              settingsModel?.setAutoToggle(state);
             }));
   }
 }

@@ -99,15 +99,16 @@ class NotificationsService {
     devicesModelCallback!();
   }
 
-  toggleHandle(bool state) {
-    ls.read('showNotifs').then((notifs) {
-      notifs = notifs != "false" ? true : false;
-      if (state) {
-        messaging.subscribeToTopic("All");
-      } else if (!notifs) {
-        messaging.unsubscribeFromTopic("All");
-      }
-      ls.save('autoToggle', state.toString());
-    });
+  updateSettings() async {
+    var showNotifs = await ls.read('showNotifs');
+    showNotifs = showNotifs != "false" ? true : false;
+    var autoToggle = await ls.read('autoToggle');
+    autoToggle = autoToggle != "false" ? true : false;
+
+    if (autoToggle || showNotifs) {
+      messaging.subscribeToTopic("All");
+    } else {
+      messaging.unsubscribeFromTopic("All");
+    }
   }
 }

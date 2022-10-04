@@ -41,11 +41,7 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
           );
         });
       }
-      devicesModel.getAutoToggle().then((state) {
-        setState(() {
-          autoToggle = state;
-        });
-      });
+
       Provider.of<TimeSeriesModel>(context, listen: false).update();
     });
   }
@@ -239,21 +235,13 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
                       margin: const EdgeInsets.only(right: 10),
                       alignment: Alignment.centerRight,
                       child: Row(
-                        children: [
-                          const Icon(Icons.bolt, color: Colors.white),
-                          const Text("Auto : ",
+                        children: const [
+                          Icon(Icons.bolt, color: Colors.white),
+                          Text("Auto : ",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white)),
-                          ShadowSwitch(
-                            value: autoToggle,
-                            onChanged: (state) {
-                              setState(() {
-                                autoToggle = state;
-                                devicesModel.setAutoToggle(state);
-                              });
-                            },
-                          )
+                          ShadowSwitch()
                         ],
                       ),
                     )
