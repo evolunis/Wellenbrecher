@@ -8,7 +8,7 @@ db = admin.database();
 
 
 
-exports.smartGridApiCall = functions.pubsub.schedule('every 15 minutes').onRun((context) => {
+exports.smartGridApiCall = functions.pubsub.schedule('11-59/15 * * * *').onRun((context) => {
     return updateGridData().then(()=> {
       return null;});
   });
@@ -32,11 +32,10 @@ async function updateGridData() {
 
     db.ref('/data/overProd').get().then((snapshot) => {
       if (snapshot.exists()) {
+        console.log("This is the value !")
+        console.log(snapshot.val());
         overProd = snapshot.val();
-      } else {
-        console.log("No data available");
-      }
-    })
+      
 
     if((data['prodSerieSum'].last >= data['consSerieSum'].last) && !overProd){
       db.ref("/data/overProd").set(true).then(()=>{
@@ -48,7 +47,12 @@ async function updateGridData() {
       db.ref("/data/overProd").set(false).then(()=>{
             sendNotification("off");
         });
+    }} else {
+      console.log("No data available");
     }
+  })
+
+
     
     
       return db.ref('/data/').update(data).then(()=>{

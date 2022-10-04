@@ -43,7 +43,7 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
       }
       devicesModel.getAutoToggle().then((state) {
         setState(() {
-          autoToggle = true;
+          autoToggle = state;
         });
       });
       Provider.of<TimeSeriesModel>(context, listen: false).init();

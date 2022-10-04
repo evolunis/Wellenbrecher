@@ -74,9 +74,6 @@ func notification(){
                 myId = String(devices.count)
             }
             
-            var getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?string=\(myId)") ?? URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?string=was_nil")!)
-            var task2 = URLSession.shared.dataTask(with: getRequest2)
-            task2.resume();
             
             
             var toState = "on";

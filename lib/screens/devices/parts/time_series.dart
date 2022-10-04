@@ -74,7 +74,9 @@ class TimeSeries extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall),
                   RichText(
                     text: TextSpan(children: [
-                      const TextSpan(text: "Prod: "),
+                      const TextSpan(
+                          text: "Prod: ",
+                          style: TextStyle(color: Colors.black)),
                       TextSpan(
                           text:
                               "${(timeSeries.getData()['prodSerieSum'].last[1] / 1000).toStringAsFixed(1)}",
@@ -83,7 +85,9 @@ class TimeSeries extends StatelessWidget {
                   ),
                   RichText(
                     text: TextSpan(children: [
-                      const TextSpan(text: "Cons: "),
+                      const TextSpan(
+                          text: "Cons: ",
+                          style: TextStyle(color: Colors.black)),
                       TextSpan(
                           text:
                               "${(timeSeries.getData()['consSerieSum'].last[1] / 1000).toStringAsFixed(1)}",
