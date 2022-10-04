@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 
 import 'package:wellenbrecher/service_locator.dart';
 import 'package:wellenbrecher/services/cloud_server_service.dart';
+import 'package:wellenbrecher/services/notifications_service.dart';
 import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 
 part 'devices.g.dart';
@@ -28,6 +29,7 @@ List supportedCodes = ["SHPL", "SHPLG-S"];
 
 class DevicesModel extends ChangeNotifier {
   CloudServerService cloudServer = serviceLocator<CloudServerService>();
+  NotificationsService notifications = serviceLocator<NotificationsService>();
   bool hasLoaded = false;
   Box? devices;
   List devicesStatus = [];
@@ -35,6 +37,7 @@ class DevicesModel extends ChangeNotifier {
 
   dynamic init() async {
     cloudServer.setCallback(refresh);
+    notifications.setCallback(refresh);
 
     Hive.registerAdapter<Device>(DeviceAdapter());
     devices = await Hive.openBox<Device>('devices');

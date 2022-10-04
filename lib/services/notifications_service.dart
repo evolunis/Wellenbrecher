@@ -8,7 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //Background handler : Only on Android, iOS is handled natively.
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
-class FirebaseNotifications {
+class NotificationsService {
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
     var title = message.notification?.title ?? "The market has changed :";
@@ -22,17 +22,21 @@ class FirebaseNotifications {
       } else {
         showNotification(title, "Time to turn your devices $state !");
       }
+      notifyProvider();
     });
   }
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  VoidCallback? devicesModelCallback;
+
   final FlutterLocalNotificationsPlugin _localNotificationPlugin =
       FlutterLocalNotificationsPlugin();
   late DarwinInitializationSettings iosSettings;
 
   late InitializationSettings localSettings;
 
-  FirebaseNotifications() {
+  NotificationsService() {
     iosSettings = const DarwinInitializationSettings();
     localSettings = InitializationSettings(iOS: iosSettings);
   }
@@ -83,6 +87,14 @@ class FirebaseNotifications {
 
     await _localNotificationPlugin.show(0, title, body, notificationDetails,
         payload: 'item z');
+  }
+
+  setCallback(VoidCallback cb) {
+    devicesModelCallback = cb;
+  }
+
+  notifyProvider() {
+    devicesModelCallback!();
   }
 
   toggleHandle(bool state) {
