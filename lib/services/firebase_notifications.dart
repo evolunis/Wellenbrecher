@@ -12,7 +12,8 @@ class FirebaseNotifications {
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
     var title = message.notification?.title ?? "The market has changed :";
-    var state = message.data['toState'] ?? "fail";
+    //var state = message.data['toState'] ?? "fail";
+    var state = "off";
 
     ls.read('autoToggle').then((auto) {
       if (auto) {
@@ -81,5 +82,16 @@ class FirebaseNotifications {
 
     await _localNotificationPlugin.show(0, title, body, notificationDetails,
         payload: 'item z');
+  }
+
+  toggleAuto(bool state) {
+    ls.read('reminders').then((reminders) {
+      if (state) {
+        messaging.subscribeToTopic("All");
+      } else if (!reminders) {
+        messaging.unsubscribeFromTopic("All");
+      }
+      ls.save('autoToggle', state.toString());
+    });
   }
 }
