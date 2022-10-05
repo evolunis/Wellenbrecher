@@ -19,7 +19,7 @@ class NotificationsService {
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
     var title = message.notification?.title ?? "The market has changed :";
-    var state = message.data['toState'] ?? "fail";
+    var state = message.data['toState'];
     // var state = "off";
 
     ls.read('autoToggle').then((auto) {
