@@ -1,10 +1,3 @@
-//
-//  NotificationService.swift
-//  NotificationServiceExtension
-//
-//  Created by user226910 on 28.09.22.
-//
-
 import UserNotifications
 import Foundation
 
@@ -42,24 +35,10 @@ public class NotificationService: UNNotificationServiceExtension {
                 print(error.localizedDescription)
             }
             
-            var myId = "disabled";
             
             
             if(authValid){
                 if(autoToggle){
-                    
-                    if(devices.count != 0 ){
-                        
-                        myId = devices[0].id
-                    }
-                    else{
-                        myId = String(devices.count)
-                    }
-                    
-                    var getRequest2 = URLRequest(url: URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?string=\(myId)") ?? URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?string=was_nil")!)
-                    var task2 = URLSession.shared.dataTask(with: getRequest2)
-                    task2.resume();
-                    
                     
                     var toState = bestAttemptContent.userInfo["toState"] as! String;
                     
@@ -72,19 +51,15 @@ public class NotificationService: UNNotificationServiceExtension {
 
                         // Check for Error
                         if let error = error {
-                            var getRequest4 = URLRequest(url: URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?error=\(error)") ?? URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?error=was_nil")!)
-                            var task4 = URLSession.shared.dataTask(with: getRequest4)
-                            task4.resume();
+                
                         }
 
                         // Convert HTTP Response Data to a String
                         if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                            var getRequest5 = URLRequest(url: URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?datastring=\(String(describing: response))") ?? URL(string: "https://us-central1-wellenbrecher-3c570.cloudfunctions.net/debug?datastring=was_nil")!)
-                            var task5 = URLSession.shared.dataTask(with: getRequest5)
-                            task5.resume();
+                        
                         }
                     }
-                    task3.resume()
+
                     
                     bestAttemptContent.title = "Energy market has changed :"
                     bestAttemptContent.body = "Your devices were turned \(bestAttemptContent.userInfo["toState"] as! String) !"
@@ -100,12 +75,6 @@ public class NotificationService: UNNotificationServiceExtension {
             else{
                 //Dismiss notification
             }
-                
-                            
-            
-            
-           
-            
             contentHandler(bestAttemptContent)
         }
     }
@@ -114,8 +83,6 @@ public class NotificationService: UNNotificationServiceExtension {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
         if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
-            bestAttemptContent.title = "Timeout!"
-            bestAttemptContent.body = "This was too short!"
 
             contentHandler(bestAttemptContent)
         }

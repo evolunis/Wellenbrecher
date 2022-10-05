@@ -9,6 +9,7 @@ import 'package:wellenbrecher/utils/helpers.dart';
 class TimeSeries extends StatelessWidget {
   const TimeSeries({super.key});
 
+  //Chooses which vertical grid lines should be shown
   bool verticalLineShow(double value) {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
 
@@ -18,6 +19,7 @@ class TimeSeries extends StatelessWidget {
     return false;
   }
 
+  //Returns the bottom axis values
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontSize: 12,
@@ -40,6 +42,7 @@ class TimeSeries extends StatelessWidget {
     );
   }
 
+  //Returns the vertical axis values
   Widget sideTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontSize: 12,

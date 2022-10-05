@@ -8,7 +8,6 @@ import 'package:wellenbrecher/models/devices.dart';
 import 'package:wellenbrecher/screens/devices/devices.dart';
 
 import 'package:wellenbrecher/service_locator.dart';
-import 'package:flutter/foundation.dart';
 
 //firebase
 import 'package:firebase_core/firebase_core.dart';
@@ -22,9 +21,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  //Setting up Get_it service locator for services
   setUp();
   serviceLocator.allReady().then((value) {
-    
     runApp(const MyApp());
   });
 }
@@ -33,9 +32,9 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key, this.token});
   final String? token;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //Creating Provider architecture
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => SettingsModel()),

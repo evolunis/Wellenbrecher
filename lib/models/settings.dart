@@ -6,9 +6,11 @@ import 'package:wellenbrecher/services/notifications_service.dart';
 import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 
 class SettingsModel extends ChangeNotifier {
+  //loading services
   CloudServerService cloudServer = serviceLocator<CloudServerService>();
   NotificationsService notifications = serviceLocator<NotificationsService>();
 
+  //save the setting from main page
   Future<bool> setSettings(
       String serverAddress, String apiKey, bool showNotifs) async {
     if (serverAddress != "" && serverAddress[serverAddress.length - 1] == "/") {
@@ -22,6 +24,7 @@ class SettingsModel extends ChangeNotifier {
     return true;
   }
 
+  //return the settings from local storage
   getSettings() async {
     Map settings = {};
     settings['serverAddress'] = await ls.read('serverAddr') ?? "";
@@ -31,6 +34,7 @@ class SettingsModel extends ChangeNotifier {
     return settings;
   }
 
+  //Setter and getter for the main toggle
   getAutoToggle() {
     return ls.read("autoToggle").then((state) {
       return state == "true" ? true : false;

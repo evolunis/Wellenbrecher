@@ -8,6 +8,7 @@ import 'package:wellenbrecher/services/cloud_server_service.dart';
 import 'package:wellenbrecher/services/notifications_service.dart';
 import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 
+//Model for the Hive database
 part 'devices.g.dart';
 
 @HiveType(typeId: 0) // 1
@@ -38,10 +39,13 @@ class DevicesModel extends ChangeNotifier {
   dynamic init() async {
     cloudServer.setCallback(refresh);
     notifications.setCallback(refresh);
+
     notifications.setup();
 
     Hive.registerAdapter<Device>(DeviceAdapter());
     devices = await Hive.openBox<Device>('devices');
+
+    //Checks if authentication is valid and send back message
     return cloudServer.checkAuthSettings().then((res) async {
       dynamic message = true;
       if (res != true) {
@@ -91,6 +95,7 @@ class DevicesModel extends ChangeNotifier {
     }
   }
 
+  /* Intermediate control functions */
   getDeviceStatus(int index) {
     return devicesStatus[index];
   }
@@ -108,6 +113,7 @@ class DevicesModel extends ChangeNotifier {
     });
   }
 
+  //Main refresh function, used as callback in services
   refresh() {
     notifyListeners();
     if (cloudServer.getIsAuthValid()) {
@@ -159,6 +165,7 @@ class DevicesModel extends ChangeNotifier {
     }
   }
 
+  //Check if the interface should be shown
   bool shouldShow() {
     return cloudServer.getIsAuthValid();
   }

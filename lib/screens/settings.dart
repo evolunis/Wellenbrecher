@@ -15,10 +15,12 @@ class SettingsForm extends StatefulWidget {
 class SettingsFormState extends State<SettingsForm> {
   final _formKey = GlobalKey<FormState>();
 
+  //Linked model
   late SettingsModel settingsModel;
+
+  //Fields variables
   late TextEditingController serverController;
   late TextEditingController keyController;
-
   late bool showNotifs;
 
   late bool loading;
@@ -35,6 +37,7 @@ class SettingsFormState extends State<SettingsForm> {
     getSettings();
   }
 
+  //Loads the to be put in the fields
   getSettings() async {
     settingsModel.getSettings().then((settings) {
       setState(() {
@@ -116,10 +119,7 @@ class SettingsFormState extends State<SettingsForm> {
                         ListTile(
                             title: RichText(
                           text: TextSpan(
-                            style: const TextStyle(
-                                color:
-                                    Colors.black) // default style for all text
-                            ,
+                            style: const TextStyle(color: Colors.black),
                             children: [
                               WidgetSpan(
                                   alignment: PlaceholderAlignment.middle,
@@ -141,7 +141,7 @@ class SettingsFormState extends State<SettingsForm> {
                                                   color: Colors.blue,
                                                   fontWeight: FontWeight.bold)),
                                         ),
-                                      ]))), // override default text styles with link-specific styles
+                                      ]))),
                             ],
                           ),
                         ))

@@ -13,6 +13,7 @@ class DeviceModal extends StatefulWidget {
 
 class _DeviceModalState extends State<DeviceModal> {
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final DevicesModel devicesModel =

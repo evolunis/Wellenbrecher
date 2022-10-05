@@ -4,9 +4,11 @@ import 'dart:convert';
 
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
+
 import 'package:wellenbrecher/utils/local_storage.dart' as ls;
 import 'package:wellenbrecher/utils/api_calls.dart';
 
+//Authentification data class
 class ServerAuth {
   String serverAddress;
   String apiKey;
@@ -20,6 +22,8 @@ class ServerAuth {
 class CloudServerService {
   ServerAuth serverAuth = ServerAuth("", "");
   VoidCallback? devicesModelCallback;
+
+  //Keep track of the interval between api calls
   DateTime lastTime = DateTime.now();
   bool loading = true;
 
@@ -72,12 +76,6 @@ class CloudServerService {
 
   checkDeviceStatus(String id) async {
     return sendCommand("/device/status", {"id": id}).then((res) {
-      try {
-        print("response");
-      } catch (e) {
-        print(e);
-      }
-
       return jsonDecode(res.body)['isok'];
     });
   }
@@ -113,6 +111,7 @@ class CloudServerService {
     });
   }
 
+  //Switch all devices in local memory after opening app or changeing auto setting
   catchUp(state) async {
     String devicesIds = await ls.read('devicesIds');
     var devices = jsonDecode(devicesIds);
@@ -120,11 +119,11 @@ class CloudServerService {
     for (var device in devices) {
       ids.add(device['id']);
     }
-    print(ids);
-    Future.delayed(Duration(milliseconds: 2000), () async {
-    switchAllDevices(ids, state);
-    print("called");
-    notifyProviders();
+
+    Future.delayed(const Duration(milliseconds: 2000), () async {
+      switchAllDevices(ids, state);
+
+      notifyProviders();
     });
   }
 
@@ -148,6 +147,7 @@ class CloudServerService {
     }
   }
 
+  //Setter and getter for the auth class
   getIsAuthValid() {
     return serverAuth.isAuthValid;
   }

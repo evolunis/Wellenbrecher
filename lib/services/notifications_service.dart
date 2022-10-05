@@ -3,8 +3,10 @@ import 'package:wellenbrecher/service_locator.dart';
 
 import 'package:wellenbrecher/utils/remote_database.dart' as db;
 import 'package:wellenbrecher/utils/local_storage.dart' as ls;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:wellenbrecher/services/cloud_server_service.dart';
 
 //Background handler : Only on Android, iOS is handled natively.
@@ -13,6 +15,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 class NotificationsService {
   late CloudServerService cloudServer;
 
+  //Foreground notifications handler
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
     var title = message.notification?.title ?? "The market has changed :";
@@ -32,6 +35,7 @@ class NotificationsService {
     });
   }
 
+  //Firebase and local notification variables
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   VoidCallback? devicesModelCallback;
@@ -48,8 +52,7 @@ class NotificationsService {
   }
 
   init() async {
-
-   
+    //Asks for notifications permission
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -82,11 +85,13 @@ class NotificationsService {
     });
   }
 
-  setup(){
-     cloudServer = serviceLocator<CloudServerService>();
-     updateSettings();
+  //Second init called later as other service isn't ready
+  setup() {
+    cloudServer = serviceLocator<CloudServerService>();
+    updateSettings();
   }
 
+  //Show a local notification
   showNotification(String title, String body) async {
     const DarwinNotificationDetails iosNotificationDetails =
         DarwinNotificationDetails(
@@ -108,6 +113,7 @@ class NotificationsService {
     devicesModelCallback!();
   }
 
+  //Update the service after settings were changed
   updateSettings() async {
     var showNotifs = await ls.read('showNotifs');
     showNotifs = showNotifs != "false" ? true : false;
@@ -121,7 +127,7 @@ class NotificationsService {
     }
     if (autoToggle) {
       var state = await db.read("/data/overProd");
-      
+
       cloudServer.catchUp(state);
     }
   }

@@ -8,6 +8,7 @@ import 'package:firebase_database/firebase_database.dart';
 class TimeSeriesModel extends ChangeNotifier {
   Map? data;
 
+  //Main function, initiate data retrieval
   update() async {
     data = await getDataFirebase();
     //data = await getPowerData();
@@ -16,6 +17,7 @@ class TimeSeriesModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Get the data from the server
   getDataFirebase() async {
     DatabaseReference ref = FirebaseDatabase.instance.ref();
     data = {};
@@ -27,6 +29,7 @@ class TimeSeriesModel extends ChangeNotifier {
     }
   }
 
+  //Functionnal getters
   isLoaded() {
     return data != null ? true : false;
   }
@@ -39,6 +42,7 @@ class TimeSeriesModel extends ChangeNotifier {
     return data?['consSerieSum'].last[0];
   }
 
+  //Transforms the points for the plot
   toFlSpots(List list, int interval) {
     List<FlSpot> spots = [];
     for (var i = (list.length / 7 * 2).floor();
@@ -51,7 +55,7 @@ class TimeSeriesModel extends ChangeNotifier {
   }
 }
 
-/* NOT USED, WAS PUT ON SERVER */
+/* NOT USED, WAS PUT ON REMOTE SERVER */
 
 //Get the whole timestamp list
 

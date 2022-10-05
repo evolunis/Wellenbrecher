@@ -21,7 +21,11 @@ class _ShadowSwitchState extends State<ShadowSwitch> {
   void initState() {
     super.initState();
     settingsModel = Provider.of<SettingsModel>(context, listen: false);
-    settingsModel?.getAutoToggle().then((state){value = state;});
+    settingsModel?.getAutoToggle().then((state) {
+      value = state;
+    });
+
+    //Control the animation
     large = false;
     timer = Timer.periodic(
         const Duration(milliseconds: 1000),

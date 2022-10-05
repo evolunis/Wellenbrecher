@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preference_app_group/shared_preference_app_group.dart';
 import 'package:flutter/foundation.dart';
 
+//Platform specific storage to allow values to be retrieved from notification service extension.
 const appGroupID = "group.com.evolunis.wellenbrecher";
 
 read(key) {
@@ -12,7 +13,7 @@ read(key) {
         return value;
       });
     } catch (e) {
-      print("false");
+      return false;
     }
   } else {
     return SharedPreferences.getInstance().then((prefs) {

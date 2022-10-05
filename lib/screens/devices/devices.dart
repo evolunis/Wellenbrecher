@@ -24,14 +24,18 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
   //Initialization, data fetching
   @override
   void initState() {
+    super.initState();
+
     var devicesModel = Provider.of<DevicesModel>(context, listen: false);
+    autoToggle = true;
+
     ls.read('firstInit').then((value) {
       if (value == "true") {
-        //// special start !
+        // Place to create a first time init screen
       }
     });
-    super.initState();
-    autoToggle = true;
+
+    //Adds an observer to refresh on show
     WidgetsBinding.instance.addObserver(this);
     devicesModel.init().then((res) {
       if (res != true) {
@@ -46,6 +50,7 @@ class _DevicesPageState extends State<DevicesPage> with WidgetsBindingObserver {
     });
   }
 
+  //Manages the update on screen show
   @override
   didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
