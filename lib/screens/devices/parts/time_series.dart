@@ -120,10 +120,6 @@ class TimeSeries extends StatelessWidget {
               return Padding(
                   padding: const EdgeInsets.fromLTRB(5, 30, 5, 1),
                   child: LineChart(LineChartData(
-                      betweenBarsData: [
-                        BetweenBarsData(
-                            fromIndex: 0, toIndex: 1, color: Colors.green)
-                      ],
                       lineTouchData: LineTouchData(
                           getTouchedSpotIndicator: (LineChartBarData barData,
                               List<int> spotIndexes) {
