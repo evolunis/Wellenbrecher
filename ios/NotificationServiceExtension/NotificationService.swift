@@ -17,7 +17,7 @@ public class NotificationService: UNNotificationServiceExtension {
             let apiKey = group?.string(forKey: "apiKey") as? String ?? ""
             let authValid = (group?.string(forKey: "isAuthValid") as? String) == "true" ? true:false
             let devicesIds = group?.string(forKey: "devicesIds") as? String ?? "[]"
-            let autoToggle = (group?.string(forKey: "autoToggle") as? String) == "true" ? true:false
+            let autoToggle = (group?.string(forKey: "autoToggle") as? String) == "false" ? false:true
             let showNotif = (group?.string(forKey: "showNotifs") as? String) == "true" ? true:false
                 
             struct Device: Codable {
