@@ -37,7 +37,7 @@ class SettingsModel extends ChangeNotifier {
   //Setter and getter for the main toggle
   getAutoToggle() {
     return ls.read("autoToggle").then((state) {
-      return state == "true" ? true : false;
+      return state == "false" ? false : true;
     });
   }
 
