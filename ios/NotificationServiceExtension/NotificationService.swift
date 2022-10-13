@@ -47,7 +47,7 @@ public class NotificationService: UNNotificationServiceExtension {
                     postRequest.httpMethod = "POST"
                     let postString = "auth_key=\(apiKey)&turn=\(toState)&devices=\(devicesIds)";
                     postRequest.httpBody = postString.data(using: String.Encoding.utf8);
-                    let task3 = URLSession.shared.dataTask(with: postRequest){ (data, response, error) in
+                    let task = URLSession.shared.dataTask(with: postRequest){ (data, response, error) in
 
                         // Check for Error
                         if let error = error {
@@ -60,7 +60,7 @@ public class NotificationService: UNNotificationServiceExtension {
                         }
                     }
 
-                    
+                    task.resume()
                     bestAttemptContent.title = "Energy market has changed :"
                     bestAttemptContent.body = "Your devices were turned \(bestAttemptContent.userInfo["toState"] as! String) !"
                 
