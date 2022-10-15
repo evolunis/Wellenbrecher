@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TimeSeriesModel())
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Wellenbrecher',
         theme: ThemeData(
           primarySwatch: Colors.blue,
