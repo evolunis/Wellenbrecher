@@ -127,7 +127,7 @@ class SettingsFormState extends State<SettingsForm> {
                                       onTap: () async {
                                         await launchUrl(
                                             Uri.parse(
-                                                'https://youtu.be/JMoZeLe6TS0'),
+                                                'https://youtu.be/UCt9WKuRirY'),
                                             mode:
                                                 LaunchMode.externalApplication);
                                       },
