@@ -107,6 +107,9 @@ class SettingsFormState extends State<SettingsForm> {
                           ),
                         ),
                         ListTile(
+                          title: const Text("Powered by SMARD.de")
+                        ),
+                        ListTile(
                           title: const Text("Show reminders "),
                           trailing: Switch(
                               value: showNotifs,
