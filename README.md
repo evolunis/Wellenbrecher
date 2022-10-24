@@ -2,6 +2,8 @@
 
 A simple open-source mobile application allowing to control smart wifi plugs and turn them off when the price of electricity is expected to rise due to increased energy consomation.
 
+[App Store](https://apps.apple.com/de/app/wellenbrecher/id6443548746?l=en)
+
 ## Getting Started
 
 The app displays the following features :
